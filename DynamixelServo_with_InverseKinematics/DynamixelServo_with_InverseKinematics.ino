@@ -3,16 +3,16 @@
 
 double coxa=6,     femur=4.5,    tibia=6;
 
-double x_limit=5,  y_limit=8.66, z_limit=3;
+double x_limit=15,  y_limit=15, z_limit=3;
 
-double x_val=5,    y_val=7,      z_val=3;
+double x_val=10,    y_val=10,      z_val=3;
 
 double beta_limit=56,      alpha_limit=143;
 
 
-#define ID_coxa 
-#define ID_femur 
-#define ID_tibia 
+#define ID_coxa 12
+#define ID_femur 17
+#define ID_tibia 10
 
 double Rad_to_Degree(double Rad){
   double degree= Rad*57.2957795;
@@ -23,7 +23,7 @@ double Gamma_Calculation(double x, double y, double z){
   double gamma;
   gamma= Rad_to_Degree(atan(x/y));
   
-  return round(gamma);
+  return gamma;
 }
 double Beta_Calculation(double x, double y, double z){
   double L1, beta, L;
@@ -31,7 +31,7 @@ double Beta_Calculation(double x, double y, double z){
   L= sqrt(pow((L1-coxa), 2) + pow(z, 2));
   beta= Rad_to_Degree(acos((pow(tibia, 2) + pow(femur, 2) - pow(L, 2))/(2*tibia*femur)));
   
-  return round(beta);
+  return beta;
 }
 double TotalAlpha_Calculation(double x, double y, double z){
   double L1, L, alpha1, alpha2, alpha_total;
@@ -41,7 +41,7 @@ double TotalAlpha_Calculation(double x, double y, double z){
   alpha2=Rad_to_Degree(acos((pow(femur, 2) + pow(L,2) - pow(tibia, 2))/(2*femur*L)));
   alpha_total=alpha1+alpha2;
   
-  return round(alpha_total);
+  return alpha_total;
 }
 
 void setup() {
@@ -57,9 +57,18 @@ void setup() {
   Serial.println(Beta_Calculation(x_val,y_val,z_val));
   Serial.print("Alpha total=");
   Serial.println(TotalAlpha_Calculation(x_val,y_val,z_val));
+  Serial.println("Hasil Kalkulasi (rounded version");
+  Serial.print("Gamma=");
+  Serial.println(round(Gamma_Calculation(x_val,y_val,z_val)));
+  Serial.print("Beta=");
+  Serial.println(round(Beta_Calculation(x_val,y_val,z_val)));
+  Serial.print("Alpha total=");
+  Serial.println(round(TotalAlpha_Calculation(x_val,y_val,z_val)));
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  int Kec = 1000;
+  // 1 leg test
+  
 
 }
