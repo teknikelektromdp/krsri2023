@@ -1,7 +1,7 @@
 #include <DynamixelSerial.h>
 
 
-double coxa=3,     femur=7,      tibia=9;
+double coxa=6,     femur=4.5,    tibia=6;
 
 double x_limit=5,  y_limit=8.66, z_limit=3;
 
