@@ -23,19 +23,19 @@ double Rad_to_Degree(double Rad){
 //  alpha_total=alpha1+alpha2;
 //  return gamma, beta, alpha_total;
 //}
-double Gamma_Calculation(double x, double y, double z){
+int Gamma_Calculation(double x, double y, double z){
   double gamma;
   gamma= Rad_to_Degree(atan(x/y));
   return gamma;
 }
-double Beta_Calculation(double x, double y, double z){
+int Beta_Calculation(double x, double y, double z){
   double L1, beta, L;
   L1=sqrt(pow(x, 2) + pow(y, 2));
   L= sqrt(pow((L1-coxa), 2) + pow(z, 2));
   beta= Rad_to_Degree(acos((pow(tibia, 2) + pow(femur, 2) - pow(L, 2))/(2*tibia*femur)));
   return beta;
 }
-double TotalAlpha_Calculation(double x, double y, double z){
+int TotalAlpha_Calculation(double x, double y, double z){
   double L1, L, alpha1, alpha2, alpha_total;
   L1=sqrt(pow(x, 2) + pow(y, 2));
   L= sqrt(pow((L1-coxa), 2) + pow(z, 2));
@@ -51,30 +51,6 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.println("Hasil Kalkulasi(Float)");
-  Serial.print("Gamma=");
-  Serial.println(Gamma_Calculation(x_val,y_val,z_val));
-  Serial.print("Beta=");
-  Serial.println(Beta_Calculation(x_val,y_val,z_val));
-  Serial.print("Alpha total=");
-  Serial.println(TotalAlpha_Calculation(x_val,y_val,z_val));
-  
-  Serial.println("Hasil Kalkulasi(Int())");
-  Serial.print("Gamma=");
-  Serial.println(int(Gamma_Calculation(x_val,y_val,z_val)));
-  Serial.print("Beta=");
-  Serial.println(int(Beta_Calculation(x_val,y_val,z_val)));
-  Serial.print("Alpha total=");
-  Serial.println(int(TotalAlpha_Calculation(x_val,y_val,z_val)));
-  
-  Serial.println("Hasil Kalkulasi(Round())");
-  Serial.print("Gamma=");
-  Serial.println(round(Gamma_Calculation(x_val,y_val,z_val)));
-  Serial.print("Beta=");
-  Serial.println(round(Beta_Calculation(x_val,y_val,z_val)));
-  Serial.print("Alpha total=");
-  Serial.println(round(TotalAlpha_Calculation(x_val,y_val,z_val)));
-
-  Serial.println("Hasil Kalkulasi((Float))");
   Serial.print("Gamma=");
   Serial.println(Gamma_Calculation(x_val,y_val,z_val));
   Serial.print("Beta=");
