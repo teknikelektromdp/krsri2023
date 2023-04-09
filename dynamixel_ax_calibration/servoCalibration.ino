@@ -8,7 +8,7 @@ void setup(){
 }
 
 void loop(){
-  //don't map position value
+  //don't map the value of position
   //0 = 0 degree 
   //500 = 150 degree
   //1023 = 300 degree
