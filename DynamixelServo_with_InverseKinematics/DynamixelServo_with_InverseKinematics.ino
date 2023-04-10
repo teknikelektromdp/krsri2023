@@ -1,14 +1,12 @@
 #include <DynamixelSerial.h>
 
 //defining length of each part of the legs
-double coxa=6,     femur=4.5,    tibia=6;
+double coxa=6.5,     femur=4.7,    tibia=6;
 //limiting coordinate for leg movement
-double x_limit=15,  y_limit=15, z_limit=3;
-//limiting servo rotation's degree of freedom
-double beta_limit=75,      alpha_limit=90;
+double x_limit=11.5,  y_limit=11.5, z_limit=5
 
 //coordinate value for standing state
-double x_val=11,    y_val=11,      z_val=3;
+double x_val=11.5,    y_val=11.5,      z_val=4;
 
 //defining id for 1 leg
 #define ID_coxa 9
@@ -32,8 +30,7 @@ double Gamma_Calculation(double x, double y, double z){
   gamma = Rad_to_Degree(atan(x/y));
   //rounding gamma value
   gamma = round(gamma);
-  //mapping from 0-300 (physical capability of servo) to 0-1000 (digitally signed servo capability)
-  gamma = map(gamma, 0, 300, 0, 1000);
+  
   return gamma;
 }
 
@@ -45,8 +42,7 @@ double Beta_Calculation(double x, double y, double z){
   beta = Rad_to_Degree(acos((pow(tibia, 2) + pow(femur, 2) - pow(L, 2))/(2*tibia*femur)));
   //rounding beta value
   beta = round(beta);
-  //mapping from 0-300 (physical capability of servo) to 0-1000 (digitally signed servo capability)
-  beta = map(beta, 0, 300, 0, 1000);
+  
   return beta;
 }
 
@@ -60,9 +56,23 @@ double TotalAlpha_Calculation(double x, double y, double z){
   alpha_total = alpha1 + alpha2;
   //rounding alpha value
   alpha_total = round(alpha_total);
-  //mapping from 0-300 (physical capability of servo) to 0-1000 (digitally signed servo capability)
-  alpha_total = map(alpha_total, 0, 300, 0, 1000);
+
   return alpha_total;
+}
+
+//convert an angle to adc value
+int aCalc(float angle)
+{
+  float angle_calc = (angle/300)*1023;
+  return angle_calc;
+}
+
+//calculate the mirror value of an angle
+int cAm(int angle)
+{
+  int mirror_angle = (angle - 150)*-1;
+  mirror_angle += 150;
+  return mirror_angle;
 }
 
 void setup() {
