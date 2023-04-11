@@ -1,22 +1,14 @@
 #include <DynamixelSerial.h>
 
 //Servo address
-int servoLFT = ,
-    servoLFM = ,
-    servoLFB = ,
+int servoLFT = ,    servoRFT = ,
+    servoLFM = ,    servoRFM = ,
+    servoLFB = ,    servoRFB = ,
     
-    servoLBT = ,
-    servoLBM = ,
-    servoLBB = ,
+    servoLBT = ,    servoRBT = ,
+    servoLBM = ,    servoRBM = ,
+    servoLBB = ,    servoRBB = ;
     
-    servoRFT = ,
-    servoRFM = ,
-    servoRFB = ,
-    
-    servoRBT = ,
-    servoRBM = ,
-    servoRBB = ;
-
 
 void Berdiri(int kecepatan){
   Dynamixel.moveSpeed( , 500, kecepatan);
