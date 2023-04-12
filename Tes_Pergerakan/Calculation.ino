@@ -1,7 +1,7 @@
 //defining length of each part of the legs
 double coxa=6.5,     femur=4.7,    tibia=6;
 //limiting coordinate for leg movement
-double x_limit=11.5,  y_limit=11.5, z_limit=5;
+double x_limit=11.5,  y_limit=11.5, z_limit=4;
 
 //coordinate value for standing state
 double x_standing=11.5,    y_standing=11.5,      z_standing=4;
@@ -54,60 +54,57 @@ double Alpha_Calculation(double x, double y, double z){
 }
 
 
-//convert an angle to adc value
-int AngleCalc(float angle, int mode)
+//convert an angle to adc value and mirroring the output
+int AngleCalc(float angle, int mirror)
 {
   float angle_calc = (angle/300)*1023;
-  if(mode<0){
-    int mirror_angle = (angle - 150)*-1;
-    mirror_angle += 150;
+  if(mirror == 1){
+    int mirror_angle = (angle_calc - 511)*-1;
+    mirror_angle += 511;
     return mirror_angle;
   }
-  return angle_calc;
-}
-
-//calculate the mirror value of an angle
-int AngleMirror(int angle)
-{
-  int mirror_angle = (angle - 150)*-1;
-  mirror_angle += 150;
-  return mirror_angle;
-}
-
-int CoxaAngle(float angle, int mode)
-{
-  int coxa_angle;
-  if (mode < 0){
-    coxa_angle = coxa_set_angle - (Gamma_Calculation(x_standing, y_standing, z_standing) - angle);
-  }
   else{
-    coxa_angle = coxa_set_angle + (Gamma_Calculation(x_standing, y_standing, z_standing) - angle);
+    return angle_calc;  
   }
-  return coxa_angle;
 }
 
-int FemurAngle(float angle, int mode)
+int dynamixelGamma(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
 {
-  int femur_angle;
-  if (mode < 0){
-    femur_angle = femur_set_angle - (Alpha_Calculation(x_standing, y_standing, z_standing) - angle);
+  int dynamixel_gamma = Gamma_Calculation(x_limit,y_limit,z_limit)-Gamma_Calculation(x_val,y_val,z_val);
+  if(mirror_inverse == 1)
+  {
+    return AngleCalc(30+(dynamixel_gamma*-1),mirror_dynamixel);
   }
-  else{
-    femur_angle = femur_set_angle + (Alpha_Calculation(x_standing, y_standing, z_standing) - angle);
+  else
+  {
+    return AngleCalc(30+dynamixel_gamma,mirror_dynamixel);
   }
-
-  return femur_angle;
 }
 
-int TibiaAngle(float angle, int mode)
+
+int dynamixelAlpha(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
 {
-  int tibia_angle;
-  if (mode < 0){
-    tibia_angle = tibia_set_angle - (Beta_Calculation(x_standing, y_standing, z_standing) - angle);
+  int dynamixel_alpha = Alpha_Calculation(x_limit,y_limit,z_limit) - Alpha_Calculation(x_val,y_val,z_val);
+  if(mirror_inverse == 1)
+  {
+    return AngleCalc(130+(dynamixel_alpha*-1), mirror_dynamixel);
   }
-  else {
-    tibia_angle = tibia_set_angle + (Beta_Calculation(x_standing, y_standing, z_standing) - angle);
+  else
+  {
+    return AngleCalc(130+dynamixel_alpha, mirror_dynamixel);
   }
-  
-  return tibia_angle;
+}
+
+
+int dynamixelBeta(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
+{
+  int dynamixel_beta = Beta_Calculation(x_limit,y_limit,z_limit) - Beta_Calculation(x_val,y_val,z_val);
+  if(mirror_inverse == 1)
+  {
+     return AngleCalc(165+(dynamixel_beta*-1), mirror_dynamixel);
+  }
+  else
+  {
+    return AngleCalc(165+dynamixel_beta, mirror_dynamixel);
+  }
 }
