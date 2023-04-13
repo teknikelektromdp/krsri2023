@@ -1,7 +1,7 @@
 //defining length of each part of the legs
-double coxa=6.5,     femur=4.7,    tibia=6;
+double coxa=7.5,     femur=5,    tibia=6;
 //limiting coordinate for leg movement
-double x_limit=11.5,  y_limit=11.5, z_limit=4;
+double x_limit=12.5,  y_limit=12.5, z_limit=3;
 
 //coordinate value for standing state
 double x_standing=11.5,    y_standing=11.5,      z_standing=4;
@@ -87,11 +87,11 @@ int dynamixelAlpha(double x_val,double y_val,double z_val,int mirror_inverse,int
   int dynamixel_alpha = Alpha_Calculation(x_limit,y_limit,z_limit) - Alpha_Calculation(x_val,y_val,z_val);
   if(mirror_inverse == 1)
   {
-    return AngleCalc(130+(dynamixel_alpha*-1), mirror_dynamixel);
+    return AngleCalc(150+(dynamixel_alpha*-1), mirror_dynamixel);
   }
   else
   {
-    return AngleCalc(130+dynamixel_alpha, mirror_dynamixel);
+    return AngleCalc(150+dynamixel_alpha, mirror_dynamixel);
   }
 }
 
@@ -101,10 +101,10 @@ int dynamixelBeta(double x_val,double y_val,double z_val,int mirror_inverse,int 
   int dynamixel_beta = Beta_Calculation(x_limit,y_limit,z_limit) - Beta_Calculation(x_val,y_val,z_val);
   if(mirror_inverse == 1)
   {
-     return AngleCalc(165+(dynamixel_beta*-1), mirror_dynamixel);
+     return AngleCalc(235+(dynamixel_beta*-1), mirror_dynamixel);
   }
   else
   {
-    return AngleCalc(165+dynamixel_beta, mirror_dynamixel);
+    return AngleCalc(235+dynamixel_beta, mirror_dynamixel);
   }
 }

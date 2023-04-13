@@ -58,12 +58,12 @@ void loop(){
 //  }
 //  delay(4000);
 //
-  for(int i=0; i<60;i++){
-    Dynamixel.moveSpeed(i,500,Kec);
-    Serial.println(i);
-    delay(1000);
-  }
-  Serial.println("Recalibration to 0 is Done");
+//  for(int i=0; i<60;i++){
+//    Dynamixel.moveSpeed(i,500,Kec);
+//    Serial.println(i);
+//    delay(1000);
+//  }
+//  Serial.println("Recalibration to 500 is Done");
 //  for(int i=0; i<60;i++){
 //    Dynamixel.moveSpeed(i,1000,Kec);
 //    Serial.println(i);
@@ -72,16 +72,16 @@ void loop(){
 //  Serial.println("Recalibration to 1000 is Done");
 //
 //  Dynamixel.moveSpeed(13,500,Kec);
-//  Dynamixel.moveSpeed(14,500,Kec);
+  Dynamixel.moveSpeed(14,750,Kec);
 //  
-//  Dynamixel.moveSpeed(2,0,Kec);
-//  Dynamixel.moveSpeed(18,500,Kec);
+  Dynamixel.moveSpeed(2,500,Kec);
+  Dynamixel.moveSpeed(5,500,Kec);
 //  
 //  Dynamixel.moveSpeed(10,500,Kec);
 //  Dynamixel.moveSpeed(11,500,Kec);
 //
-//  Dynamixel.moveSpeed(20,500,Kec);
-//  Dynamixel.moveSpeed(22,500,Kec);
+  Dynamixel.moveSpeed(20,500,Kec);
+  Dynamixel.moveSpeed(9,500,Kec);
 //
 //  Serial.println("Recalibration to 1000 is Done");
 }
