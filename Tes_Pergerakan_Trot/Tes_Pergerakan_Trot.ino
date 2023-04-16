@@ -52,13 +52,6 @@ void loop() {
 //
 //  
 //  }
-while(1){
-  trajectoryPlanningMirror(5,30,2,3,3,4);
-  delay(10);
-  Serial.println("-------------------------------------------------------------");
-  trajectoryPlanning(5,30,2,3,3,4);
-  delay(10);
-}
 }
 
 void trajectoryPlanning(int x0,float t,int deltaT,int AEPx,int fc,int z0)
@@ -80,11 +73,6 @@ void trajectoryPlanning(int x0,float t,int deltaT,int AEPx,int fc,int z0)
       x=x0_+((x0+AEPx-x0_)/deltaT);
       z=z0;
     }
-    Serial.print("x");
-    Serial.println(i);
-    Serial.println(x);
-    Serial.print("z: ");
-    Serial.println(z);
     LeftFront(x,8,z);
     x0_=x;
     z0_=z;    
@@ -111,11 +99,6 @@ void trajectoryPlanningMirror(int x0,float t,int deltaT,float AEPx,int fc,int z0
       x=x0_+(((AEPx+x0)+(AEPx*-1)-x0_)/deltaT);    
       z=fc*sin(Degree_to_Rad(180*((((i+1)*2)-t)/t)))+z0;
     }
-    Serial.print("x");
-    Serial.println(i);
-    Serial.println(x);
-    Serial.print("z: ");
-    Serial.println(z);
     LeftFront(x,8,z);
     x0_=x;
     z0_=z;    
