@@ -2,7 +2,7 @@
 void Berdiri(){
   double  x_standing=8,
           y_standing=8,
-          z_standing=4;
+          z_standing=5;
 //  LeftFront(10.5, 10.5, 3);
 //  LeftBack(10.5, 10.5, 3);
 //  RightFront(10.5, 10.5, 3);

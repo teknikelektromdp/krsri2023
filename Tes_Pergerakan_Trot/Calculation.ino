@@ -1,7 +1,7 @@
 //defining length of each part of the legs
-double coxa=7.5,     femur=5,    tibia=6;
+double coxa=6.5,     femur=6,    tibia=6;
 //limiting coordinate for leg movement
-double x_limit=12.5,  y_limit=12.5, z_limit=4;
+double x_limit=12.5,  y_limit=12.5, z_limit=3;
 
 
 //function for converting radian value to degree
