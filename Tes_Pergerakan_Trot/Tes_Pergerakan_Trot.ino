@@ -75,25 +75,22 @@ void setup() {
 
 }
 
+void(*resetFunc)(void)=0;
+
 void loop() {
   // put your main code here, to run repeatedly:
   int starting_x=8/*last working value(=8)*/, starting_z=5,//last try(=4)
-      desired_x =5/*last working value(=5)*/, desired_z =3,//last try(=1)
+      desired_x =5/*last working value(=5)*/, desired_z =2,//last try(=1)
       starting_y=8/*last try(=8)*/, test_desired_y=5,//only for testing, since when using 5 for x value it only make the robot move backward
-      delay_servo=1;
-  double  x_increment=(double)(starting_x-desired_x)/5,
-          z_increment=(double)(starting_z-desired_z)/5;
+      delay_servo=1, pembagi=5;
+  double  x_increment=(double)(starting_x-desired_x)/pembagi,
+          y_increment=(double)(starting_y-test_desired_y)/pembagi,
+          z_increment=(double)(starting_z-desired_z)/pembagi;
           
   display.clearDisplay();
   Serial.println("Start");
   
-  Berdiri();//x_val=y_val=8; z_val=3
-  delay(2000);
-  Serial.print("X increment");
-  Serial.println(x_increment);
-  Serial.print("z increment");
-  Serial.println(z_increment);
-  
+  Berdiri();//x_val=y_val=8; z_val=
   display.setCursor(0,0);
   display.print("X,Y inc = ");  
   display.setCursor(60,0);
@@ -104,6 +101,13 @@ void loop() {
   display.print(z_increment);
 
   display.display();
+  delay(2000);
+  Serial.print("X increment");
+  Serial.println(x_increment);
+  Serial.print("z increment");
+  Serial.println(z_increment);
+  
+  
   button_state=digitalRead(button_pin1);
 
 //without making sine-like movement value on z parameter
@@ -168,85 +172,73 @@ void loop() {
 >>>>>>> 0b2f46af5476f784212912c1c0d4665687caae0b
   }
   */
+  /**/
 //  //attempt to moving the legs simultanuously while the other is moving
 //  //test result = success, but robot moving backward no matter what the order of sequence
-//  while(1){
-//    //setting up first move
-//    for(double i=starting_x; i>=desired_x; i=i-x_increment){
-//      RightFront(i,8,desired_z);
-//      LeftBack(i,8,desired_z);
-//      delay(delay_servo); 
-//    }
-//    while(1){
-//      for(double  i=desired_x, j=desired_z, n=starting_x; 
-//                  i<=starting_x, j<=starting_z, n>=desired_x;
-//                  i=i+x_increment, j=j+z_increment, n=n-desired_x){
-//        RightFront(i,8,j);
-//        LeftBack(i,8,j);
-//        LeftFront(n,8,desired_z);
-//        RightBack(n,8,desired_z);
-//        delay(delay_servo);
-//      }
-//      for(double  i=desired_x, j=desired_z, n=starting_x;
-//                  i<=starting_x, j<=starting_z, n>=desired_x;
-//                  i=i+x_increment, j=j+z_increment, n=n-desired_x){
-//        LeftFront(i,8,j);
-//        RightBack(i,8,j);
-//        RightFront(n,8,desired_z);
-//        LeftBack(n,8,desired_z);
-//        delay(delay_servo);
-//      }
-//    }
-//  }
-
-  
-//  attempt to moving the legs simultanuously while the other is moving
-//  test result = success on moving forward, but unable to climb 1 cm obstacle
   while(button_state==LOW){
     button_state=digitalRead(button_pin1);
+    display.clearDisplay();
+    display.setCursor(0, 14);
+    display.println("PRESS START");
+    
+    display.display();
   }
+  
   //setting up first move
   digitalWrite(LED_pin, HIGH);
-  display.setCursor(0, 20);
-  display.println("Starting");
-//    display.startscrollright(0x00, 0x0F);
-  for(double i=starting_y; i>=test_desired_y; i=i-x_increment){
-    RightFront(8, i, desired_z);
-    LeftBack(8,i, desired_z);
-    delay(delay_servo); 
-  }
+  display.clearDisplay();
+  display.setCursor(10, 7);
+  
+  display.println("Testing");
+  display.display();
+
+  LeftBack(8,8,4);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(7,7,1);
+  delay(1000);
+
+  LeftBack(8,8,4);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(5,7,1);
+  delay(100);
+  LeftBack(8,8,4);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(6,8,4);
+  delay(1000);
+
+  
+  LeftBack(7,7,1);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(7,9,4);
+  delay(1000);
+  
+  LeftBack(5,7,1);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(7,9,4);
+  delay(100);
+  LeftBack(5,7,4);
+  LeftFront(7,7,4);
+  RightBack(7,7,4);
+  RightFront(7,9,4);
+  delay(100);
   while(1){
-    Serial.println("-----------------------------------------------");
-    Serial.println("step RF and LB, ");
-    for(double  i=test_desired_y, j=desired_z,      n=starting_y; 
-                i<=starting_y,    j<=starting_z,    n>=test_desired_y;
-                i=i+x_increment,  j=j+z_increment,  n=n-x_increment/*test_desired_y*/){
-      RightFront(8,i,j);
-      LeftBack(8,i,j);
-      LeftFront(8,n,desired_z);
-      RightBack(8,n,desired_z);
-      delay(delay_servo);
-      Serial.print("i="); Serial.println(i);
-      Serial.print("j="); Serial.println(j);
-      Serial.print("n="); Serial.println(n);
-      Serial.println("-----------");
-    }
-    Serial.println("-----------------------------------------------");
-    Serial.println("Step LF and RB");
-    for(double  i=test_desired_y, j=desired_z, n=starting_y;
-                i<=starting_x, j<=starting_z, n>=test_desired_y;
-                i=i+x_increment, j=j+z_increment, n=n-x_increment/*test_desired_y*/){
-      LeftFront(8,i,j);
-      RightBack(8,i,j);
-      RightFront(8,n,desired_z);
-      LeftBack(8,n,desired_z);
-      delay(delay_servo);
-      Serial.print("i="); Serial.println(i);
-      Serial.print("j="); Serial.println(j);
-      Serial.print("n="); Serial.println(n);
-      Serial.println("-----------");
+    if(digitalRead(button_pin2)==HIGH){
+        digitalWrite(LED_pin, LOW);
+        button_state=digitalRead(button_pin1);
+        resetFunc();  
     }
   }
+//  display.println("Forward");
+//  display.display();
+//  ForwardMovement(starting_x, desired_x, starting_z, desired_z, x_increment, z_increment, delay_servo);
+//  display.println("Backward");
+//  display.display();
+//  BackwardMovement(starting_y, test_desired_y, starting_z, desired_z, y_increment, z_increment, delay_servo);
 
 
 /*
