@@ -53,13 +53,15 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          enhancedTrotLeft(70); 
+          trotBasicSlightLeft(70);
+//          enhancedTrotLeft(70); 
           delay(10);
         }
         delay(100);
         for(int i=0; i<5; i++)
         {
-          enhancedTrotRight(70); 
+          trotBasicSlightRight(70);
+//          enhancedTrotRight(70); 
           delay(10);
         }
       }
@@ -67,7 +69,8 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          enhancedTrotRight(70); 
+          trotBasicSlightRight(70);
+//          enhancedTrotRight(70); 
           delay(10);
         }      
       }
@@ -75,7 +78,8 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          enhancedTrotLeft(70); 
+          trotBasicSlightLeft(70);
+//          enhancedTrotLeft(70); 
           delay(10);
         } 
       }
@@ -86,6 +90,9 @@ void detectObject(int object)
         while(lock == 1)
         {
           int distance = scan(GRIP);
+//          if(distance <= 30){
+//            
+//          }
           for(int i=0; i<(distance/5); i++)
           {
             enhancedTrotBackward(100); 

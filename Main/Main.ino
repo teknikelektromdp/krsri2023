@@ -17,6 +17,10 @@
 #define LBD 9 //Left Back Diagonal
 #define LFD 8 //Left Front Diagonal
 #define GRIP A9 //Gripper
+#define FRONT A8//Front
+#define LEFT_ A6//Left
+#define RIGHT A4//Right
+
 
 /*Push buttons + Menu*/
 int menuState = LOW,
@@ -82,12 +86,32 @@ void loop()
 {
   // detectObject(1);
   // displayMenu();
+//  getObjectLocation()
+  gripMovement("scg");
   while(true)
   {
-    //  enhancedTrotHigherForward(200, 10);
-    // enhancedTrotHigherForwardV2(300, 2);
     
+    Serial.println(scan(GRIP));
+    long jarak = scan(GRIP);
+    if (jarak>1 && jarak<5){
+      jarak=scan(GRIP);
+      if (jarak>1 && jarak<5){
+        gripMovement("pcg");
+        Serial.println("_------------------------------------------------------_");
+      }
+    }
+//    detectObject(1);
+//    gripMovement("pcg");
+//    gripMovement("pcg");
+//    creepForward(300,1, 1);
+//    creepForward(250, 5, 10);
+//    enhancedTrotHigherForward(300, 10);
+//    trotBasicForward(200, 10);
+//    trotBasicBackward(200, 10);
+//    enhancedTrotHigherTurn(200, 10);
   }
+
+  
   // while(true)
   // {
   //   for(int i=0; i<3; i++)

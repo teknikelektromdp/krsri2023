@@ -447,6 +447,32 @@ void trotBasicForward(int speed, int delay_servo)
   delay(1);
 }
 
+void trotBasicBackward(int speed, int delay_servo)
+{
+  // LeftFront(7,7,3,speed,delay_servo);
+  // RightBack(7,7,3,speed,delay_servo);
+  // delay(1);
+  RightFront(5,7,2.5,speed,delay_servo);
+  LeftBack(5,7,2.5,speed,delay_servo);
+  LeftFront(7,5,0.5,speed,delay_servo);
+  RightBack(7,5,0.5,speed,delay_servo);
+  delay(1);
+  // LeftFront(4,7,2,speed,delay_servo);
+  // RightBack(4,7,2,speed,delay_servo);
+  // delay(1);
+  // RightFront(7,4,2,speed,delay_servo);
+  // LeftBack(7,4,2,speed,delay_servo);
+  // delay(1);
+  LeftFront(5,7,2.5,speed,delay_servo);
+  RightBack(5,7,2.5,speed,delay_servo);
+  RightFront(7,5,0.5,speed,delay_servo);
+  LeftBack(7,5,0.5,speed,delay_servo);
+  // delay(1);
+  // RightFront(4,7,2,speed,delay_servo);
+  // LeftBack(4,7,2,speed,delay_servo);
+  delay(1);
+}
+
 void trotBasicSlightRight(int speed)
 {
   RightFront(8,5,3.5,speed,10);
@@ -583,6 +609,33 @@ void enhancedTrotRight(int speed)
   delay(1);
 }
 
+/* Please dont remove */
+//void enhancedTrotHigherForward(int speed, int delay_servo)
+//{
+//  LeftFront(8,8,3,speed,delay_servo);
+//  RightBack(8,8,3,speed,delay_servo);
+//  delay(10);
+//  RightFront(8,5,3,speed,delay_servo);
+//  LeftBack(8,5,3,speed,delay_servo);
+//  LeftFront(5,8,2,speed,delay_servo);
+//  RightBack(5,8,1,speed,delay_servo);
+//  delay(10);
+//  LeftFront(5,8,3,speed,delay_servo);
+//  RightBack(5,8,3,speed,delay_servo);
+//  delay(10);
+//  RightFront(8,5,1.5,speed,delay_servo);
+//  LeftBack(8,5,0.5,speed,delay_servo);
+//  delay(10);
+//  LeftFront(8,5,3,speed,delay_servo);
+//  RightBack(8,5,3,speed,delay_servo);
+//  RightFront(5,8,2,speed,delay_servo);
+//  LeftBack(5,8,1,speed,delay_servo);
+//  delay(10);
+//  RightFront(5,8,3,speed,delay_servo);
+//  LeftBack(5,8,3,speed,delay_servo);
+//  delay(10);
+//}
+
 void enhancedTrotHigherForward(int speed, int delay_servo)
 {
   LeftFront(8,8,3,speed,delay_servo);
@@ -591,20 +644,46 @@ void enhancedTrotHigherForward(int speed, int delay_servo)
   RightFront(8,5,3,speed,delay_servo);
   LeftBack(8,5,3,speed,delay_servo);
   LeftFront(5,8,2,speed,delay_servo);
-  RightBack(5,8,1,speed,delay_servo);
+  RightBack(5,8,0.4,speed,delay_servo);
   delay(10);
   LeftFront(5,8,3,speed,delay_servo);
   RightBack(5,8,3,speed,delay_servo);
   delay(10);
-  RightFront(8,5,1.5,speed,delay_servo);
-  LeftBack(8,5,0.5,speed,delay_servo);
+  RightFront(8,5,2,speed,delay_servo);
+  LeftBack(8,5,0.4,speed,delay_servo);
   delay(10);
   LeftFront(8,5,3,speed,delay_servo);
   RightBack(8,5,3,speed,delay_servo);
   RightFront(5,8,2,speed,delay_servo);
-  LeftBack(5,8,1,speed,delay_servo);
+  LeftBack(5,8,0.4,speed,delay_servo);
   delay(10);
   RightFront(5,8,3,speed,delay_servo);
   LeftBack(5,8,3,speed,delay_servo);
+  delay(10);
+}
+
+void enhancedTrotHigherTurn(int speed, int delay_servo)
+{
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,5,3,speed,delay_servo);
+  LeftBack(5,8,3,speed,delay_servo);
+  LeftFront(8,5,2,speed,delay_servo);
+  RightBack(5,8,2,speed,delay_servo);
+  delay(10);
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,5,2,speed,delay_servo);
+  LeftBack(5,8,2,speed,delay_servo);
+  delay(10);
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  RightFront(5,8,2,speed,delay_servo);
+  LeftBack(8,5,2,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,3,speed,delay_servo);
+  LeftBack(8,5,3,speed,delay_servo);
   delay(10);
 }
