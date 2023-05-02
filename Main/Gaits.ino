@@ -473,6 +473,35 @@ void trotBasicBackward(int speed, int delay_servo)
   delay(1);
 }
 
+///
+void trotBasicLeftward(int speed, int delay_servo)
+{
+  LeftFront(5,7,2.5,speed,delay_servo);
+  RightBack(5,7,2.5,speed,delay_servo);
+  RightFront(5,7,0.5,speed,delay_servo);
+  LeftBack(5,7,0.5,speed,delay_servo);
+  delay(1);
+  RightFront(7,5,2.5,speed,delay_servo);
+  LeftBack(7,5,2.5,speed,delay_servo);
+  LeftFront(7,5,0.5,speed,delay_servo);
+  RightBack(7,5,0.5,speed,delay_servo);
+  delay(1);
+}
+
+void trotBasicRightward(int speed, int delay_servo)
+{
+  LeftFront(7,5,2.5,speed,delay_servo);
+  RightBack(7,5,2.5,speed,delay_servo);
+  RightFront(7,5,0.5,speed,delay_servo);
+  LeftBack(7,5,0.5,speed,delay_servo);
+  delay(1);
+  RightFront(5,7,2.5,speed,delay_servo);
+  LeftBack(5,7,2.5,speed,delay_servo);
+  LeftFront(5,7,0.5,speed,delay_servo);
+  RightBack(5,7,0.5,speed,delay_servo);
+  delay(1);
+}
+
 void trotBasicSlightRight(int speed)
 {
   RightFront(8,5,3.5,speed,10);

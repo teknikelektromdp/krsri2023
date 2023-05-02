@@ -53,14 +53,14 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicSlightLeft(70);
+          trotBasicLeftward(100,10);
 //          enhancedTrotLeft(70); 
           delay(10);
         }
         delay(100);
         for(int i=0; i<5; i++)
         {
-          trotBasicSlightRight(70);
+          trotBasicRightward(100,10);
 //          enhancedTrotRight(70); 
           delay(10);
         }
@@ -69,7 +69,7 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicSlightRight(70);
+          trotBasicRightward(100,10);
 //          enhancedTrotRight(70); 
           delay(10);
         }      
@@ -78,7 +78,7 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicSlightLeft(70);
+          trotBasicLeftward(100, 10);
 //          enhancedTrotLeft(70); 
           delay(10);
         } 
@@ -90,20 +90,35 @@ void detectObject(int object)
         while(lock == 1)
         {
           int distance = scan(GRIP);
-//          if(distance <= 30){
-//            
+          Serial.print("Distance :");
+          Serial.println(distance);
+//          while(distance > 15){
+//            if(distance >100){
+//              for(int i=0;i<2;i++){
+//              enhancedTrotRight(70); 
+//              delay(10);
+//              }
+//              for(int i=0;i<2;i++){
+//                enhancedTrotLeft(70);
+//                delay(10);
+//              }
+//            }
+            for(int i=0; i<(distance/5); i++){
+              enhancedTrotBackward(100); 
+              Serial.print("i :");
+              Serial.print(i);
+              int _distance =scan(GRIP);
+              Serial.print("\tgripper distance :");
+              Serial.println(_distance);
+              delay(10);
+            }
+            delay(1000);
+            for(int i=0; i<4; i++){
+              enhancedTrotRight(70); 
+              delay(10);
+            }
 //          }
-          for(int i=0; i<(distance/5); i++)
-          {
-            enhancedTrotBackward(100); 
-            delay(10);
-          }
-          delay(1000);
-          for(int i=0; i<2; i++)
-          {
-            enhancedTrotRight(70); 
-            delay(10);
-          }
+          
           // delay(1000);
           // for(int i=0; i<1; i++)
           // {

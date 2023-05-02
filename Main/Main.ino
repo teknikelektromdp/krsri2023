@@ -11,6 +11,8 @@
 //Button
 #define menu_button 3
 #define start_button 6
+//I2C address
+#define CMPSAddress 0x60
 //Ultrasonic
 #define RBD A0 //Right Back Diagonal
 #define RFD A2 //Right Front Diagonal
@@ -20,6 +22,9 @@
 #define FRONT A8//Front
 #define LEFT_ A6//Left
 #define RIGHT A4//Right
+//Compass
+#define BEARING_Register 2
+#define TWO_BYTES 2
 
 
 /*Push buttons + Menu*/
@@ -57,6 +62,12 @@ int left_min,
     front_max, 
     lock, 
     object1;
+/*COMPASS*/
+int nReceived,
+    _bearing,
+    cmps_offset=10;
+byte _byteHigh,
+     _byteLow;
 
 /*Classes*/
 U8X8_SSD1306_128X64_NONAME_HW_I2C display(U8X8_PIN_NONE);
@@ -88,21 +99,47 @@ void loop()
   // displayMenu();
 //  getObjectLocation()
   gripMovement("scg");
+  pixy.setLamp(1,0);
   while(true)
   {
-    
-    Serial.println(scan(GRIP));
-    long jarak = scan(GRIP);
-    if (jarak>1 && jarak<5){
-      jarak=scan(GRIP);
-      if (jarak>1 && jarak<5){
-        gripMovement("pcg");
-        Serial.println("_------------------------------------------------------_");
-      }
+//    int bearing = getBearing();
+//    Serial.print("$CMP,");
+//    Serial.println(bearing);
+
+//    trotBasicLeftward(120,10);
+//    trotBasicRightward(120,10);
+//    Serial.println(scan(GRIP));
+//    long jarak = scan(GRIP);
+//    if (jarak>1 && jarak<5){
+//      jarak=scan(GRIP);
+//      if (jarak>1 && jarak<5){
+//        gripMovement("pcg");
+//        Serial.println("_------------------------------------------------------_");
+//        delay(1000);
+//        gripMovement("lcg");
+//      }
+//    }
+
+    /*  Taking victim(s)  */
+    detectObject(1);
+    gripMovement("pcg");
+    delay(1000);
+    gripMovement("lch");
+    delay(1000);
+    for(int i=0; i<=2; i++){
+      trotBasicForward(100,10);
+      delay(10);
     }
-//    detectObject(1);
-//    gripMovement("pcg");
-//    gripMovement("pcg");
+    initialPosition(200);
+    delay(1000);
+    gripMovement("lcg");
+    pixy.setLamp(0,0);
+    delay(1000000);
+
+
+
+
+
 //    creepForward(300,1, 1);
 //    creepForward(250, 5, 10);
 //    enhancedTrotHigherForward(300, 10);

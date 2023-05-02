@@ -20,9 +20,13 @@ void gripMovement(String movement)
   else if(movement == "pcg"){
     pixy.setServos(850, 0);
   }
+  //lift the victim a bit
+  else if(movement == "lch"){
+    pixy.setServos(700,0);
+  }
   else
   {
-    pixy.setServos(950, 500);
+    pixy.setServos(900, 500);
   }
 }
 
