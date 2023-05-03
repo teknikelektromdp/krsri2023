@@ -34,7 +34,15 @@ void displayMenu()
 {
   while(start_==0)
   {
+    //Stuck when reset button is released
     menuState = digitalRead(menu_button);
+    startState = digitalRead(start_button);
+    Serial.print(menuState);
+    Serial.println(startState);
+    if(startState == HIGH)
+    {
+      start_ = 1;
+    }
     //filter out any noise by setting a time buffer
     if ((millis() - lastDebounceTime) > debounceDelay) {
       if(menuState == HIGH)

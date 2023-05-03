@@ -691,28 +691,54 @@ void enhancedTrotHigherForward(int speed, int delay_servo)
   delay(10);
 }
 
-void enhancedTrotHigherTurn(int speed, int delay_servo)
+void enhancedTrotHigherLeftTurn(int speed, int delay_servo)
 {
-  LeftFront(8,5,3,speed,delay_servo);
-  RightBack(5,8,3,speed,delay_servo);
+  LeftFront(8,4,3,speed,delay_servo);
+  RightBack(4,8,3,speed,delay_servo);
   delay(10);
-  RightFront(8,5,3,speed,delay_servo);
-  LeftBack(5,8,3,speed,delay_servo);
-  LeftFront(8,5,2,speed,delay_servo);
-  RightBack(5,8,2,speed,delay_servo);
+  RightFront(8,4,3,speed,delay_servo);
+  LeftBack(4,8,3,speed,delay_servo);
+  LeftFront(8,4,1.5,speed,delay_servo);
+  RightBack(4,8,1.5,speed,delay_servo);
   delay(10);
-  LeftFront(8,5,3,speed,delay_servo);
-  RightBack(5,8,3,speed,delay_servo);
+  LeftFront(8,4,3,speed,delay_servo);
+  RightBack(4,8,3,speed,delay_servo);
   delay(10);
-  RightFront(8,5,2,speed,delay_servo);
-  LeftBack(5,8,2,speed,delay_servo);
+  RightFront(8,4,1.5,speed,delay_servo);
+  LeftBack(4,8,1.5,speed,delay_servo);
   delay(10);
-  LeftFront(8,5,3,speed,delay_servo);
-  RightBack(5,8,3,speed,delay_servo);
-  RightFront(5,8,2,speed,delay_servo);
-  LeftBack(8,5,2,speed,delay_servo);
+  LeftFront(8,4,3,speed,delay_servo);
+  RightBack(4,8,3,speed,delay_servo);
+  RightFront(4,8,1.5,speed,delay_servo);
+  LeftBack(8,4,1.5,speed,delay_servo);
   delay(10);
-  RightFront(5,8,3,speed,delay_servo);
-  LeftBack(8,5,3,speed,delay_servo);
+  RightFront(4,8,3,speed,delay_servo);
+  LeftBack(8,4,3,speed,delay_servo);
+  delay(10);
+}
+
+void enhancedTrotHigherRightTurn(int speed, int delay_servo)
+{
+  LeftFront(4,8,3,speed,delay_servo);
+  RightBack(8,4,3,speed,delay_servo);
+  delay(10);
+  RightFront(4,8,3,speed,delay_servo);
+  LeftBack(8,4,3,speed,delay_servo);
+  LeftFront(4,8,1.5,speed,delay_servo);
+  RightBack(8,4,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(4,8,3,speed,delay_servo);
+  RightBack(8,4,3,speed,delay_servo);
+  delay(10);
+  RightFront(4,8,1.5,speed,delay_servo);
+  LeftBack(8,4,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(4,8,3,speed,delay_servo);
+  RightBack(8,4,3,speed,delay_servo);
+  RightFront(8,4,1.5,speed,delay_servo);
+  LeftBack(4,8,1.5,speed,delay_servo);
+  delay(10);
+  RightFront(8,4,3,speed,delay_servo);
+  LeftBack(4,8,3,speed,delay_servo);
   delay(10);
 }

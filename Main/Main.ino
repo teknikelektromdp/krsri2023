@@ -4,13 +4,16 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 #include <Pixy2.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
 
 /*Constants*/
 //Menu
 #define MENU_SIZE 3
 //Button
-#define menu_button 3
-#define start_button 6
+#define menu_button 2
+#define start_button 11
 //I2C address
 #define CMPSAddress 0x60
 //Ultrasonic
@@ -29,6 +32,7 @@
 
 /*Push buttons + Menu*/
 int menuState = LOW,
+    startState = LOW,
     menuCount = 0,
     start_ = 0,
     cursor = 0,
@@ -62,26 +66,36 @@ int left_min,
     front_max, 
     lock, 
     object1;
+    
 /*COMPASS*/
 int nReceived,
-    _bearing,
-    cmps_offset=10;
+    _bearing;
+int cmps_offset=10,
+    front_direction,  front_r_offset, front_l_offset,
+    left_direction,   left_r_offset,  left_l_offset,
+    right_direction,  right_r_offset, right_l_offset,
+    back_direction,   back_r_offset,  back_l_offset;
 byte _byteHigh,
      _byteLow;
+
+/* Data Logger */
+const byte address[6] = "00001";
 
 /*Classes*/
 U8X8_SSD1306_128X64_NONAME_HW_I2C display(U8X8_PIN_NONE);
 Pixy2 pixy;
+RF24 radio(A7, A5); // CE, CSN
 
 void(*resetFunc)(void)=0;
 
-void setup() 
-{
+void setup(){
   Serial.begin(9600);
   //Starting Dynamixel servo
   Dynamixel.setSerial(&Serial1);
   Dynamixel.begin(1000000,15);
+  initLogger();
   pinMode(menu_button, INPUT);
+  pinMode(start_button, INPUT);
   attachInterrupt(digitalPinToInterrupt(menu_button), mainMenu, CHANGE);
   display.begin();
   display.setPowerSave(0);
@@ -96,16 +110,44 @@ void setup()
 void loop() 
 {
   // detectObject(1);
-  // displayMenu();
+   displayMenu();
 //  getObjectLocation()
-  gripMovement("scg");
-  pixy.setLamp(1,0);
+  gripMovement("lcg");
+  pixy.setLamp(0,0);
+
   while(true)
   {
-//    int bearing = getBearing();
-//    Serial.print("$CMP,");
-//    Serial.println(bearing);
-
+    Serial.println("Start L");
+    int bearing = getBearing();
+    for(int i=0; i<5; i++){
+      //turning ~90 degree
+      Serial.print("$CMP,");
+      Serial.println(bearing);
+      writeLog(intToString(bearing));
+      enhancedTrotHigherLeftTurn(200,10);
+      delay(10);
+      bearing = getBearing();
+    }
+    Serial.print("$CMP,");
+    Serial.println(bearing);
+    Serial.println("END");
+    delay(5000);
+    
+    Serial.println("StartR");
+    bearing = getBearing();
+    for(int i=0; i<5; i++){
+      //turning ~90 degree
+      Serial.print("$CMP,");
+      Serial.println(bearing);
+      writeLog(intToString(bearing));
+      enhancedTrotHigherRightTurn(200,10);
+      delay(10);
+      bearing = getBearing();
+    }
+    Serial.print("$CMP,");
+    Serial.println(bearing);
+    Serial.println("END");
+    delay(10000);
 //    trotBasicLeftward(120,10);
 //    trotBasicRightward(120,10);
 //    Serial.println(scan(GRIP));
@@ -119,8 +161,7 @@ void loop()
 //        gripMovement("lcg");
 //      }
 //    }
-
-    /*  Taking victim(s)  */
+    /*  Taking victim(s)  
     detectObject(1);
     gripMovement("pcg");
     delay(1000);
@@ -135,10 +176,15 @@ void loop()
     gripMovement("lcg");
     pixy.setLamp(0,0);
     delay(1000000);
+*/
 
 
-
-
+  /*  compass calibration  
+  int calibrate = digitalRead(start_button);
+  if(calibrate == HIGH){
+    compassCalibration();
+  }
+*/
 
 //    creepForward(300,1, 1);
 //    creepForward(250, 5, 10);

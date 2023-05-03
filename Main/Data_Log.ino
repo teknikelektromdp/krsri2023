@@ -1,19 +1,11 @@
-/*
-* Arduino Wireless Communication Tutorial
-*     Example 1 - Transmitter Code
-*                
-* by Dejan Nedelkovski, www.HowToMechatronics.com
-* 
-* Library: TMRh20/RF24, https://github.com/tmrh20/RF24/
-*/
-
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
-
-RF24 radio(A7, A5); // CE, CSN
-
-const byte address[6] = "00001";
+void initLogger()
+{
+  radio.begin();
+  radio.openWritingPipe(address);
+  radio.setPALevel(RF24_PA_MAX);
+  radio.setDataRate(RF24_250KBPS);
+  radio.stopListening();  
+}
 
 void writeLog(String msg)
 {
@@ -53,17 +45,4 @@ String doubleToString(double val)
   dtostrf(val,5,2,buf);  
 
   return buf;
-}
-
-void setup() {
-  radio.begin();
-  radio.openWritingPipe(address);
-  radio.setPALevel(RF24_PA_MAX);
-  radio.setDataRate(RF24_250KBPS);
-  radio.stopListening();
-}
-
-void loop() {
-  writeLog(longToString(700));
-  delay(1000);
 }
