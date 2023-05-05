@@ -12,7 +12,7 @@
 //Menu
 #define MENU_SIZE 3
 //Button
-#define menu_button 2
+#define menu_button 3
 #define start_button 11
 //I2C address
 #define CMPSAddress 0x60
@@ -114,9 +114,205 @@ void loop()
 //  getObjectLocation()
   gripMovement("lcg");
   pixy.setLamp(0,0);
+//  ultrasonicScan();
+  int right_distance = scan(RIGHT);
 
+  int offsetkiri=48, offsetkanan=58;
+
+/*  testing purpose  */
+  while(true){
+    creepForward(250, 5, 10);
+  }
+
+
+
+
+
+
+
+  //starting from home
   while(true)
   {
+    int k=0, repositioning,bearing, home_=0; 
+    bearing = getBearing();
+    while(home_==0){
+      bearing = getBearing();
+      if(bearing<offsetkanan && bearing>offsetkiri){
+        home_=1;
+      }
+      else if(bearing < offsetkiri || bearing>230){
+        enhancedTrotLowerRightTurn(250,10);
+      }
+      else if(bearing<230 && bearing>offsetkanan){
+        enhancedTrotLowerLeftTurn(250,10);
+      }
+      delay(10);
+    }
+//      
+//    writeLog(intToString(bearing));
+
+//    trotBasicLeftward(250, 8);
+////    ultrasonicScan();
+
+  while(k ==0){
+    writeLog(intToString(right_distance));
+    while(right_distance<=54 && right_distance>0){
+      trotBasicLeftward(250, 8);
+      right_distance=scan(RIGHT);
+    }
+    repositioning=0;
+    while(repositioning==0){
+      bearing = getBearing();
+      display.clearDisplay();
+      display.setCursor(5,5);
+      display.print(bearing);
+      display.display();
+      if(bearing<offsetkiri){
+        enhancedTrotLowerRightTurn(250,10);
+      }
+      else if(bearing>offsetkanan){
+        enhancedTrotLowerLeftTurn(250,10);
+      }
+      else{
+        repositioning=1;
+      }
+    }
+    right_distance=scan(RIGHT);
+    
+    if(right_distance >54 && bearing >=offsetkiri && bearing<=offsetkanan){
+      k=1;
+    }
+    else{
+      k=0;
+    }
+  }
+//  while(true){
+//    initialPosition(200);
+//    pixy.setLamp(0,0);
+//    delay(200);
+//    pixy.setLamp(1,1);
+//    delay(200);
+//    bearing = getBearing();
+//    display.setCursor(10,10);
+//    display.print(bearing);
+//    display.display();
+//  }
+    
+//    enhancedTrotHigherLeftTurn(200, 10);
+    
+    
+//    int i=5, n=8, j=3, fast_speed=500, delay_servo=1;
+////    fastMove(600);
+////    trotBasicForward(300,10);
+//    //Forward Movement
+//      RightFront(8,i,j, fast_speed, delay_servo);
+//      LeftBack(8,i,j, fast_speed, delay_servo);
+//      LeftFront(8,n,j, fast_speed, delay_servo);
+//      RightBack(8,n,j, fast_speed, delay_servo);
+//      delay(10);
+//    LeftFront(8,i,j, fast_speed, delay_servo);
+//    RightBack(8,i,j, fast_speed, delay_servo);
+//    RightFront(8,n,j, fast_speed, delay_servo);
+//    LeftBack(8,n,j, fast_speed, delay_servo);
+//    delay(10);
+
+    //backward  movement
+//      RightFront(i,8,j, fast_speed, delay_servo);
+//      LeftBack(i,8,j, fast_speed, delay_servo);
+//      LeftFront(8,n,j, fast_speed, delay_servo);
+//      RightBack(8,n,j, fast_speed, delay_servo);
+//      delay(10);
+//    LeftFront(i,8,j, fast_speed, delay_servo);
+//    RightBack(i,8,j, fast_speed, delay_servo);
+//    RightFront(8,n,j, fast_speed, delay_servo);
+//    LeftBack(8,n,j, fast_speed, delay_servo);
+//    delay(10);
+
+
+    //left movement
+//    LeftFront(6,8,2.5,fast_speed,delay_servo);
+//    RightBack(6,8,2.5,fast_speed,delay_servo);
+//    RightFront(6,8,2,fast_speed,delay_servo);
+//    LeftBack(6,8,2,fast_speed,delay_servo);
+//    delay(1);
+//    RightFront(8,6,2.5,fast_speed,delay_servo);
+//    LeftBack(8,6,2.5,fast_speed,delay_servo);
+//    LeftFront(8,6,2,fast_speed,delay_servo);
+//    RightBack(8,6,1.5,fast_speed,delay_servo);
+//    delay(1);
+
+
+//    LeftFront(6.2,8,2.5,fast_speed,delay_servo);
+//    RightBack(6.2,8,2.5,fast_speed,delay_servo);
+//    RightFront(6.2,8,2,fast_speed,delay_servo);
+//    LeftBack(6.2,8,2,fast_speed,delay_servo);
+//    delay(1);
+//    RightFront(8,6.2,2.5,fast_speed,delay_servo);
+//    LeftBack(8,6.2,2.5,fast_speed,delay_servo);
+//    LeftFront(8,6.2,2,fast_speed,delay_servo);
+//    RightBack(8,6.2,1.5,fast_speed,delay_servo);
+//    delay(1);
+
+
+    
+//      RightFront(i,8,j, fast_speed, delay_servo);
+//      LeftBack(i,8,j, fast_speed, delay_servo);
+//      LeftFront(8,n,j, fast_speed, delay_servo);
+//      RightBack(8,n,j, fast_speed, delay_servo);
+//      delay(10);
+//    LeftFront(i,8,j, fast_speed, delay_servo);
+//    RightBack(i,8,j, fast_speed, delay_servo);
+//    RightFront(8,n,j, fast_speed, delay_servo);
+//    LeftBack(8,n,j, fast_speed, delay_servo);
+//    delay(10);
+
+//      trotBasicLeftward(100, 10);
+////    trotBasicForward(200,20);
+//    right_distance = scan(RIGHT);
+//    writeLog(intToString(right_distance));
+    /*
+    int back_distance = scan(GRIP);
+    while(back_distance <45){
+      trotBasicForward(200,10);
+      back_distance = scan(GRIP);
+      writeLog(intToString(back_distance));
+    }
+    writeLog("TURNING RIGHT");
+    int bearing = getBearing();
+    for(int i=0; i<5; i++){
+      //turning ~90 degree
+      Serial.print("$CMP,");
+      Serial.println(bearing);
+      writeLog("CMP :");
+      writeLog(intToString(bearing));
+      enhancedTrotHigherRightTurn(200,10);
+      delay(10);
+      bearing = getBearing();
+    }
+
+    writeLog("SAVING VICTIM");
+    pixy.setLamp(1,0);
+    detectObject(1);
+    gripMovement("pcg");
+    delay(1000);
+    gripMovement("lch");
+    delay(1000);
+    for(int i=0; i<=2; i++){
+      trotBasicForward(100,10);
+      delay(10);
+    }
+    initialPosition(200);
+    delay(1000);
+    gripMovement("lcg");
+    pixy.setLamp(0,0);
+
+    writeLog("SEQUENCES DONE");
+    delay(10000000);
+    */
+
+
+    
+    /* rotating
     Serial.println("Start L");
     int bearing = getBearing();
     for(int i=0; i<5; i++){
@@ -148,6 +344,8 @@ void loop()
     Serial.println(bearing);
     Serial.println("END");
     delay(10000);
+    */
+    
 //    trotBasicLeftward(120,10);
 //    trotBasicRightward(120,10);
 //    Serial.println(scan(GRIP));
@@ -161,22 +359,25 @@ void loop()
 //        gripMovement("lcg");
 //      }
 //    }
-    /*  Taking victim(s)  
+    /*  Taking victim(s)  */
+    writeLog("SAVING VICTIM");
+    pixy.setLamp(1,0);
+    gripMovement("sog");
     detectObject(1);
     gripMovement("pcg");
-    delay(1000);
+    delay(200);
     gripMovement("lch");
-    delay(1000);
-    for(int i=0; i<=2; i++){
-      trotBasicForward(100,10);
+    delay(200);
+    for(int i=0; i<=5; i++){
+      trotBasicForward(130,10);
       delay(10);
     }
     initialPosition(200);
-    delay(1000);
+    delay(100);
     gripMovement("lcg");
     pixy.setLamp(0,0);
     delay(1000000);
-*/
+
 
 
   /*  compass calibration  
@@ -188,7 +389,10 @@ void loop()
 
 //    creepForward(300,1, 1);
 //    creepForward(250, 5, 10);
+
+    //puing
 //    enhancedTrotHigherForward(300, 10);
+
 //    trotBasicForward(200, 10);
 //    trotBasicBackward(200, 10);
 //    enhancedTrotHigherTurn(200, 10);

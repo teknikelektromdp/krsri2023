@@ -14,7 +14,11 @@ void mainMenu()
 
   if(holdTime >= 3000)
   {
-    resetFunc();
+    menuCount=0;
+    start_=0;
+    pinMode(4, OUTPUT);
+    digitalWrite(4, LOW);
+//    resetFunc();
   }
 }
 

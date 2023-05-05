@@ -473,32 +473,56 @@ void trotBasicBackward(int speed, int delay_servo)
   delay(1);
 }
 
-///
+
 void trotBasicLeftward(int speed, int delay_servo)
 {
-  LeftFront(5,7,2.5,speed,delay_servo);
-  RightBack(5,7,2.5,speed,delay_servo);
-  RightFront(5,7,0.5,speed,delay_servo);
-  LeftBack(5,7,0.5,speed,delay_servo);
-  delay(1);
-  RightFront(7,5,2.5,speed,delay_servo);
-  LeftBack(7,5,2.5,speed,delay_servo);
-  LeftFront(7,5,0.5,speed,delay_servo);
-  RightBack(7,5,0.5,speed,delay_servo);
-  delay(1);
+    LeftFront(5,8,2.5,speed,delay_servo);
+    RightBack(5,7.5,2.5,speed,delay_servo);
+    RightFront(5,7.5,0.5,speed,delay_servo);
+    LeftBack(5,7.5,0.5,speed,delay_servo);
+    delay(1);
+    RightFront(7.5,5,2.5,speed,delay_servo);
+    LeftBack(7.5,5,2.5,speed,delay_servo);
+    LeftFront(8,5,0.5,speed,delay_servo);
+    RightBack(7.5,5,0.5,speed,delay_servo);
+    delay(1);
+
+//  for(double x=8, z=2.5; x>=5, z>=0.5; x--, z--){
+//    LeftFront(x,8,2.5,400,delay_servo);
+//    RightBack(x,7.5,2.5,400,delay_servo);
+//    RightFront(x,7.5,0.5,400,delay_servo);
+//    LeftBack(x,7.5,0.5,400,delay_servo);
+//    delay(1);
+//    RightFront(7.5,5,2.5,speed,delay_servo);
+//    LeftBack(7.5,5,2.5,speed,delay_servo);
+//    LeftFront(8,5,0.5,speed,delay_servo);
+//    RightBack(7.5,5,0.5,speed,delay_servo);
+//    delay(1);
+//  }
 }
 
 void trotBasicRightward(int speed, int delay_servo)
 {
-  LeftFront(7,5,2.5,speed,delay_servo);
-  RightBack(7,5,2.5,speed,delay_servo);
-  RightFront(7,5,0.5,speed,delay_servo);
-  LeftBack(7,5,0.5,speed,delay_servo);
+//  LeftFront(7,5,2.5,speed,delay_servo);
+//  RightBack(7,5,2.5,speed,delay_servo);
+//  RightFront(7,5,0.5,speed,delay_servo);
+//  LeftBack(7,5,0.5,speed,delay_servo);
+//  delay(1);
+//  RightFront(5,7,2.5,speed,delay_servo);
+//  LeftBack(5,7,2.5,speed,delay_servo);
+//  LeftFront(5,7,0.5,speed,delay_servo);
+//  RightBack(5,7,0.5,speed,delay_servo);
+//  delay(1);
+//  
+  LeftFront(8,5,2.5,speed,delay_servo);
+  RightBack(7.5,5,2.5,speed,delay_servo);
+  RightFront(7.5,5,0.5,speed,delay_servo);
+  LeftBack(7.5,5,0.5,speed,delay_servo);
   delay(1);
-  RightFront(5,7,2.5,speed,delay_servo);
-  LeftBack(5,7,2.5,speed,delay_servo);
-  LeftFront(5,7,0.5,speed,delay_servo);
-  RightBack(5,7,0.5,speed,delay_servo);
+  RightFront(5,7.5,2.5,speed,delay_servo);
+  LeftBack(5,7.5,2.5,speed,delay_servo);
+  LeftFront(5,8,0.5,speed,delay_servo);
+  RightBack(5,7.5,0.5,speed,delay_servo);
   delay(1);
 }
 
@@ -691,6 +715,58 @@ void enhancedTrotHigherForward(int speed, int delay_servo)
   delay(10);
 }
 
+void enhancedTrotHigherRight(int speed, int delay_servo)
+{
+  LeftFront(8,8,3,speed,delay_servo);
+  RightBack(8,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,3,speed,delay_servo);
+  LeftBack(5,8,3,speed,delay_servo);
+  LeftFront(5,8,2,speed,delay_servo);
+  RightBack(5,8,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(5,8,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,5,2,speed,delay_servo);
+  LeftBack(8,5,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(8,5,3,speed,delay_servo);
+  RightFront(8,5,2,speed,delay_servo);
+  LeftBack(8,5,0.4,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,3,speed,delay_servo);
+  LeftBack(5,8,3,speed,delay_servo);
+  delay(10);
+}
+
+void enhancedTrotHigherLeft(int speed, int delay_servo)
+{
+  LeftFront(8,8,3,speed,delay_servo);
+  RightBack(8,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,5,3,speed,delay_servo);
+  LeftBack(8,5,3,speed,delay_servo);
+  LeftFront(8,5,2,speed,delay_servo);
+  RightBack(8,5,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(8,5,3,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,2,speed,delay_servo);
+  LeftBack(5,8,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(5,8,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  RightFront(5,8,2,speed,delay_servo);
+  LeftBack(5,8,0.4,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,3,speed,delay_servo);
+  LeftBack(5,8,3,speed,delay_servo);
+  delay(10);
+}
+
 void enhancedTrotHigherLeftTurn(int speed, int delay_servo)
 {
   LeftFront(8,4,3,speed,delay_servo);
@@ -714,6 +790,32 @@ void enhancedTrotHigherLeftTurn(int speed, int delay_servo)
   delay(10);
   RightFront(4,8,3,speed,delay_servo);
   LeftBack(8,4,3,speed,delay_servo);
+  delay(10);
+}
+
+void enhancedTrotLowerLeftTurn(int speed, int delay_servo)
+{
+  LeftFront(8,6,3,speed,delay_servo);
+  RightBack(6,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,6,3,speed,delay_servo);
+  LeftBack(6,8,3,speed,delay_servo);
+  LeftFront(8,6,1.5,speed,delay_servo);
+  RightBack(6,8,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(8,6,3,speed,delay_servo);
+  RightBack(6,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(8,6,1.5,speed,delay_servo);
+  LeftBack(6,8,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(8,6,3,speed,delay_servo);
+  RightBack(6,8,3,speed,delay_servo);
+  RightFront(6,8,1.5,speed,delay_servo);
+  LeftBack(8,6,1.5,speed,delay_servo);
+  delay(10);
+  RightFront(6,8,3,speed,delay_servo);
+  LeftBack(8,6,3,speed,delay_servo);
   delay(10);
 }
 
@@ -741,4 +843,85 @@ void enhancedTrotHigherRightTurn(int speed, int delay_servo)
   RightFront(8,4,3,speed,delay_servo);
   LeftBack(4,8,3,speed,delay_servo);
   delay(10);
+}
+
+void enhancedTrotLowerRightTurn(int speed, int delay_servo)
+{
+  LeftFront(6,8,3,speed,delay_servo);
+  RightBack(8,6,3,speed,delay_servo);
+  delay(10);
+  RightFront(6,8,3,speed,delay_servo);
+  LeftBack(8,6,3,speed,delay_servo);
+  LeftFront(6,8,1.5,speed,delay_servo);
+  RightBack(8,6,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(6,8,3,speed,delay_servo);
+  RightBack(8,6,3,speed,delay_servo);
+  delay(10);
+  RightFront(6,8,1.5,speed,delay_servo);
+  LeftBack(8,6,1.5,speed,delay_servo);
+  delay(10);
+  LeftFront(6,8,3,speed,delay_servo);
+  RightBack(8,6,3,speed,delay_servo);
+  RightFront(8,6,1.5,speed,delay_servo);
+  LeftBack(6,8,1.5,speed,delay_servo);
+  delay(10);
+  RightFront(8,6,3,speed,delay_servo);
+  LeftBack(6,8,3,speed,delay_servo);
+  delay(10);
+}
+
+/*  still need improvement  */
+void fastMove(int fast_speed){
+  int startingx=8,  startingz=5,
+      desiredx=5,   desiredz=2,
+      delayservo=1;
+  double  x_increment=(double)(startingx-desiredx)/5,
+          z_increment=(double)(startingz-desiredz)/5;
+  for(double i=startingx;i>=desiredx; i=i-x_increment){
+    RightFront(8, i, desiredz,400,1);
+    LeftBack(8, i, desiredz,400,1);
+    delay(delayservo);
+    writeLog("x=8");
+    writeLog("y=");
+    writeLog(doubleToString(i));
+    writeLog("desiredz =");
+    writeLog(doubleToString(desiredz));
+  }
+  delay(10);
+  writeLog("Start moving");
+  while(true){
+    for(double i=desiredx, j=desiredz, n=startingx;  i<=startingx, j<=startingz, n>=desiredx; i=i+x_increment, j=j+z_increment, n=n-desiredx){
+      RightFront(8,i,j, fast_speed, delayservo);
+      LeftBack(8,i,j, fast_speed, delayservo);
+      LeftFront(8,n,desiredz, fast_speed, delayservo);
+      RightBack(8,n,desiredz, fast_speed, delayservo);
+      delay(delayservo);
+      writeLog("i=");
+      writeLog(doubleToString(i));
+      writeLog("n=");
+      writeLog(doubleToString(n));
+      writeLog("j=");
+      writeLog(doubleToString(j));
+      writeLog("desired z=");
+      writeLog(doubleToString(desiredz));
+    }
+    writeLog("--------------------------------------------------------");
+    for(double i=desiredx, j=desiredz, n=startingx;  i<=startingx, j<=startingz, n>=desiredx; i=i+x_increment, j=j+z_increment, n=n-desiredx){
+      LeftFront(8,i,j, fast_speed, delayservo);
+      RightBack(8,i,j, fast_speed, delayservo);
+      RightFront(8,n,desiredz, fast_speed, delayservo);
+      LeftBack(8,n,desiredz, fast_speed, delayservo);
+      delay(delayservo);
+      writeLog("i=");
+      writeLog(doubleToString(i));
+      writeLog("n=");
+      writeLog(doubleToString(n));
+      writeLog("j=");
+      writeLog(doubleToString(j));
+      writeLog("desired z=");
+      writeLog(doubleToString(desiredz));
+    }
+    writeLog("--------------------------------------------------------");
+  }
 }

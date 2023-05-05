@@ -53,14 +53,14 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicLeftward(100,10);
+          trotBasicLeftward(135,10);
 //          enhancedTrotLeft(70); 
           delay(10);
         }
         delay(100);
-        for(int i=0; i<5; i++)
+        for(int i=0; i<3; i++)
         {
-          trotBasicRightward(100,10);
+          trotBasicRightward(135,10);
 //          enhancedTrotRight(70); 
           delay(10);
         }
@@ -69,7 +69,7 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicRightward(100,10);
+          trotBasicRightward(135,10);
 //          enhancedTrotRight(70); 
           delay(10);
         }      
@@ -78,7 +78,7 @@ void detectObject(int object)
       {
         for(int i=0; i<3; i++)
         {
-          trotBasicLeftward(100, 10);
+          trotBasicLeftward(135, 10);
 //          enhancedTrotLeft(70); 
           delay(10);
         } 
