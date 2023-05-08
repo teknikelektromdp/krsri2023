@@ -15,7 +15,7 @@
 #define menu_button 3
 #define start_button 11
 //I2C address
-#define CMPSAddress 0x60
+#define CMPS12Address 0x60
 //Ultrasonic
 #define RBD A0 //Right Back Diagonal
 #define RFD A2 //Right Front Diagonal
@@ -27,7 +27,14 @@
 #define RIGHT A4//Right
 //Compass
 #define BEARING_Register 2
+#define PITCH_Register 4 
+#define ROLL_Register 5
 #define TWO_BYTES 2
+#define ONE_BYTE 1
+//Gyroscope
+#define _Register_GYRO_X 18
+#define _Register_GYRO_Y 20
+#define _Register_GYRO_Z 22
 
 
 /*Push buttons + Menu*/
@@ -77,6 +84,15 @@ int cmps_offset=10,
     back_direction,   back_r_offset,  back_l_offset;
 byte _byteHigh,
      _byteLow;
+char _pitch,//on steep obstacle = +- 13~14
+     _roll;//on steep obstacle = +- 11~13
+signed char pitch;
+signed char roll;
+/*Gyroscope*/
+float gyrox = 0;
+float gyroy = 0;
+float gyroz = 0;
+float _gyroScale = 1.0f/16.f; // 1 Dps = 16 LSB
 
 /* Data Logger */
 const byte address[6] = "00001";
@@ -115,19 +131,44 @@ void loop()
   gripMovement("lcg");
   pixy.setLamp(0,0);
 //  ultrasonicScan();
-  int right_distance = scan(RIGHT);
+  int right_distance = scan(RIGHT),
+      front_distance;
 
   int offsetkiri=48, offsetkanan=58;
 
-/*  testing purpose  */
+/*  testing purpose  
+  int mundur=0;
+  int bearing;
+  compassManualCalibration(50);
   while(true){
-    creepForward(250, 5, 10);
+    int speed = 400, delay_servo = 10;
+    RightFront(5,7,6,speed,delay_servo);
+    LeftBack(5,7,7,speed,delay_servo);
+    LeftFront(7,5,2,speed,delay_servo);
+    RightBack(7,5,3,speed,delay_servo);
+    delay(50);
+    LeftFront(5,7,6,speed,delay_servo);
+    RightBack(5,7,7,speed,delay_servo);
+    RightFront(7,5,2,speed,delay_servo);
+    LeftBack(7,5,3,speed,delay_servo);
+    delay(50);
+//    enhancedTrotBackwardv2(400,2);
   }
+*/
 
 
 
+//for(int i=0; i<5; i++){90 degree Left turn
+//      enhancedTrotHigherLeftTurn(500,10);
+//    }
 
-
+compassManualCalibration(50);
+//  for(int i=0; i<5; i++){
+//    enhancedTrotHigherRightTurn(500,10);
+//  }
+//  delay(4000);
+//  initialPosition(200);
+//  delay(2000);
 
 
   //starting from home
@@ -137,30 +178,38 @@ void loop()
     bearing = getBearing();
     while(home_==0){
       bearing = getBearing();
-      if(bearing<offsetkanan && bearing>offsetkiri){
+      if(bearing<front_r_offset && bearing>front_l_offset){
         home_=1;
       }
-      else if(bearing < offsetkiri || bearing>230){
-        enhancedTrotLowerRightTurn(250,10);
+      else if(bearing < front_l_offset || bearing>back_r_offset){
+//        enhancedTrotLowerRightTurn(500,10);
+        for(int i=0; i<5; i++){
+          enhancedTrotHigherRightTurn(500,10);
+        }
+//        home_=1;
       }
-      else if(bearing<230 && bearing>offsetkanan){
-        enhancedTrotLowerLeftTurn(250,10);
+      else if(bearing<back_l_offset && bearing>front_r_offset){
+//        enhancedTrotLowerLeftTurn(500,10);
+        for(int i=0; i<5; i++){
+          enhancedTrotHigherLeftTurn(500,10);
+        }
+//        home_=1;
+      }
+      else{
+        for(int i=0; i<10; i++){
+          enhancedTrotHigherLeftTurn(500,10);
+        }
+//        home_=1;
       }
       delay(10);
     }
-//      
-//    writeLog(intToString(bearing));
-
-//    trotBasicLeftward(250, 8);
-////    ultrasonicScan();
-
+  repositioning=0;
   while(k ==0){
-    writeLog(intToString(right_distance));
-    while(right_distance<=54 && right_distance>0){
+    while(right_distance<=54){
       trotBasicLeftward(250, 8);
       right_distance=scan(RIGHT);
     }
-    repositioning=0;
+    
     while(repositioning==0){
       bearing = getBearing();
       display.clearDisplay();
@@ -186,6 +235,135 @@ void loop()
       k=0;
     }
   }
+  /*  Taking victim(s)  */
+//    writeLog("SAVING VICTIM");
+    pixy.setLamp(1,0);
+    gripMovement("sog");
+    detectObject(1);
+    gripMovement("pcg");
+    delay(200);
+    gripMovement("lch");
+    delay(200);
+    front_distance =scan(FRONT);
+    while(front_distance>15){
+      trotBasicForward(130,10);
+      delay(10);
+      front_distance=scan(FRONT);
+    }
+    
+    repositioning=0;
+    while(repositioning==0){
+      bearing = getBearing();
+      display.clearDisplay();
+      display.setCursor(5,5);
+      display.print(bearing);
+      display.display();
+      if(bearing<offsetkiri){
+        enhancedTrotLowerRightTurn(250,10);
+      }
+      else if(bearing>offsetkanan){
+        enhancedTrotLowerLeftTurn(250,10);
+      }
+      else{
+        repositioning=1;
+      }
+    }
+    gripMovement("lcg");
+    pixy.setLamp(0,0);
+    delay(100);
+    initialPosition(200);
+    delay(100);
+    
+    int mundur=0,kanan=0;
+    pitchRoll();
+//    while(abs(pitch) < 15 && abs(roll)<15){
+    while(true){
+      enhancedTrotHigherLeft(500,12);
+      bearing =getBearing();
+      if(bearing>right_direction-20.
+      0){
+        mundur=1;
+      }
+      
+      while(mundur==1){
+        enhancedTrotHigherBackward(500,12);
+        bearing=getBearing();
+        
+        if(bearing>back_direction-20){
+          kanan=1;
+        }
+        while(kanan==1){
+          enhancedTrotHigherRight(500,12);
+          pitchRoll();
+          display.clearDisplay();
+          display.setCursor(0,0);
+          display.print(pitch);
+          display.setCursor(10,0);
+          display.print(roll);
+          display.display();
+//          if(abs(pitch)>10 || abs(roll)>10){
+//            kanan=0;
+//          }
+        }
+        pitchRoll();
+        display.clearDisplay();
+        display.setCursor(0,0);
+        display.print(pitch);
+        display.setCursor(10,0);
+        display.print(roll);
+        display.display();
+//        if(abs(pitch)>13 || abs(roll)>13){
+//          mundur=0;
+//        }
+      }
+      pitchRoll();
+    }
+    display.clearDisplay();
+    display.setCursor(0,0);
+
+    display.print("miring");
+    display.display();
+    repositioning=0;
+    while(repositioning==0){
+      bearing = getBearing();
+      display.clearDisplay();
+      display.setCursor(10,10);
+      display.print(bearing);
+      display.display();
+      if(bearing<right_l_offset){
+        enhancedTrotLowerRightTurn(400,10);
+      }
+      else if(bearing>right_r_offset){
+        enhancedTrotLowerLeftTurn(400,10);
+      }
+      else{
+        repositioning=1;
+      }
+    }
+    pitchRoll();
+    while(abs(pitch) > 2 || abs(roll)>2){
+      enhancedTrotBackward(400);
+      pitchRoll();
+    }
+    repositioning=0;
+    while(repositioning==0){
+      bearing = getBearing();
+      display.clearDisplay();
+      display.setCursor(10,10);
+      display.print(bearing);
+      display.display();
+      if(bearing<right_l_offset){
+        enhancedTrotLowerRightTurn(250,10);
+      }
+      else if(bearing>right_r_offset){
+        enhancedTrotLowerLeftTurn(250,10);
+      }
+      else{
+        repositioning=1;
+      }
+    }
+    initialPosition(200);
+    delay(20000000);
 //  while(true){
 //    initialPosition(200);
 //    pixy.setLamp(0,0);
@@ -359,24 +537,7 @@ void loop()
 //        gripMovement("lcg");
 //      }
 //    }
-    /*  Taking victim(s)  */
-    writeLog("SAVING VICTIM");
-    pixy.setLamp(1,0);
-    gripMovement("sog");
-    detectObject(1);
-    gripMovement("pcg");
-    delay(200);
-    gripMovement("lch");
-    delay(200);
-    for(int i=0; i<=5; i++){
-      trotBasicForward(130,10);
-      delay(10);
-    }
-    initialPosition(200);
-    delay(100);
-    gripMovement("lcg");
-    pixy.setLamp(0,0);
-    delay(1000000);
+    
 
 
 

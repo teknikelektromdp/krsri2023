@@ -46,3 +46,8 @@ String doubleToString(double val)
 
   return buf;
 }
+
+String byteToString(byte val)
+{
+  return String(val);
+}

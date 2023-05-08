@@ -610,6 +610,31 @@ void enhancedTrotBackward(int speed)
   delay(1);
 }
 
+void enhancedTrotBackwardv2(int speed, float inc){
+  LeftFront(8,8,4+inc,speed,2);
+  RightBack(8,8,4+inc,speed,2);
+  delay(1);
+  RightFront(5,8,3+inc,speed,2);
+  LeftBack(5,8,3+inc,speed,2);
+  LeftFront(8,5,3+inc,speed,2);
+  RightBack(8,5,3+inc,speed,2);
+  delay(1);
+  LeftFront(8,5,3+(inc/3),speed,2);
+  RightBack(8,5,3+(inc/3),speed,2);
+  delay(1);
+  RightFront(5,8,2.5+(inc/3),speed,2);
+  LeftBack(5,8,2+(inc/3),speed,2);
+  delay(1);
+  LeftFront(5,8,3+inc,speed,2);
+  RightBack(5,8,3+inc,speed,2);
+  RightFront(8,5,2.5+(inc/3),speed,2);
+  LeftBack(8,5,2+(inc/3),speed,2);
+  delay(1);
+  RightFront(8,5,3+inc,speed,2);
+  LeftBack(8,5,3+inc,speed,2);
+  delay(1);
+}
+
 void enhancedTrotLeft(int speed)
 {
   LeftFront(8,8,4,speed,2);
@@ -714,7 +739,31 @@ void enhancedTrotHigherForward(int speed, int delay_servo)
   LeftBack(5,8,3,speed,delay_servo);
   delay(10);
 }
-
+void enhancedTrotHigherBackward(int speed, int delay_servo)
+{
+  LeftFront(8,8,3,speed,delay_servo);
+  RightBack(8,8,3,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,3,speed,delay_servo);
+  LeftBack(5,8,3,speed,delay_servo);
+  LeftFront(8,5,2,speed,delay_servo);
+  RightBack(8,5,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(8,5,3,speed,delay_servo);
+  RightBack(8,5,3,speed,delay_servo);
+  delay(10);
+  RightFront(5,8,2,speed,delay_servo);
+  LeftBack(5,8,0.4,speed,delay_servo);
+  delay(10);
+  LeftFront(5,8,3,speed,delay_servo);
+  RightBack(5,8,3,speed,delay_servo);
+  RightFront(8,5,2,speed,delay_servo);
+  LeftBack(8,5,0.4,speed,delay_servo);
+  delay(10);
+  RightFront(8,5,3,speed,delay_servo);
+  LeftBack(8,5,3,speed,delay_servo);
+  delay(10);
+}
 void enhancedTrotHigherRight(int speed, int delay_servo)
 {
   LeftFront(8,8,3,speed,delay_servo);
@@ -869,6 +918,17 @@ void enhancedTrotLowerRightTurn(int speed, int delay_servo)
   RightFront(8,6,3,speed,delay_servo);
   LeftBack(6,8,3,speed,delay_servo);
   delay(10);
+}
+
+void trot90DegreeRightTurn(int repeat){
+  for(int i=0; i<5*repeat; i++){
+    enhancedTrotHigherRightTurn(500,10);
+  }
+}
+void trot90DegreeLeftTurn(int repeat){
+  for(int i=0; i<5*repeat; i++){
+    enhancedTrotHigherLeftTurn(500,10);
+  }
 }
 
 /*  still need improvement  */

@@ -12,7 +12,7 @@ void mainMenu()
     holdTime = endPressed - startPressed; 
   }
 
-  if(holdTime >= 3000)
+  if(holdTime >= 1000)
   {
     menuCount=0;
     start_=0;
@@ -43,6 +43,11 @@ void displayMenu()
     startState = digitalRead(start_button);
     Serial.print(menuState);
     Serial.println(startState);
+    display.clearDisplay();
+    display.setCursor(5,5);
+    int bearing =getBearing();
+    display.print(bearing);
+    display.display();
     if(startState == HIGH)
     {
       start_ = 1;
