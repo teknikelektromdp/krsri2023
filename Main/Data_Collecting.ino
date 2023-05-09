@@ -1,15 +1,8 @@
 void ultrasonicScan(){
-  gripMovement("pcg");
-  initialPosition(200);
-  writeLog("Front Distance");
-  writeLog(intToString(scan(FRONT)));
-  writeLog("Left Distance");
-  writeLog(intToString(scan(LEFT_)));
-  writeLog("Right Distance");
-  writeLog(intToString(scan(RIGHT)));
-  writeLog("Back Distance");
-  writeLog(intToString(scan(GRIP)));
-  writeLog("------------------------");
+  front_distance  = scan(FRONT);
+  left_distance   = scan(LEFT_);
+  right_distance  = scan(RIGHT);
+  back_distance   = scan(GRIP);
 }
 
 

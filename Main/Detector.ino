@@ -114,7 +114,7 @@ void detectObject(int object)
             }
             delay(1000);
             for(int i=0; i<4; i++){
-              enhancedTrotRight(50); 
+              enhancedTrotRight(70); 
               delay(10);
             }
 //          }
