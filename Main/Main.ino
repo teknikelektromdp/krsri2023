@@ -17,14 +17,15 @@
 //I2C address
 #define CMPS12Address 0x60
 //Ultrasonic
-#define RBD A0 //Right Back Diagonal
-#define RFD A2 //Right Front Diagonal
-#define LBD 9 //Left Back Diagonal
-#define LFD 8 //Left Front Diagonal
-#define GRIP A9 //Gripper
-#define FRONT A8//Front
-#define LEFT_ A6//Left
-#define RIGHT A4//Right
+#define RBD A0  //Right Back Diagonal
+#define RFD A2  //Right Front Diagonal
+#define LBD 9   //Left Back Diagonal
+#define LFD 8   //Left Front Diagonal
+#define GRIP A9   //Gripper
+#define BACK 7    //Back
+#define FRONT A8  //Front
+#define LEFT_ A6  //Left
+#define RIGHT A4  //Right
 //Compass
 #define BEARING_Register 2
 #define PITCH_Register 4 
@@ -101,7 +102,8 @@ const byte address[6] = "00001";
 int front_distance,
     left_distance,
     right_distance,
-    back_distance;
+    back_distance,
+    grip_distance;
     
 /*Classes*/
 U8X8_SSD1306_128X64_NONAME_HW_I2C display(U8X8_PIN_NONE);
@@ -147,18 +149,10 @@ void loop()
   int bearing;
   compassManualCalibration(50);
   while(true){
-    int speed = 400, delay_servo = 10;
-    RightFront(5,7,6,speed,delay_servo);
-    LeftBack(5,7,7,speed,delay_servo);
-    LeftFront(7,5,2,speed,delay_servo);
-    RightBack(7,5,3,speed,delay_servo);
-    delay(50);
-    LeftFront(5,7,6,speed,delay_servo);
-    RightBack(5,7,7,speed,delay_servo);
-    RightFront(7,5,2,speed,delay_servo);
-    LeftBack(7,5,3,speed,delay_servo);
-    delay(50);
-//    enhancedTrotBackwardv2(400,2);
+    pitchRoll();
+    Serial.print(pitch);
+    Serial.print(",\t");
+    Serial.println(roll);
   }
 */
 
@@ -168,7 +162,7 @@ void loop()
 //      enhancedTrotHigherLeftTurn(500,10);
 //    }
 
-compassManualCalibration(50);
+
 //  for(int i=0; i<5; i++){
 //    enhancedTrotHigherRightTurn(500,10);
 //  }
@@ -176,6 +170,8 @@ compassManualCalibration(50);
 //  initialPosition(200);
 //  delay(2000);
 
+
+compassManualCalibration(50);
 
   //starting from home
   while(true)
@@ -189,22 +185,22 @@ compassManualCalibration(50);
       }
       else if(bearing < front_l_offset || bearing>back_r_offset){
 //        enhancedTrotLowerRightTurn(500,10);
-        for(int i=0; i<5; i++){
+//        for(int i=0; i<5; i++){
           enhancedTrotHigherRightTurn(500,10);
-        }
+//        }
 //        home_=1;
       }
       else if(bearing<back_l_offset && bearing>front_r_offset){
 //        enhancedTrotLowerLeftTurn(500,10);
-        for(int i=0; i<5; i++){
+//        for(int i=0; i<5; i++){
           enhancedTrotHigherLeftTurn(500,10);
-        }
+//        }
 //        home_=1;
       }
       else{
-        for(int i=0; i<10; i++){
+//        for(int i=0; i<10; i++){
           enhancedTrotHigherLeftTurn(500,10);
-        }
+//        }
 //        home_=1;
       }
       delay(10);
@@ -294,15 +290,21 @@ compassManualCalibration(50);
       int kiri=0;
       enhancedTrotHigherLeft(500,12);
       bearing =getBearing();
+      pitchRoll();
+      back_distance = scan(BACK);
+      left_distance = scan(LEFT_);
+      if((back_distance>50 && back_distance <150) && (left_distance<25) && pitch <= 8 && pitch >= -8 && roll <=8 && roll >= -8){
+        m1=0;
+      }
+
       if(bearing>right_direction-20){
         mundur=1;
       }
-      
       while(mundur==1){
         enhancedTrotHigherBackward(500,12);
         bearing=getBearing();
-
-        //condition when the robot facing the other side from taking the victim
+        pitchRoll();
+        //ccondition when the robot facing the other side from taking the victim
         if(bearing>back_direction-20){
           kanan=1;
         }
@@ -310,8 +312,8 @@ compassManualCalibration(50);
           enhancedTrotHigherRight(500,12);
           front_distance =scan(FRONT);
           right_distance =scan(RIGHT);
-
-          if(front_distance >50 && right_distance <20){
+          pitchRoll();
+          if(front_distance >50 && right_distance <20 && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
             initialPosition(300);
             kanan=0;
             mundur=0;
@@ -323,25 +325,25 @@ compassManualCalibration(50);
           mundur=0;
         }
         right_distance=scan(RIGHT);
-        if(right_distance>50 && right_distance < 150){
-          for(int i=0; i<2; i++){
-            enhancedTrotHigherBackward(500,12);
-          }
+        back_distance=scan(BACK);
+        pitchRoll();
+        if((right_distance>50 && right_distance < 150)&&(back_distance<=30 && back_distance>0) && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
+//          for(int i=0; i<1; i++){
+//            enhancedTrotHigherBackward(500,12);
+//          }
           initialPosition(300);
           mundur=0;
           m1=0;
         }
       }
-      kiri+=1;
-
-      if(kiri>15){
-        left_distance=scan(LEFT_);
-        if(left_distance > 10 && left_distance < 30){
-          initialPosition(300);
-          m1=0;
-        }
+      back_distance = scan(BACK);
+      left_distance = scan(LEFT_);
+      pitchRoll();
+      if((back_distance>50 && back_distance <150) && (left_distance<=30 && left_distance>0) && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
+        m1=0;
       }
     }
+    
     pixy.setLamp(1,1);
     repositioning=0;
     while(repositioning==0){
@@ -380,6 +382,7 @@ compassManualCalibration(50);
         repositioning=1;
       }
     }
+    /* Putting Victim */
     delay(200);
     gripMovement("pcg");
     delay(200);
@@ -406,8 +409,28 @@ compassManualCalibration(50);
         repositioning=1;
       }
     }
-    while(true){
+    front_distance=scan(FRONT);
+    back_distance=scan(BACK);
+    int r4=1;
+    while(r4==1){
       enhancedTrotHigherForward(400,10);
+      front_distance=scan(FRONT);
+      back_distance=scan(BACK);
+      if(front_distance<50 && back_distance>40){
+        r4=0;
+      }
+    }
+    for(int i =0; i<5;i++){
+      pixy.setLamp(1,0);
+      delay(200);
+      pixy.setLamp(0,1);
+      delay(200);
+      pixy.setLamp(0,0);
+      delay(200);
+    }
+    
+    while(true){
+      
     }
 
 //  while(true){
@@ -495,11 +518,11 @@ compassManualCalibration(50);
 //    right_distance = scan(RIGHT);
 //    writeLog(intToString(right_distance));
     /*
-    int back_distance = scan(GRIP);
-    while(back_distance <45){
+    int grip_distance = scan(GRIP);
+    while(grip_distance <45){
       trotBasicForward(200,10);
-      back_distance = scan(GRIP);
-      writeLog(intToString(back_distance));
+      grip_distance = scan(GRIP);
+      writeLog(intToString(grip_distance));
     }
     writeLog("TURNING RIGHT");
     int bearing = getBearing();
