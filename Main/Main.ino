@@ -25,7 +25,7 @@
 #define BACK 7    //Back
 #define FRONT A8  //Front
 #define LEFT_ A6  //Left
-#define RIGHT A4  //Right
+#define RIGHT 35   //Right
 //Compass
 #define BEARING_Register 2
 #define PITCH_Register 4 
@@ -89,6 +89,7 @@ char _pitch,//on steep obstacle = +- 13~14
      _roll;//on steep obstacle = +- 11~13
 signed char pitch;
 signed char roll;
+int bearing;
 /*Gyroscope*/
 float gyrox = 0;
 float gyroy = 0;
@@ -146,13 +147,34 @@ void loop()
 
 /*  testing purpose  
   int mundur=0;
-  int bearing;
-  compassManualCalibration(50);
+//  int bearing;
   while(true){
+    bearing=getBearing();
     pitchRoll();
-    Serial.print(pitch);
-    Serial.print(",\t");
-    Serial.println(roll);
+    back_distance=scan(BACK);
+    right_distance=scan(RIGHT);
+    front_distance=scan(FRONT);
+    left_distance=scan(LEFT_);
+   
+
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.print("pitch=");  display.print(pitch);
+    display.setCursor(10,0);
+    display.print("roll=");  display.print(roll);
+    display.setCursor(0,10);
+    display.print("cmps=");  display.print(bearing);
+    display.setCursor(0,20);
+    display.print("b=");  display.print(back_distance);
+    display.setCursor(10,20);
+    display.print("r=");  display.print(right_distance);
+    display.setCursor(0,30);
+    display.print("f=");  display.print(front_distance);
+    display.setCursor(10,30);
+    display.print("l=");  display.print(left_distance);  
+
+
+    Serial.println(front_distance);
   }
 */
 
@@ -171,7 +193,7 @@ void loop()
 //  delay(2000);
 
 
-compassManualCalibration(50);
+compassManualCalibration(41);
 
   //starting from home
   while(true)
@@ -205,6 +227,7 @@ compassManualCalibration(50);
       }
       delay(10);
     }
+    
   repositioning=0;
   while(k ==0){
     while(right_distance<=54){
@@ -293,8 +316,12 @@ compassManualCalibration(50);
       pitchRoll();
       back_distance = scan(BACK);
       left_distance = scan(LEFT_);
-      if((back_distance>50 && back_distance <150) && (left_distance<25) && pitch <= 8 && pitch >= -8 && roll <=8 && roll >= -8){
-        m1=0;
+      if((back_distance>50 && back_distance <150) && (left_distance<25)){
+        initialPosition(400);
+        pitchRoll();
+        if(pitch <= 3 && pitch >= -3 && roll <=3 && roll >= -3){
+          m1=0;
+        }
       }
 
       if(bearing>right_direction-20){
@@ -304,6 +331,7 @@ compassManualCalibration(50);
         enhancedTrotHigherBackward(500,12);
         bearing=getBearing();
         pitchRoll();
+        
         //ccondition when the robot facing the other side from taking the victim
         if(bearing>back_direction-20){
           kanan=1;
@@ -313,34 +341,88 @@ compassManualCalibration(50);
           front_distance =scan(FRONT);
           right_distance =scan(RIGHT);
           pitchRoll();
-          if(front_distance >50 && right_distance <20 && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
+          display.clearDisplay();
+          display.setCursor(0,0);
+          display.print("pitch=");  display.print(pitch);
+          display.setCursor(10,0);
+          display.print("roll=");  display.print(roll);
+          display.setCursor(0,10);
+          display.print("cmps=");  display.print(bearing);
+          display.setCursor(0,20);
+          display.print("b=");  display.print(back_distance);
+          display.setCursor(10,20);
+          display.print("r=");  display.print(right_distance);
+          display.setCursor(0,30);
+          display.print("f=");  display.print(front_distance);
+          display.setCursor(10,30);
+          display.print("l=");  display.print(left_distance); 
+          if(front_distance >50 && right_distance <20){
+            initialPosition(400);
+            pitchRoll();
+            if(pitch <= 3 && pitch >= -3 && roll <= 3 && roll >= -3){
+              initialPosition(300);
+              kanan=0;
+              mundur=0;
+              m1=0;
+            }
+          }
+        }
+        
+        right_distance=scan(RIGHT);
+        back_distance=scan(BACK);
+        pitchRoll();
+        display.clearDisplay();
+        display.setCursor(0,0);
+        display.print("pitch=");  display.print(pitch);
+        display.setCursor(10,0);
+        display.print("roll=");  display.print(roll);
+        display.setCursor(0,10);
+        display.print("cmps=");  display.print(bearing);
+        display.setCursor(0,20);
+        display.print("b=");  display.print(back_distance);
+        display.setCursor(10,20);
+        display.print("r=");  display.print(right_distance);
+        display.setCursor(0,30);
+        display.print("f=");  display.print(front_distance);
+        display.setCursor(10,30);
+        display.print("l=");  display.print(left_distance); 
+        if((right_distance>50 && right_distance < 150)&&(back_distance<=35 && back_distance>0)){
+          initialPosition(400);
+          pitchRoll();
+          if(pitch <= 3 && pitch >= -3 && roll <= 3 && roll >= -3){
             initialPosition(300);
-            kanan=0;
             mundur=0;
             m1=0;
           }
         }
-        
         if(bearing > (front_l_offset-10) && bearing < (front_r_offset-10)){
           mundur=0;
-        }
-        right_distance=scan(RIGHT);
-        back_distance=scan(BACK);
-        pitchRoll();
-        if((right_distance>50 && right_distance < 150)&&(back_distance<=30 && back_distance>0) && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
-//          for(int i=0; i<1; i++){
-//            enhancedTrotHigherBackward(500,12);
-//          }
-          initialPosition(300);
-          mundur=0;
-          m1=0;
         }
       }
       back_distance = scan(BACK);
       left_distance = scan(LEFT_);
       pitchRoll();
-      if((back_distance>50 && back_distance <150) && (left_distance<=30 && left_distance>0) && pitch <= 8 && pitch >= -8 && roll <= 8 && roll >= -8){
-        m1=0;
+      display.clearDisplay();
+      display.setCursor(0,0);
+      display.print("pitch=");  display.print(pitch);
+      display.setCursor(10,0);
+      display.print("roll=");  display.print(roll);
+      display.setCursor(0,10);
+      display.print("cmps=");  display.print(bearing);
+      display.setCursor(0,20);
+      display.print("b=");  display.print(back_distance);
+      display.setCursor(10,20);
+      display.print("r=");  display.print(right_distance);
+      display.setCursor(0,30);
+      display.print("f=");  display.print(front_distance);
+      display.setCursor(10,30);
+      display.print("l=");  display.print(left_distance); 
+      if((back_distance>50 && back_distance <150) && (left_distance<=30 && left_distance>0)){
+        initialPosition(400);
+        pitchRoll();
+        if(pitch <= 3 && pitch >= -3 && roll <= 3 && roll >= -3){
+          m1=0;
+        }
       }
     }
     
@@ -363,7 +445,10 @@ compassManualCalibration(50);
       }
     }
     initialPosition(400);
+////////////////////////////////////////////////////////repositioning on r4 before rotating to put the victim
+//    fr
 
+////////////////////////////////////////////////////////
     pixy.setLamp(0,0);
     repositioning=0;
     while(repositioning==0){
@@ -373,10 +458,10 @@ compassManualCalibration(50);
       display.print(bearing);
       display.display();
       if(bearing<((back_l_offset+right_l_offset)/2)-15){
-        enhancedTrotLowerRightTurn(400,10);
+        enhancedTrotHigherRightTurn(400,10);
       }
       else if(bearing>((back_r_offset+right_r_offset)/2)-15){
-        enhancedTrotLowerLeftTurn(400,10);
+        enhancedTrotHigherLeftTurn(400,10);
       }
       else{
         repositioning=1;
@@ -409,6 +494,7 @@ compassManualCalibration(50);
         repositioning=1;
       }
     }
+    
     front_distance=scan(FRONT);
     back_distance=scan(BACK);
     int r4=1;
@@ -416,17 +502,27 @@ compassManualCalibration(50);
       enhancedTrotHigherForward(400,10);
       front_distance=scan(FRONT);
       back_distance=scan(BACK);
-      if(front_distance<50 && back_distance>40){
+      if(front_distance<40 && back_distance>60){
         r4=0;
       }
     }
-    for(int i =0; i<5;i++){
-      pixy.setLamp(1,0);
-      delay(200);
-      pixy.setLamp(0,1);
-      delay(200);
-      pixy.setLamp(0,0);
-      delay(200);
+    
+    repositioning=0;
+    while(repositioning==0){
+      bearing = getBearing();
+      display.clearDisplay();
+      display.setCursor(10,10);
+      display.print(bearing);
+      display.display();
+      if(bearing<left_l_offset && bearing >front_r_offset){
+        enhancedTrotHigherRightTurn(200,10);
+      }
+      else if(bearing>left_r_offset || bearing<front_l_offset){
+        enhancedTrotHigherLeftTurn(200,10);
+      }
+      else{
+        repositioning=1;
+      }
     }
     
     while(true){
