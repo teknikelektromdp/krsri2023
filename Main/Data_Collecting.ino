@@ -33,5 +33,5 @@ void lcdDisplay(){
   display.setCursor(0,30);
   display.print("f=");  display.print(front_distance);
   display.setCursor(10,30);
-  display.print("l=");  display.print(left_distance);  
+  display.print("l=");  display.print(left_distance);
 }

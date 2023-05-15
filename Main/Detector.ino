@@ -133,4 +133,65 @@ void detectObject(int object)
       }
     }
   }
+  
+  if(object == 2)
+  {
+    while(object2==0)
+    {
+      int getObject = getObjectLocation();
+      Serial.println(getObject);
+      if(getObject==0)
+      {
+        for(int i=0; i<3; i++)
+        {
+          trotBasicLeftward(135,10);
+          delay(10);
+        }
+        delay(100);
+        for(int i=0; i<3; i++)
+        {
+          trotBasicRightward(135,10);
+          delay(10);
+        }
+      }
+      else if(getObject==-1)
+      {
+        for(int i=0; i<3; i++)
+        {
+          trotBasicRightward(135,10);
+          delay(10);
+        }      
+      }
+      else if(getObject==-2)
+      {
+        for(int i=0; i<3; i++)
+        {
+          trotBasicLeftward(135, 10);
+          delay(10);
+        } 
+      }
+      else if(getObject==1)
+      {
+        gripMovement("pog");
+        lock = 1;
+        while(lock == 1)
+        {
+          int distance = scan(GRIP);
+          Serial.print("Distance :");
+          Serial.println(distance);
+          for(int i=0; i<(distance/5); i++){
+            creepBackward(100, 4, 10);
+            delay(10);
+          }
+          delay(1000);
+          for(int i=0; i<4; i++){
+            enhancedTrotRight(70); 
+            delay(10);
+          }
+          lock = 0;
+          object2 = 1;
+        }
+      }
+    }
+  }
 }
