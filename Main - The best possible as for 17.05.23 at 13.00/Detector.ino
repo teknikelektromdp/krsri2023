@@ -103,7 +103,7 @@ void detectObject(int object)
 //                delay(10);
 //              }
 //            }
-            for(int i=0; i<(distance/4); i++){
+            for(int i=0; i<(distance/3); i++){
               enhancedTrotBackward(100); 
               Serial.print("i :");
               Serial.print(i);
