@@ -24,9 +24,17 @@ void gripMovement(String movement)
   else if(movement == "lch"){
     pixy.setServos(700,0);
   }
+  //open and lift by a bit
+  else if(movement == "loh"){
+    pixy.setServos(700,500);
+  }
+  //put(to scan) and open gripper
+  else if(movement == "sog"){
+    pixy.setServos(900, 500);
+  }
   else
   {
-    pixy.setServos(900, 500);
+    pixy.setServos(1000, 500);
   }
 }
 
