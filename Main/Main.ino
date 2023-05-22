@@ -149,14 +149,37 @@ void loop()
   //compassManualCalibration(50);
   compassManualCalibration8bit(30);
   while (true) {
+//    right_distance = scan(RIGHT);
+//    while (right_distance < 100) {
+//      enhancedTrotHigherLeft(400, 10);
+//      right_distance = scan(RIGHT);
+//    }
+//    while (true) {
+//      creepLeft(300, 4, 10);
+//    }
+
+    back_distance = scan(BACK);
+    left_distance = scan(LEFT_);
     right_distance = scan(RIGHT);
-    while (right_distance < 100) {
-      enhancedTrotHigherLeft(400, 10);
-      right_distance = scan(RIGHT);
-    }
-    while (true) {
-      creepLeft(300, 4, 10);
-    }
+    front_distance = scan(FRONT);
+    grip_distance  = scan(GRIP);
+    bearing = getBearing();
+    pitchRoll();
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.print("grip=");  display.print(grip_distance);
+    display.setCursor(10,0);
+    display.print("roll=");  display.print(roll);
+    display.setCursor(0,10);
+    display.print("cmps=");  display.print(bearing);
+    display.setCursor(0,20);
+    display.print("b=");  display.print(back_distance);
+    display.setCursor(10,20);
+    display.print("r=");  display.print(right_distance);
+    display.setCursor(0,30);
+    display.print("f=");  display.print(front_distance);
+    display.setCursor(10,30);
+    display.print("l=");  display.print(left_distance);
     //    trotBasicForward(400,10);
     //    int test=1;
     //    enhancedTrotHigherLeft(300,10);
@@ -274,7 +297,7 @@ void loop()
 
 
   //compassManualCalibration(45);
-  compassManualCalibration8bit(35);
+  compassManualCalibration8bit(40);
 
   //starting from home
   while (true)
@@ -383,10 +406,10 @@ void loop()
         maju = 0;
     pitchRoll();
     int m1 = 1, trot_phase=1;
-    int upper_pitch_limit = 10,
-        lower_pitch_limit = -3,
-        upper_roll_limit  = 3,
-        lower_roll_limit  = -3;
+    int upper_pitch_limit = 6,  //(10)
+        lower_pitch_limit = -6, //-3
+        upper_roll_limit  = 6,  //3
+        lower_roll_limit  = -6; //-3
     while (m1 == 1) {
       right_distance = scan(RIGHT);
       while (trot_phase == 1 && mundur == 0 && maju==0) {
@@ -702,7 +725,7 @@ void loop()
       }
       }
     */
-
+    pixy.setLamp(0,1);
     back_distance = scan(BACK);
     left_distance = scan(LEFT_);
     right_distance = scan(RIGHT);
@@ -735,7 +758,7 @@ void loop()
         creepForward(400,4,10);
       }
     }
-    
+    pixy.setLamp(1,0);
     back_distance = scan(BACK);
     left_distance = scan(LEFT_);
     right_distance = scan(RIGHT);
@@ -772,7 +795,7 @@ void loop()
         front_distance = scan(FRONT);
         bearing = getBearing();
         pitchRoll();
-        if (back_distance <= 45) {
+        if (back_distance <= 50) {
           mundur = 0;
         }
         else {
@@ -781,10 +804,11 @@ void loop()
       }
       back_distance = scan(BACK);
       bearing = getBearing();
-      if (back_distance <= 45 && bearing < ((back_r_offset + right_r_offset) / 2) - 10 && bearing > ((back_l_offset + right_l_offset) / 2) - 10) {
+      if (back_distance <=50 && bearing < ((back_r_offset + right_r_offset) / 2) - 7 && bearing > ((back_l_offset + right_l_offset) / 2) - 13) {
         r4 = 0;
       }
     }
+    pixy.setLamp(0,0);
     /* Putting Victim */
     delay(200);
     gripMovement("pcg");
@@ -853,10 +877,10 @@ void loop()
       int repositioning = 0;
       while (repositioning == 0) {
         bearing = getBearing();
-        if (bearing < back_l_offset) {
+        if (bearing < back_l_offset-15) {
           enhancedTrotHigherRightTurn(400, 10);
         }
-        else if (bearing > back_r_offset) {
+        else if (bearing > back_r_offset-15) {
           enhancedTrotHigherLeftTurn(400, 10);
         }
         else {
@@ -865,7 +889,7 @@ void loop()
       }
 
       for(int i=0; i<4;i++){
-        trotBasicForward(500,10);
+        trotBasicForward(200,10);
       }
 
 
@@ -874,10 +898,10 @@ void loop()
       repositioning = 0;
       while (repositioning == 0) {
         bearing = getBearing();
-        if (bearing < left_l_offset) {
+        if (bearing < left_l_offset-10) {
           enhancedTrotHigherRightTurn(400, 10);
         }
-        else if (bearing > left_r_offset) {
+        else if (bearing > left_r_offset-10) {
           enhancedTrotHigherLeftTurn(400, 10);
         }
         else {
@@ -909,10 +933,10 @@ void loop()
           int repositioning = 0;
           while (repositioning == 0) {
             bearing = getBearing();
-            if (bearing < (left_l_offset - 25)) {
+            if (bearing < (left_l_offset - 25) && bearing >front_r_offset) {
               enhancedTrotHigherRightTurn(200, 10);
             }
-            else if (bearing > (left_r_offset - 25)) {
+            else if (bearing > (left_r_offset - 25) || bearing<=front_r_offset) {
               enhancedTrotHigherLeftTurn(200, 10);
             }
             else {
@@ -920,9 +944,9 @@ void loop()
             }
           }
           gripMovement("loh");
-          for (int i = 0; i < 4; i++) {
+          for (int i = 0; i < 5; i++) {
             if (i == 2) {
-              gripMovement("sog");
+              gripMovement("pog");
             }
             creepBackward(200, 5, 10);
           }
@@ -956,17 +980,23 @@ void loop()
           }
 
           right_distance = scan(RIGHT);
-          while (right_distance > 13) {
+          while (right_distance > 15) {
             creepRight(200, 4, 10);
             right_distance = scan(RIGHT);
           }
 
           back_distance = scan(BACK);
-          while (back_distance < 20) {
-            enhancedTrotHigherForward(400, 10);
+          while (back_distance < 18 || back_distance > 30) {
+            if(back_distance < 18){
+              enhancedTrotHigherForward(400, 10);
+            }
+            if(back_distance > 30){
+              enhancedTrotHigherBackward(400, 10);
+            }
 //          creepForward(400, 4, 10);
             back_distance = scan(BACK);
           }
+          
           repositioning = 0;
           while (repositioning == 0) {
             bearing = getBearing();
@@ -1001,6 +1031,7 @@ void loop()
       initialPosition(500);
     }
     while (true) {
+      creepForward(300,5,10);
     }
     //  while(true){
     //    initialPosition(200);

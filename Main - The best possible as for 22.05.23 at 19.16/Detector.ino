@@ -103,31 +103,8 @@ void detectObject(int object)
 //                delay(10);
 //              }
 //            }
-            back_distance = scan(BACK);
-            left_distance = scan(LEFT_);
-            right_distance = scan(RIGHT);
-            front_distance = scan(FRONT);
-            grip_distance  = scan(GRIP);
-            bearing = getBearing();
-            pitchRoll();
-            display.clearDisplay();
-            display.setCursor(0,0);
-            display.print("grip=");  display.print(grip_distance);
-            display.setCursor(10,0);
-            display.print("roll=");  display.print(roll);
-            display.setCursor(0,10);
-            display.print("cmps=");  display.print(bearing);
-            display.setCursor(0,20);
-            display.print("b=");  display.print(back_distance);
-            display.setCursor(10,20);
-            display.print("r=");  display.print(right_distance);
-            display.setCursor(0,30);
-            display.print("f=");  display.print(front_distance);
-            display.setCursor(10,30);
-            display.print("l=");  display.print(left_distance);
             for(int i=0; i<(distance/4); i++){
               enhancedTrotBackward(100); 
-//              trotBasicBackward(200,10); 
               Serial.print("i :");
               Serial.print(i);
               int _distance =scan(GRIP);
