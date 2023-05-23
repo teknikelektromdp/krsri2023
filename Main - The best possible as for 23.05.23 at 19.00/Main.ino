@@ -142,20 +142,144 @@ void loop()
       front_distance;
 
   int offsetkiri = 48, offsetkanan = 58;
-  
-  /*  
-   *  testing purpose  
-   */
 
+  /*  testing purpose  
   int kiri = 0;
   //  int bearing;
   //compassManualCalibration(50);
-  compassManualCalibration8bit(40);
+  compassManualCalibration8bit(30);
   while (true) {
-    int lfd_distance;
+//    right_distance = scan(RIGHT);
+//    while (right_distance < 100) {
+//      enhancedTrotHigherLeft(400, 10);
+//      right_distance = scan(RIGHT);
+//    }
+//    while (true) {
+//      creepLeft(300, 4, 10);
+//    }
 
-    lfd_distance=scan(LFD);
-    Serial.println(lfd_distance);
+    back_distance = scan(BACK);
+    left_distance = scan(LEFT_);
+    right_distance = scan(RIGHT);
+    front_distance = scan(FRONT);
+    grip_distance  = scan(GRIP);
+    bearing = getBearing();
+    pitchRoll();
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.print("grip=");  display.print(grip_distance);
+    display.setCursor(10,0);
+    display.print("roll=");  display.print(roll);
+    display.setCursor(0,10);
+    display.print("cmps=");  display.print(bearing);
+    display.setCursor(0,20);
+    display.print("b=");  display.print(back_distance);
+    display.setCursor(10,20);
+    display.print("r=");  display.print(right_distance);
+    display.setCursor(0,30);
+    display.print("f=");  display.print(front_distance);
+    display.setCursor(10,30);
+    display.print("l=");  display.print(left_distance);
+    //    trotBasicForward(400,10);
+    //    int test=1;
+    //    enhancedTrotHigherLeft(300,10);
+    //    right_distance = scan(RIGHT);
+    //    left_distance = scan(LEFT_);
+    //    if(right_distance>48 && left_distance <60){
+    //      for(int i=0; i<3; i++){
+    //        creepLeft(200, 4, 10);
+    //      }
+    //      initialPosition(200);
+    //      delay(300);
+    //      int repositioning=0;
+    //      while(repositioning==0){
+    //        bearing = getBearing();
+    //        if(bearing<(left_l_offset-15)){
+    //          enhancedTrotHigherRightTurn(200,10);
+    //        }
+    //        else if(bearing>(left_r_offset-15)){
+    //          enhancedTrotHigherLeftTurn(200,10);
+    //        }
+    //        else{
+    //          repositioning=1;
+    //        }
+    //      }
+    //      gripMovement("loh");
+    //      for(int i=0;i <4;i++){
+    //        if(i==2){
+    //          gripMovement("sog");
+    //        }
+    //        creepBackward(200, 5, 10);
+    //      }
+    //      delay(500);
+    //      gripMovement("pog");
+    //      delay(300);
+    //      gripMovement("pcg");
+    //      delay(200);
+    //      gripMovement("lcg");
+    //      delay(200);
+    //      for(int i=0;i <4;i++){
+    //        creepForward(200, 4, 10);
+    //      }
+    //
+    //      repositioning=0;
+    //      while(repositioning==0){
+    //        bearing = getBearing();
+    //        display.clearDisplay();
+    //        display.setCursor(5,5);
+    //        display.print(bearing);
+    //        display.display();
+    //        if(bearing<right_l_offset){
+    //          enhancedTrotHigherRightTurn(250,10);
+    //        }
+    //        else if(bearing>right_r_offset){
+    //          enhancedTrotHigherLeftTurn(250,10);
+    //        }
+    //        else{
+    //          repositioning=1;
+    //        }
+    //      }
+    //
+    //      right_distance = scan(RIGHT);
+    //      while(right_distance>13){
+    //        creepRight(200, 4, 10);
+    //        right_distance = scan(RIGHT);
+    //      }
+    //
+    //      back_distance = scan(BACK);
+    //      while(back_distance < 20){
+    //        enhancedTrotHigherForward(400,10);
+    ////        creepForward(400, 4, 10);
+    //        back_distance = scan(BACK);
+    //      }
+    //      repositioning=0;
+    //      while(repositioning==0){
+    //        bearing = getBearing();
+    //        display.clearDisplay();
+    //        display.setCursor(5,5);
+    //        display.print(bearing);
+    //        display.display();
+    //        if(bearing<right_l_offset-20){
+    //          enhancedTrotHigherRightTurn(250,10);
+    //        }
+    //        else if(bearing>right_r_offset-20){
+    //          enhancedTrotHigherLeftTurn(250,10);
+    //        }
+    //        else{
+    //          repositioning=1;
+    //        }
+    //      }
+    //      delay(200);
+    //      gripMovement("pcg");
+    //      delay(200);
+    //      gripMovement("pog");
+    //      delay(200);
+    //      gripMovement("log");
+    //      delay(200);
+    //      gripMovement("lcg");
+    //      delay(200);
+    //      }
+    //      initialPosition(500);
   }
   /* */
 
@@ -282,10 +406,10 @@ void loop()
         maju = 0;
     pitchRoll();
     int m1 = 1, trot_phase=1;
-    int upper_pitch_limit = 5,  //(10)
-        lower_pitch_limit = -5, //-3
-        upper_roll_limit  = 5,  //3
-        lower_roll_limit  = -5; //-3
+    int upper_pitch_limit = 6,  //(10)
+        lower_pitch_limit = -6, //-3
+        upper_roll_limit  = 6,  //3
+        lower_roll_limit  = -6; //-3
     while (m1 == 1) {
       right_distance = scan(RIGHT);
       while (trot_phase == 1 && mundur == 0 && maju==0) {
@@ -652,12 +776,10 @@ void loop()
       while (repositioning == 0) {
         bearing = getBearing();
         if (bearing < ((back_l_offset + right_l_offset) / 2) - 10) {
-//          enhancedTrotHigherRightTurn(400, 10);
-          enhancedTrotLowerRightTurn(400, 10);
+          enhancedTrotHigherRightTurn(400, 10);
         }
         else if (bearing > ((back_r_offset + right_r_offset) / 2) - 10) {
-//          enhancedTrotHigherLeftTurn(400, 10);
-          enhancedTrotLowerLeftTurn(400, 10);
+          enhancedTrotHigherLeftTurn(400, 10);
         }
         else {
           repositioning = 1;
@@ -665,7 +787,7 @@ void loop()
       }
       mundur = 1;
       back_distance = scan(BACK);
-//      enhancedTrotHigherBackward(400, 10);
+      enhancedTrotHigherBackward(400, 10);
       while (mundur == 1) {
         back_distance = scan(BACK);
         left_distance = scan(LEFT_);
@@ -673,7 +795,7 @@ void loop()
         front_distance = scan(FRONT);
         bearing = getBearing();
         pitchRoll();
-        if (back_distance <= 45) {
+        if (back_distance <= 50) {
           mundur = 0;
         }
         else {
@@ -682,7 +804,7 @@ void loop()
       }
       back_distance = scan(BACK);
       bearing = getBearing();
-      if (back_distance <=45 && bearing < ((back_r_offset + right_r_offset) / 2) - 7 && bearing > ((back_l_offset + right_l_offset) / 2) - 13) {
+      if (back_distance <=50 && bearing < ((back_r_offset + right_r_offset) / 2) - 7 && bearing > ((back_l_offset + right_l_offset) / 2) - 13) {
         r4 = 0;
       }
     }
@@ -694,7 +816,7 @@ void loop()
     gripMovement("pog");
     delay(200);
     gripMovement("log");
-    delay(600);
+    delay(200);
     gripMovement("lcg");
     delay(200);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -756,12 +878,10 @@ void loop()
       while (repositioning == 0) {
         bearing = getBearing();
         if (bearing < back_l_offset-15) {
-//          enhancedTrotHigherRightTurn(400, 10);
-          enhancedTrotLowerRightTurn(400, 10);
+          enhancedTrotHigherRightTurn(400, 10);
         }
         else if (bearing > back_r_offset-15) {
-//          enhancedTrotHigherLeftTurn(400, 10);
-          enhancedTrotLowerLeftTurn(400, 10);
+          enhancedTrotHigherLeftTurn(400, 10);
         }
         else {
           repositioning = 1;
@@ -771,34 +891,31 @@ void loop()
       for(int i=0; i<4;i++){
         trotBasicForward(200,10);
       }
-      r4=1;
-      while(r4==1){
-        repositioning = 0;
-        while (repositioning == 0) {
-          bearing = getBearing();
-          if (bearing < left_l_offset-15) {
-            enhancedTrotHigherRightTurn(400, 10);
-          }
-          else if (bearing > left_r_offset-15) {
-            enhancedTrotHigherLeftTurn(400, 10);
-          }
-          else {
-            repositioning = 1;
-          }
+
+
+
+      
+      repositioning = 0;
+      while (repositioning == 0) {
+        bearing = getBearing();
+        if (bearing < left_l_offset-10) {
+          enhancedTrotHigherRightTurn(400, 10);
         }
-  
+        else if (bearing > left_r_offset-10) {
+          enhancedTrotHigherLeftTurn(400, 10);
+        }
+        else {
+          repositioning = 1;
+        }
+      }
+
+      front_distance = scan(FRONT);
+      while (front_distance > 10) {
+        trotBasicForward(300, 10);
         front_distance = scan(FRONT);
-        while (front_distance > 10) {
-          trotBasicForward(250, 10);
-          front_distance = scan(FRONT);
-        }
-        if(bearing > left_l_offset-10 && bearing < left_r_offset-10 && front_distance < 10){
-          r4=0;
-        }
       }
       initialPosition(400);
       delay(10);
-      
       int kiri = 1;
       left_distance = scan(LEFT_);
       right_distance = scan(RIGHT);
@@ -816,20 +933,18 @@ void loop()
           int repositioning = 0;
           while (repositioning == 0) {
             bearing = getBearing();
-            if (bearing < (left_l_offset - 22) && bearing >front_r_offset) {
-//              enhancedTrotHigherRightTurn(200, 10);
-              creepSlightRight(250, 4, 10);
+            if (bearing < (left_l_offset - 25) && bearing >front_r_offset) {
+              enhancedTrotHigherRightTurn(200, 10);
             }
-            else if (bearing > (left_r_offset - 22) || bearing<=front_r_offset) {
-//              enhancedTrotHigherLeftTurn(200, 10);
-              creepSlightLeft(250, 4, 10);
+            else if (bearing > (left_r_offset - 25) || bearing<=front_r_offset) {
+              enhancedTrotHigherLeftTurn(200, 10);
             }
             else {
               repositioning = 1;
             }
           }
           gripMovement("loh");
-          for (int i = 0; i < 3; i++) {
+          for (int i = 0; i < 5; i++) {
             if (i == 2) {
               gripMovement("pog");
             }
@@ -843,9 +958,6 @@ void loop()
           gripMovement("lcg");
           delay(200);
           for (int i = 0; i < 4; i++) {
-            if(i==1){
-              gripMovement("lcg");
-            }
             creepForward(200, 4, 10);
           }
 
@@ -856,13 +968,11 @@ void loop()
             display.setCursor(5, 5);
             display.print(bearing);
             display.display();
-            if (bearing < right_l_offset || bearing >= left_direction) {
-//              enhancedTrotHigherRightTurn(250, 10);
-              creepSlightRight(400, 4, 10);
+            if (bearing < right_l_offset) {
+              enhancedTrotHigherRightTurn(250, 10);
             }
-            else if (bearing > right_r_offset && bearing < left_direction) {
-//              enhancedTrotHigherLeftTurn(250, 10);
-              creepSlightLeft(400, 4, 10);
+            else if (bearing > right_r_offset) {
+              enhancedTrotHigherLeftTurn(250, 10);
             }
             else {
               repositioning = 1;
@@ -870,63 +980,14 @@ void loop()
           }
 
           right_distance = scan(RIGHT);
-          while (right_distance > 14) {
+          while (right_distance > 15) {
             creepRight(200, 4, 10);
-            back_distance = scan(BACK);
-            left_distance = scan(LEFT_);
             right_distance = scan(RIGHT);
-            front_distance = scan(FRONT);
-            bearing = getBearing();
-            pitchRoll();
-            if(bearing < right_l_offset || bearing > right_r_offset){
-              repositioning = 0;
-            }
-            while (repositioning == 0) {
-              bearing = getBearing();
-              display.clearDisplay();
-              display.setCursor(5, 5);
-              display.print(bearing);
-              display.display();
-              if (bearing < right_l_offset) {
-//                enhancedTrotHigherRightTurn(250, 10);
-                creepSlightRight(250, 4, 10);
-              }
-              else if (bearing > right_r_offset) {
-//                enhancedTrotHigherLeftTurn(250, 10);
-                creepSlightLeft(250, 4, 10);
-              }
-              else {
-                repositioning = 1;
-              }
-            }
           }
-//          for(int i=0; i<3;i++){
-//            creepRight(200, 4, 10);
-//          }
-          
-//          repositioning = 0;
-//          while (repositioning == 0) {
-//            bearing = getBearing();
-//            display.clearDisplay();
-//            display.setCursor(5, 5);
-//            display.print(bearing);
-//            display.display();
-//            if (bearing < right_l_offset) {
-////              enhancedTrotHigherRightTurn(250, 10);
-//              creepSlightRight(250, 4, 10);
-//            }
-//            else if (bearing > right_r_offset) {
-////              enhancedTrotHigherLeftTurn(250, 10);
-//              creepSlightLeft(250, 4, 10);
-//            }
-//            else {
-//              repositioning = 1;
-//            }
-//          }
-          
+
           back_distance = scan(BACK);
-          while (back_distance < 22 || back_distance > 30) {
-            if(back_distance < 22){
+          while (back_distance < 18 || back_distance > 30) {
+            if(back_distance < 18){
               enhancedTrotHigherForward(400, 10);
             }
             if(back_distance > 30){
@@ -935,7 +996,7 @@ void loop()
 //          creepForward(400, 4, 10);
             back_distance = scan(BACK);
           }
-          /////////////////////////////////////////////////////////////////////////putting second victim
+          
           repositioning = 0;
           while (repositioning == 0) {
             bearing = getBearing();
@@ -943,13 +1004,11 @@ void loop()
             display.setCursor(5, 5);
             display.print(bearing);
             display.display();
-            if (bearing < right_l_offset - 37) {
-//              enhancedTrotHigherRightTurn(250, 10);
-              creepSlightRight(250, 4, 10);
+            if (bearing < right_l_offset - 32) {
+              enhancedTrotHigherRightTurn(250, 10);
             }
-            else if (bearing > right_r_offset - 37) {
-//              enhancedTrotHigherLeftTurn(250, 10);
-              creepSlightLeft(250, 4, 10);
+            else if (bearing > right_r_offset - 32) {
+              enhancedTrotHigherLeftTurn(250, 10);
             }
             else {
               repositioning = 1;
@@ -967,129 +1026,12 @@ void loop()
           kiri = 0;
           r5 = 0;
         }
+        
       }
       initialPosition(500);
     }
-    
-    repositioning = 0;
-    while (repositioning == 0) {
-      bearing = getBearing();
-      display.clearDisplay();
-      display.setCursor(5, 5);
-      display.print(bearing);
-      display.display();
-      if (bearing < right_l_offset) {
-//        enhancedTrotHigherRightTurn(250, 10);
-        creepSlightRight(250, 4, 10);
-        
-      }
-      else if (bearing > right_r_offset) {
-//        enhancedTrotHigherLeftTurn(250, 10);
-        creepSlightLeft(250, 4, 10);
-      }
-      else {
-        repositioning = 1;
-      }
-    }
-
-    //recalibrating robot facing
-    compassManualCalibration8bit(25);
-    int interlude = 1;
-    while(interlude == 1){
-      creepForward(300,5,10);
-
-      back_distance = scan(BACK);
-      left_distance = scan(LEFT_);
-      right_distance = scan(RIGHT);
-      front_distance = scan(FRONT);
-      bearing = getBearing();
-      pitchRoll();
-
-      if(bearing > right_l_offset || bearing < right_r_offset){
-        repositioning = 0;
-        while (repositioning == 0) {
-          bearing = getBearing();
-          display.clearDisplay();
-          display.setCursor(5, 5);
-          display.print(bearing);
-          display.display();
-          if (bearing < right_l_offset) {
-            enhancedTrotHigherRightTurn(250, 10);
-          }
-          else if (bearing > right_r_offset) {
-            enhancedTrotHigherLeftTurn(250, 10);
-          }
-          else {
-            repositioning = 1;
-          }
-        }
-      }
-      if(back_distance > 60){
-        interlude=0;
-      }
-    }
-
-    repositioning = 0;
-    while (repositioning == 0) {
-      bearing = getBearing();
-      display.clearDisplay();
-      display.setCursor(5, 5);
-      display.print(bearing);
-      display.display();
-      if (bearing < front_l_offset) {
-        enhancedTrotHigherRightTurn(300, 10);
-      }
-      else if (bearing > front_r_offset) {
-        enhancedTrotHigherLeftTurn(300, 10);
-      }
-      else {
-        repositioning = 1;
-      }
-    }
-
-    for(int i=0; i<3;i++){
-      trotBasicRightward(200,10);
-    }
-
-    back_distance = scan(BACK);
-    left_distance = scan(LEFT_);
-    right_distance = scan(RIGHT);
-    front_distance = scan(FRONT);
-    bearing = getBearing();
-    pitchRoll();
-
-    while(front_distance>20){
-      trotBasicForward(300,10);
-      
-      back_distance = scan(BACK);
-      left_distance = scan(LEFT_);
-      right_distance = scan(RIGHT);
-      front_distance = scan(FRONT);
-      bearing = getBearing();
-      pitchRoll();
-    }
-
-    back_distance = scan(BACK);
-    left_distance = scan(LEFT_);
-    right_distance = scan(RIGHT);
-    front_distance = scan(FRONT);
-    bearing = getBearing();
-    pitchRoll();
-
-    while(right_distance>20){
-      enhancedTrotHigherRight(400,10);
-
-      back_distance = scan(BACK);
-      left_distance = scan(LEFT_);
-      right_distance = scan(RIGHT);
-      front_distance = scan(FRONT);
-      bearing = getBearing();
-      pitchRoll();
-    }
-    
     while (true) {
-      initialPosition(400);
-//      creepForward(300,5,10);
+      creepForward(300,5,10);
     }
     //  while(true){
     //    initialPosition(200);
