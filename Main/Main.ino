@@ -206,14 +206,15 @@ void loop()
           }
         }
       }
-      if(back_distance > 50){
+      if(back_distance > 60){
         interlude=0;
       }
     }
-
-    for(int i=0; i<4;i++){
-      trotBasicForward(200,10);
-    }
+    initialPosition(400);
+    
+//    for(int i=0; i<4;i++){
+//      trotBasicForward(200,10);
+//    }
   
     repositioning = 0;
     while (repositioning == 0) {
@@ -241,7 +242,7 @@ void loop()
 //    bearing = getBearing();
 //    pitchRoll();
   
-    for(int i=0; i<5;i++){
+    for(int i=0; i<3;i++){
       enhancedTrotHigherForward(400,10);
 //      trotBasicForward(500,10);
     }
@@ -276,18 +277,23 @@ void loop()
     for(int i=0; i<2; i++){
       creepLeft(200,4,10);
     }
-    
+    front_distance = scan(FRONT);
     while (true) {
-//      creepForward(300,5,10);
-      enhancedTrotHigherForward(400,10);
-
+      if(front_distance<70){
+        creepForward(450,4,10);
+      }
+      else{
+        for(int i=0; i<2;i++){
+          enhancedTrotHigherForward(600, 12);
+        }
+      }
 //      back_distance = scan(BACK);
 //      left_distance = scan(LEFT_);
 //      right_distance = scan(RIGHT);
-//      front_distance = scan(FRONT);
+      front_distance = scan(FRONT);
       bearing = getBearing();
 //      pitchRoll();
-      if(bearing < right_l_offset-5 || bearing > right_r_offset+5){
+      if(bearing < right_l_offset-10 || bearing > right_r_offset+10){
         repositioning = 0;
       }
       while (repositioning == 0) {
@@ -311,7 +317,7 @@ void loop()
 //      back_distance = scan(BACK);
 //      left_distance = scan(LEFT_);
 //      right_distance = scan(RIGHT);
-//      front_distance = scan(FRONT);
+      front_distance = scan(FRONT);
       bearing = getBearing();
 //      pitchRoll();
     }
