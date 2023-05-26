@@ -38,8 +38,8 @@ void TesPinpoint(int kecepatan){
 
 void setup(){
   Serial.begin(9600);
-  Dynamixel.setSerial(&Serial1); // &Serial - Arduino UNO/NANO/MICRO, &Serial1, &Serial2, &Serial3 - Arduino Mega
-  Dynamixel.begin(1000000,15);  // Inicialize the servo at 1 Mbps and Pin Control 5
+  Dynamixel.setSerial(&Serial); // &Serial - Arduino UNO/NANO/MICRO, &Serial1, &Serial2, &Serial3 - Arduino Mega
+  Dynamixel.begin(1000000,2);  // Inicialize the servo at 1 Mbps and Pin Control 5
   delay(1000);
 }
 
@@ -49,9 +49,11 @@ void loop(){
 //  TesPutar(Kec);
 //  TesPinpoint(Kec);
 
-//  for(int id=0; id<=30; id++){
-//    Dynamixel.moveSpeed(id,0,Kec);
-//  }
+  for(int id=0; id<=30; id++){
+    Dynamixel.moveSpeed(id,0,Kec);
+    Serial.println(id);
+    delay(2000);
+  }
 //  delay(3000);
 //  for(int id1=0; id1<=30; id1++){
 //    Dynamixel.moveSpeed(id1,1000,Kec);
