@@ -125,7 +125,7 @@ void detectObject(int object)
             display.print("f=");  display.print(front_distance);
             display.setCursor(10,30);
             display.print("l=");  display.print(left_distance);
-            for(int i=0; i<(distance/4); i++){
+            for(int i=0; i<(distance/5); i++){
               enhancedTrotBackward(100); 
 //              trotBasicBackward(200,10); 
               Serial.print("i :");
