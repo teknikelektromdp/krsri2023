@@ -1,10 +1,7 @@
-#include <DynamixelSerial.h>
-
-
 //defining length of each part of the legs
-double coxa=7.5, femur=9, tibia=8.5;
+double coxa=6.5, femur=6, tibia=6;
 //limiting coordinate for leg movement
-double x_limit=17, y_limit=17, z_limit=3;
+double x_limit=12.5, y_limit=12.5, z_limit=3;
 
 //function for converting radian value to degree
 double Rad_to_Degree(double Rad)
@@ -70,18 +67,18 @@ int AngleCalc(float angle, int mirror)
   }
 }
 
-int gripperGamma(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
+int dynamixelGamma(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
 {
   int dynamixel_gamma = Gamma_Calculation(x_limit,y_limit,z_limit)-Gamma_Calculation(x_val,y_val,z_val);
   if(mirror_inverse == 1){
-    return AngleCalc(150+(dynamixel_gamma*-1),mirror_dynamixel);
+    return AngleCalc(30+(dynamixel_gamma*-1),mirror_dynamixel);
   }
   else{
-    return AngleCalc(150+dynamixel_gamma,mirror_dynamixel);
+    return AngleCalc(30+dynamixel_gamma,mirror_dynamixel);
   }
 }
 
-int gripperAlpha(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
+int dynamixelAlpha(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
 {
   int dynamixel_alpha = Alpha_Calculation(x_limit,y_limit,z_limit) - Alpha_Calculation(x_val,y_val,z_val);
   if(mirror_inverse == 1){
@@ -92,52 +89,13 @@ int gripperAlpha(double x_val,double y_val,double z_val,int mirror_inverse,int m
   }
 }
 
-int gripperBeta(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
+int dynamixelBeta(double x_val,double y_val,double z_val,int mirror_inverse,int mirror_dynamixel)
 {
   int dynamixel_beta = Beta_Calculation(x_limit,y_limit,z_limit) - Beta_Calculation(x_val,y_val,z_val);
   if(mirror_inverse == 1){
-     return AngleCalc(150+(dynamixel_beta*-1), mirror_dynamixel);
+     return AngleCalc(235+(dynamixel_beta*-1), mirror_dynamixel);
   }
   else{
-    return AngleCalc(150+dynamixel_beta, mirror_dynamixel);
+    return AngleCalc(235+dynamixel_beta, mirror_dynamixel);
   }
-}
-
-void moveGripper(double x_val,double y_val,double z_val,int speed_)
-{
-  //coxa
-  Dynamixel.moveSpeed(7,gripperGamma(x_val,y_val,z_val,1,0),speed_);
-  delay(10);
-  //femur
-  Dynamixel.moveSpeed(16,gripperAlpha(x_val,y_val,z_val,0,0),speed_);
-  delay(10);
-  //tibia
-  Dynamixel.moveSpeed(8,gripperBeta(x_val,y_val,z_val,0,0),speed_);
-  delay(10);
-}
-
-void liftPosition()
-{
-  //coxa
-  Dynamixel.moveSpeed(7,500,50);
-  delay(10);
-  //femur
-  Dynamixel.moveSpeed(16,200,50);
-  delay(10);
-  //tibia
-  Dynamixel.moveSpeed(8,300,50);
-  delay(10);
-}
-
-void setup(){
-  Serial.begin(9600);
-  Dynamixel.setSerial(&Serial1); // &Serial - Arduino UNO/NANO/MICRO, &Serial1, &Serial2, &Serial3 - Arduino Mega
-  Dynamixel.begin(1000000,2);  // Inicialize the servo at 1 Mbps and Pin Control 2
-  delay(1000);
-}
-
-void loop()
-{
-//  liftPosition();
-  moveGripper(10,10,3,100);
 }
