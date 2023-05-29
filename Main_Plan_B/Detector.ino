@@ -2,7 +2,9 @@ void initPixy()
 {
   left_min = 40;
   left_max = 79;
-  right_min = 80;
+//  right_min = 80;
+//  right_max = 140;
+  right_min = 130,
   right_max = 140;
   front_min = 60;
   front_max = 0;
@@ -140,16 +142,6 @@ void detectObject(int object)
               enhancedTrotRight(90); 
               delay(10);
             }
-//          }
-          
-          // delay(1000);
-          // for(int i=0; i<1; i++)
-          // {
-          //   enhancedTrotBackward(70); 
-          //   delay(10);
-          // } 
-          // delay(2000); 
-          // gripMovement("pcg");
           lock = 0;
           object1 = 1;
         }
@@ -159,63 +151,41 @@ void detectObject(int object)
   
   if(object == 2)
   {
-    while(object2==0)
+//    gripMovement("sog");
+    pixy.setLamp(1,0);
+    delay(100);
+    int test_val = 600,
+    right_min = 130,
+    right_max = 140;
+    int scan=0;
+    object1=0;
+    while(object1==0)
     {
+      
       int getObject = getObjectLocation();
       Serial.println(getObject);
-      if(getObject==0)
-      {
-        for(int i=0; i<3; i++)
-        {
-          trotBasicLeftward(135,10);
-          delay(10);
-        }
-        delay(100);
-        for(int i=0; i<3; i++)
-        {
-          trotBasicRightward(135,10);
-          delay(10);
-        }
+      Dynamixel.moveSpeed(7,test_val,150);
+      if(getObject==1){
+        pixy.setLamp(0,0);
+        delay(500);
+        pixy.setLamp(1,1);
+        delay(500);
+        
+        object1=1;
       }
-      else if(getObject==-1)
-      {
-        for(int i=0; i<3; i++)
-        {
-          trotBasicRightward(135,10);
-          delay(10);
-        }      
-      }
-      else if(getObject==-2)
-      {
-        for(int i=0; i<3; i++)
-        {
-          trotBasicLeftward(135, 10);
-          delay(10);
-        } 
-      }
-      else if(getObject==1)
-      {
-        gripMovement("pog");
-        lock = 1;
-        while(lock == 1)
-        {
-          int distance = scan(GRIP);
-          Serial.print("Distance :");
-          Serial.println(distance);
-          for(int i=0; i<(distance/5); i++){
-//            enhancedTrotHigherBackward(100);
-            creepBackward(200, 4, 10);
-            delay(10);
-          }
-          delay(1000);
-          for(int i=0; i<4; i++){
-            enhancedTrotRight(70); 
-            delay(10);
-          }
-          lock = 0;
-          object2 = 1;
+      test_val--;
+      if(test_val == 400){
+        test_val=600;
+        scan=scan+1;
+        if(scan%3==0){
+          enhancedTrotHigherBackward(100,10);
         }
       }
+      delay(10);
+      
     }
+    pixy.setLamp(0,0);
+    delay(500);
+    Gripper.write(90);
   }
 }

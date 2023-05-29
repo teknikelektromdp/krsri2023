@@ -88,56 +88,79 @@ void moveGripper(double x_val,double y_val,double z_val,int speed_)
 
 void liftPosition()
 {
-  //coxa
-  Dynamixel.moveSpeed(7,500,150);
-  delay(10);
-  //femur
-  Dynamixel.moveSpeed(16,200,150);
-  delay(10);
-  //tibia
-  Dynamixel.moveSpeed(8,300,150);
-  delay(10);
-  pixy.setServos(0,1000);
+  
 }
 void gripMovement(String movement)
 {
-  //pixy.setServos(lifter, gripper)  limit (300-1000, 0-500)
   //lcg = lift and close gripper 
   if(movement == "lcg")
   {
-    pixy.setServos(100, 0);
+    //coxa
+    Dynamixel.moveSpeed(7,500,175);
+    delay(10);
+    //femur
+    Dynamixel.moveSpeed(16,200,175);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,300,175);
+    delay(10);
+    Gripper.write(150);
   }
   //lift and open gripper
   else if(movement == "log")
   {
-    pixy.setServos(100, 500);
-  }
-  //put and open gripper
-  else if(movement == "pog")
-  {
-    pixy.setServos(850, 500);
-  }
-  //put and close gripper
-  else if(movement == "pcg"){
-    pixy.setServos(850, 0);
-  }
-  //lift the victim a bit
-  else if(movement == "lch"){
-    pixy.setServos(700,0);
-  }
-  //open and lift by a bit
-  else if(movement == "loh"){
-    pixy.setServos(700,500);
+    Dynamixel.moveSpeed(7,500,175);
+    delay(10);
+    //femur
+    Dynamixel.moveSpeed(16,200,175);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,300,175);
+    delay(10);
+    Gripper.write(90);
   }
   //put(to scan) and open gripper
   else if(movement == "sog"){
-    pixy.setServos(900, 500);
+    Dynamixel.moveSpeed(7,600,250);
+    delay(100);
+    //tibia
+    Dynamixel.moveSpeed(8,100,250);
+    //femur
+    Dynamixel.moveSpeed(16,750,250);
+    delay(100);
+    
+    //tibia
+    Dynamixel.moveSpeed(8,300,250);
+    gripMovement("open");
+  }
+  else if(movement == "take"){
+    //femur
+    Dynamixel.moveSpeed(16,675,150);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,350,150);
+    delay(500);
+    gripMovement("grip");
+    delay(1000);
+
+    Dynamixel.moveSpeed(8,200,150);
+    delay(500);
+    Dynamixel.moveSpeed(16,700,150);
   }
   else if(movement == "grip"){
-    pixy.setServos(0,1000);
+    Gripper.write(160);
   }
   else if(movement == "open"){
-    pixy.setServos(0,500);
+    Gripper.write(90);
+  }
+  else if(movement == "put"){
+    Dynamixel.moveSpeed(7,520,150);
+    delay(10);
+    //femur
+    Dynamixel.moveSpeed(16,800,150);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,200,150);
   }
   else
   {
@@ -147,9 +170,11 @@ void gripMovement(String movement)
 
 void initGripper()
 {
-//  gripMovement("lcg");
-  liftPosition();
-  pixy.setServos(0,1000);
+//  Gripper.attach(4);
+  gripMovement("lcg");
+//  liftPosition();
+  
+//  Gripper.write();
   //turn on the led
   pixy.setLamp(0, 0);
 }
