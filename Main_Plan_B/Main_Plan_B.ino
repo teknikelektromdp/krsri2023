@@ -109,6 +109,18 @@ int front_distance,
     grip_distance,
     lfd_distance;
 
+int mundur = 0,
+    kanan = 0,
+    kiri = 0,
+    maju = 0,
+    mod = 0,
+    kondisiPitch=0;
+int m1 = 1, trot_phase=1, mode=0;
+int upper_pitch_limit = 4,  //(10)
+    lower_pitch_limit = -4, //-3
+    upper_roll_limit  = 4,  //3        10
+    lower_roll_limit  = -4; //-3
+
 /*Classes*/
 U8X8_SSD1306_128X64_NONAME_HW_I2C display(U8X8_PIN_NONE);
 Pixy2 pixy;
@@ -164,131 +176,110 @@ void loop()
   //  int bearing;
   //compassManualCalibration(50);
 //  compassManualCalibration8bit(25);
-  int value=38;
-  compassManualCalibration8bit(value);
-  int mundur=1;
-  gripMovement("lcg");
-//  while(true){
-//    right_distance=scan(RIGHT);
-//    back_distance=scan(BACK);
-//    back_distance=back_distance-20;
-//    right_distance=right_distance-12;
-//    moveGripper(back_distance, right_distance, 3, 300);
-//    display.clearDisplay();
-//    display.setCursor(0,0);
-//    display.print("back=");
-//    display.print(back_distance);
-//    display.setCursor(0,10);
-//    display.print("right=");
-//    display.print(right_distance);
-//    display.display();
-//  }
+//  int value=38;
+//  compassManualCalibration8bit(value);
+//  int mundur=1;
   while (true) {
-    while(mundur==1){
-      enhancedTrotHigherBackward(350,10);
-      back_distance=scan(BACK);
-      right_distance=scan(RIGHT);
-      if (right_distance > 30 && back_distance <= 45){
-        initialPosition(600);
-        delay(250);
-        pitchRoll();
-        if ((pitch <= 4 && pitch >= -4) && (roll <= 4 && roll >= -4)) {
-          initialPosition(400);
-          mundur = 0;
-        }
-      }
-    }
-    left_distance=scan(LEFT_);
-    back_distance=scan(BACK);
-    if(back_distance>20 && left_distance<20){
-      initialPosition(300);
-      left_distance=scan(LEFT_);
-      back_distance=scan(BACK);
-      back_distance=back_distance-18;
-      left_distance=left_distance-12;
-      moveGripper(left_distance, back_distance, 3, 300);
-      delay(5000);
-      gripMovement("open");
-    }
-    else{
-      int r4 = 1;
-      if(back_distance <= 45 && bearing < back_r_offset && bearing > back_l_offset){
-        r4 = 0;
-      }
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.print(r4);
-      display.display();
-      while(r4 == 1){
-  //      pixy.setLamp(0,0);
-        int repositioning = 0;
-        while(repositioning == 0){
-          bearing = getBearing();
-          if(bearing < back_l_offset){
-            enhancedTrotHigherRightTurn(400, 10);
-  //          enhancedTrotLowerRightTurn(600, 10);
-          }
-          else if(bearing > back_r_offset){
-            enhancedTrotHigherLeftTurn(400, 10);
-  //          enhancedTrotLowerLeftTurn(600, 10);
-          }
-          else {
-            repositioning = 1;
-          }
-        }
-  
-        bearing = getBearing();
-        if(bearing < back_r_offset && bearing > back_l_offset){
-          r4 = 0;
-        }
-        display.clearDisplay();
-        display.setCursor(0,0);
-        display.print(r4);
-        display.display();
-      }
-      display.clearDisplay();
-      display.setCursor(10,10);
-      display.print("maju");
-      display.display();
-      for(int i=0; i<5;i++){
-        creepForward(300,4,10);
-      }
-      delay(2000);
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.print("putting");
-      display.display();
-      initialPosition(300);
-//      right_distance=scan(RIGHT);
-//      back_distance=scan(BACK);
-//      back_distance=back_distance-20;
-//      right_distance=right_distance-12;
-      moveGripper(11, 3, 3, 300);
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.print("back=");
-      display.print(back_distance);
-      display.setCursor(0,10);
-      display.print("right=");
-      display.print(right_distance);
-      display.display();
-//      Dynamixel.moveSpeed(7,520,150);
-//      delay(10);
-//      //tibia
-//      Dynamixel.moveSpeed(8,600,300);
-//      //femur
-//      delay(500);
-//      Dynamixel.moveSpeed(16,500,200);
-//      delay(100);
+//    Dynamixel.moveSpeed(7,500,250);
+//    delay(300);
+//    //tibia
+////    Dynamixel.moveSpeed(8,100,250);
+//    //femur
+//    Dynamixel.moveSpeed(16,750,250);
+//    delay(300);
+//    //tibia
+//    Dynamixel.moveSpeed(8,300,250);
+
+//    Dynamixel.moveSpeed(16,675,150);
+//    delay(10);
+//    //tibia
+//    Dynamixel.moveSpeed(8,350,150);
+//    delay(500);
+//    gripMovement("grip");
+//    delay(1000);
+//    initialPosition(400);
+//    pixy.setLamp(1, 0);
 //    
-//      Dynamixel.moveSpeed(16,800,50);
-//      delay(10);
+//    delay(300);
+//    //tibia
+//    Dynamixel.moveSpeed(8,100,250);
+//    //femur
+//    Dynamixel.moveSpeed(16,800,250);
+//    Dynamixel.moveSpeed(7,620,250);
+//    delay(300);
+//    //tibia
+//    Dynamixel.moveSpeed(8,225,250);
+//    Gripper.write(120);
+//
+////    gripMovement("sog");
+////    trotBasicBackward(100,10);
+////    initialPosition(400);
+//    standingPosition(3, 300);
+//    delay(1000);
+//    detectObject(2);
+////    initialPosition(400);
+//    int tibia_val=200, femur_val=800;
+//    Dynamixel.moveSpeed(16,femur_val,250);
+//    delay(300);
+//    //tibia
+//    Dynamixel.moveSpeed(8,tibia_val,250);
+//    while(true){
+//      Dynamixel.moveSpeed(16,300,50);
+//      delay(300);
 //      //tibia
-//      Dynamixel.moveSpeed(8,200,50);
-      delay(5000);
-      gripMovement("open");
+//      Dynamixel.moveSpeed(8,700,75);
+//      grip_distance=scan(GRIP);
+//      display.clearDisplay();
+//      display.setCursor(0,0);
+//      display.print("distance=");
+//      display.print(grip_distance);
+//      display.display();
+//      if(grip_distance<=8){
+//        gripMovement("grip");
+//        delay(3000);
+//
+//        //gripMovement("lcg");
+//        //coxa
+//        Dynamixel.moveSpeed(7,500,50);
+//        delay(10);
+//        //femur
+//        Dynamixel.moveSpeed(16,200,50);
+//        delay(10);
+//        //tibia
+//        Dynamixel.moveSpeed(8,300,50);
+//        delay(10);
+//        Gripper.write(150);
+        while(true){
+          pitchRoll();
+          back_distance=scan(BACK);
+          display.clearDisplay();
+          display.setCursor(0,0);
+          display.print("pitch=");
+          display.print(pitch);
+          
+          display.setCursor(0,20);
+          display.print("back=");
+          display.print(back_distance);
+          
+          display.setCursor(0,10);
+          display.print("roll=");
+          display.print(roll);
+          display.display();
+//      if(femur_val<300 || tibia_val>700){
+//        femur_val=800;
+//        tibia_val=200;
+//      }
+//      else{
+//        for(int i=0;i<10;i++){
+//          tibia_val=tibia_val+1;
+//        }
+//        if(tibia_val%30==0){
+//          for(int i=0; i<10; i++){
+//            femur_val=femur_val-2;
+//          }
+//        }
+//      }
     }
-    while(true);
   }
   /* */
 
@@ -314,6 +305,7 @@ void loop()
   {
     int k = 0, repositioning, bearing, home_ = 0;
     bearing = getBearing();
+    /*
     while (home_ == 0) {
       bearing = getBearing();
       if (bearing < front_r_offset && bearing > front_l_offset) {
@@ -332,75 +324,700 @@ void loop()
       }
       delay(10);
     }
-
+    //berjalan menuju korban pertama
     repositioning = 0;
     while (k == 0) {
+      //berjalan kedepan korban pertama
       while (right_distance <= 50) {
         enhancedTrotHigherLeft(200,10);
         right_distance = scan(RIGHT);
       }
-
+      //memperbaiki heading robot di depan robot
       while (repositioning == 0) {
         bearing = getBearing();
         display.clearDisplay();
         display.setCursor(5, 5);
         display.print(bearing);
         display.display();
-        if (bearing <= front_l_offset+2) {
+        if (bearing <= front_l_offset+3) {
           enhancedTrotLowerRightTurn(250, 10);
         }
-        else if (bearing >= front_r_offset-2) {
+        else if (bearing >= front_r_offset-3) {
           enhancedTrotLowerLeftTurn(250, 10);
         }
         else {
           repositioning = 1;
         }
       }
+
       right_distance = scan(RIGHT);
-      front_distance = scan(FRONT);
-
-      if (front_distance > 14) {
-        enhancedTrotHigherForward(150,3);
-//        trotBasicForward(200, 10);
-      }
-//      if (front_distance < 12) {
-//        enhancedTrotHigherBackward(150,3);
-////        trotBasicForward(200, 10);
-//      }
-
-      if (right_distance > 50 && front_distance <= 14 && bearing > front_l_offset && bearing < front_r_offset) {
-        k = 1;
-      }
-      else {
-        k = 0;
+      if (right_distance > 50 && repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
       }
     }
-    /*  Taking victim(s)  */
+
+    
+    //menyesuaikan posisi pada saat di depan korban
+    k=0;
+    while(k==0){
+      front_distance = scan(FRONT);
+      while(front_distance>17){
+        enhancedTrotHigherForward(150,3);
+        front_distance = scan(FRONT);
+      }
+      //memperbaiki heading robot di depan korban
+      while (repositioning == 0) {
+        bearing = getBearing();
+        display.clearDisplay();
+        display.setCursor(5, 5);
+        display.print(bearing);
+        display.display();
+        if (bearing <= front_l_offset+3) {
+          enhancedTrotLowerRightTurn(250, 10);
+        }
+        else if (bearing >= front_r_offset-3) {
+          enhancedTrotLowerLeftTurn(250, 10);
+        }
+        else {
+          repositioning = 1;
+        }
+      }
+      front_distance = scan(FRONT);
+      if (front_distance<=17 && repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
+      }
+    }
+
+    //Taking victim(s)
 //    writeLog("SAVING VICTIM");
     initialPosition(400);
     pixy.setLamp(1, 0);
-    Dynamixel.moveSpeed(7,600,250);
+
+    //mempersiapkan gripper untuk scanning
     delay(300);
     //tibia
     Dynamixel.moveSpeed(8,100,250);
     //femur
-    Dynamixel.moveSpeed(16,750,250);
+    Dynamixel.moveSpeed(16,800,250);
+    Dynamixel.moveSpeed(7,620,250);
     delay(300);
     //tibia
-    Dynamixel.moveSpeed(8,300,250);
+    Dynamixel.moveSpeed(8,225,250);
     Gripper.write(120);
-    
-//    gripMovement("sog");
-//    trotBasicBackward(100,10);
-    initialPosition(400);
+    //mempersiapkan tubuh robot untuk scan dan pengambilan korban
+    standingPosition(3, 200);
     delay(1000);
+    //deteksi obyek
     detectObject(2);
-    for(int i=0; i<4; i++){
-      trotBasicBackward(100,10);
-    }
 //    initialPosition(400);
+
+    //positioning gripper
+    Dynamixel.moveSpeed(16,800,250);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,200,250);
+    delay(500);
+    //pengangkatan korban sembari mengambil korban
+    Dynamixel.moveSpeed(16,300,50);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,700,75);
+    //pencenkraman korban
+
+    //apabila robot tidak berhasil mengcengkram korban, ??
+    int grip=0;
+    while(grip==0){
+      grip_distance=scan(GRIP);
+      display.clearDisplay();
+      display.setCursor(0,0);
+      display.print("distance=");
+      display.print(grip_distance);
+      display.display();
+      if(grip_distance<=8){
+        gripMovement("grip");
+        delay(3000);
+  
+        //gripMovement("lcg");
+        //coxa
+        Dynamixel.moveSpeed(7,500,50);
+        delay(10);
+        //femur
+        Dynamixel.moveSpeed(16,200,50);
+        delay(10);
+        //tibia
+        Dynamixel.moveSpeed(8,300,50);
+        delay(10);
+        Gripper.write(150);
+        grip=1;
+      }
+      else{
+        grip=0;
+      }
+    }
+    gripMovement("lcg");
+    
+    //jalan pecah
+    
+        
+    //memasuki jalan pecah
+    mundur = 0,
+    kanan = 0,
+    kiri = 0,
+    maju = 0,
+    mod = 0;
+    m1 = 1, trot_phase=1, mode=0;
+    while (trot_phase == 1 && mundur == 0 && maju==0) {
+      enhancedTrotHigherLeft(600, 12);
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      back_distance = scan(BACK);
+      bearing = getBearing();
+      //acuan sedalam apa sudah memasuki rintangan jalan pecah
+      //trigger untuk berubah metode gerak menjadi grip
+      if(right_distance > 85){
+        trot_phase=0;
+      }
+      //trigger untuk mengubah haluan gerak apabila robot tersangkut di rintangan dan berubah arah haluan
+      if (bearing > right_direction - 25 && bearing < back_direction - 20) {
+        mundur = 1;
+      }
+      //trigger untuk mengubah haluan gerak apabila robot tersangkut di rintangan dan berubah arah haluan
+      if (bearing > left_direction) {
+        maju = 1;
+      }
+    }
+
+    
+    //melewati rintangan jalan pecah
+    mundur = 0;
+    kanan  = 0;
+    maju   = 0;
+    mode   = 0;
+    while (mode == 0){
+      if (mundur == 1) {
+        creepBackward(350, 4, 10);
+      }
+      else if (kanan == 1) {
+        creepRight(300, 4, 10);
+      }
+      else if (maju == 1) {
+        creepForward(300, 4, 10);
+      }
+      else{
+        creepLeft(300, 4, 10);
+      }
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      back_distance = scan(BACK);
+      bearing = getBearing();
+      pitchRoll();
+
+      if (bearing > right_direction - 25 && bearing < back_direction - 20) {
+        mundur = 1;
+      }
+      else{
+        mundur=0;
+      }
+
+      if (bearing > left_direction) {
+        maju = 1;
+      }
+      else{
+        maju=0;
+      }
+      
+      if (bearing > back_direction + 20 && bearing < left_direction - 20) {
+        kanan = 1;
+      }
+      else{
+        kanan = 0;
+      }
+      
+      if(roll >= 12){
+        mode=1;
+      }
+      else{
+        mode=0;
+      }
+    }
+    
+    //jalan menurun
+    mode=1;
+    kondisiPitch=0;
+    while(mode==1){
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      back_distance = scan(BACK);
+      bearing = getBearing();
+      pitchRoll();
+      
+      repositioning=0;
+      while(repositioning==0){
+        bearing = getBearing();
+//        display.clearDisplay();
+//        display.setCursor(10,10);
+//        display.print(bearing);
+//        display.display();
+        if(bearing<right_l_offset){
+          creepSlightRight(250,3,10);
+        }
+        else if(bearing>right_r_offset){
+          creepSlightLeft(250,3,10);
+        }
+        else{
+          repositioning=1;
+        }
+      }
+      if (mundur == 1) {
+        enhancedTrotHigherBackward(350,10);
+      }
+      else if (kanan == 1) {
+        enhancedTrotHigherRight(350,10);
+      }
+      else if(maju == 1) {
+        enhancedTrotHigherForward(350,10);
+      }
+      else{
+        enhancedTrotHigherLeft(350,10);
+      }
+      
+      if (bearing > right_direction - 25 && bearing < back_direction - 20) {
+        mundur = 1;
+      }
+      else{
+        mundur=0;
+      }
+      if (bearing > left_direction) {
+        maju = 1;
+      }
+      else{
+        maju=0;
+      }
+      
+      if (bearing > back_direction + 20 && bearing < left_direction - 20) {
+        kanan = 1;
+      }
+      else{
+        kanan = 0;
+      }
+      if(pitch>=-84){
+        kondisiPitch = kondisiPitch + 1;
+      }
+      if(back_distance<=30 && kondisiPitch>=1){
+        mode=0;
+      }
+      else{
+        mode=1;
+      }
+    }
+
+    //persiapan sebelum meletakan korban 1
+    k=0;
+    repositioning=0;
+    while(k==0){
+      while (repositioning == 0) {
+        bearing = getBearing();
+        display.clearDisplay();
+        display.setCursor(5, 5);
+        display.print(bearing);
+        display.display();
+        if (bearing <= back_l_offset+3) {
+          enhancedTrotLowerRightTurn(300, 10);
+        }
+        else if (bearing >= back_r_offset-3) {
+          enhancedTrotLowerLeftTurn(300, 10);
+        }
+        else {
+          repositioning = 1;
+        }
+      }
+      
+      back_distance = scan(BACK);
+      while(back_distance<30){
+        enhancedTrotHigherForward(250,10);
+        back_distance = scan(BACK);
+      }
+      //memperbaiki heading robot sebelum meletakkan korban pertama
+      
+      back_distance = scan(BACK);
+      if (back_distance>=30 && repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
+      }
+    }
+
+    Dynamixel.moveSpeed(16,800,100);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,200,100);
+    Dynamixel.moveSpeed(7,620,100);
+    delay(2000);
+    
+    gripMovement("open");
+    delay(1000);
+    gripMovement("lcg");
+    
+*/
+    //preparing for taking second victim
+    
+    k=0;
+    repositioning == 0;
+    while (k == 0) {
+      //memperbaiki heading robot di depan robot
+      while (repositioning == 0) {
+        bearing = getBearing();
+        display.clearDisplay();
+        display.setCursor(5, 5);
+        display.print(bearing);
+        display.display();
+        if (bearing <= left_l_offset-10 && bearing >front_direction) {
+          creepSlightRight(300,5,10);
+        }
+        else if (bearing >= left_r_offset-10 || bearing<=front_direction) {
+          creepSlightLeft(300,5,10);
+        }
+        else {
+          repositioning = 1;
+          
+        }
+      }
+      //berjalan kedepan korban kedua
+      right_distance = scan(RIGHT);
+      while (right_distance <= 50) {
+        enhancedTrotHigherLeft(200,20);
+        right_distance = scan(RIGHT);
+      }
+      delay(1000);
+      right_distance = scan(RIGHT);
+      if (right_distance > 50 && repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
+      }
+    }
+    //mempersiapkan robot sebelum mengambil korban kedua
+    k=0;
+    while(k==0){
+      front_distance = scan(FRONT);
+      while(front_distance>15){
+        enhancedTrotHigherForward(200,10);
+        front_distance = scan(FRONT);
+      }
+      //memperbaiki heading robot di depan korban
+      while (repositioning == 0) {
+        bearing = getBearing();
+        display.clearDisplay();
+        display.setCursor(5, 5);
+        display.print(bearing);
+        display.display();
+        if (bearing <= left_l_offset-10 && bearing >front_direction) {
+          creepSlightRight(250,4,10);
+        }
+        else if (bearing >= left_r_offset-10 || bearing<=front_direction) {
+          creepSlightLeft(250,4,10);
+        }
+        else {
+          repositioning = 1;
+          
+        }
+      }
+      front_distance = scan(FRONT);
+      if (front_distance<=15 && repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
+      }
+    }
+
+    initialPosition(400);
+    pixy.setLamp(1, 0);
+
+    //mempersiapkan gripper untuk scanning
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,100,250);
+    //femur
+    
+    Gripper.write(120);
+
+    
+    //mempersiapkan tubuh robot untuk scan dan pengambilan korban
+    standingPosition(6, 200);
+    Dynamixel.moveSpeed(16,800,250);
+    Dynamixel.moveSpeed(7,400,250);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,225,250);
+    delay(1000);
+    //deteksi obyek
+    detectObject(3);
+//    initialPosition(400);
+
+    //positioning gripper
+    Dynamixel.moveSpeed(16,800,250);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,225,250);
+    delay(500);
+    //pengangkatan korban sembari mengambil korban
+    Dynamixel.moveSpeed(16,300,50);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,700,75);
+    //pencenkraman korban
+
+    int grip=0;
+    while(grip==0){
+      grip_distance=scan(GRIP);
+      display.clearDisplay();
+      display.setCursor(0,0);
+      display.print("distance=");
+      display.print(grip_distance);
+      display.display();
+      if(grip_distance<=9){
+        gripMovement("grip");
+        delay(3000);
+  
+        //gripMovement("lcg");
+        //coxa
+        Dynamixel.moveSpeed(7,500,50);
+        delay(10);
+        //femur
+        Dynamixel.moveSpeed(16,200,50);
+        delay(10);
+        //tibia
+        Dynamixel.moveSpeed(8,300,50);
+        delay(10);
+        Gripper.write(150);
+        grip=1;
+      }
+      else{
+        grip=0;
+      }
+    }
+    while(true);
+    
+
+    //old
+    while (m1 == 1) {
+      
+      creepLeft(300, 4, 10);
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      back_distance = scan(BACK);
+      bearing = getBearing();
+      pitchRoll();
+      
+      if(mode==1){
+        repositioning=0;
+        while(repositioning==0){
+          bearing = getBearing();
+          display.clearDisplay();
+          display.setCursor(10,10);
+          display.print(bearing);
+          display.display();
+          if(bearing<right_l_offset){
+            creepSlightRight(250,3,10);
+          }
+          else if(bearing>right_r_offset){
+            creepSlightLeft(250,3,10);
+          }
+          else{
+            repositioning=1;
+          }
+        }
+      }
+      
+      if (bearing > right_direction - 25 && bearing < back_direction - 20) {
+        mundur = 1;
+      }
+      
+      if (bearing > left_direction) {
+        maju = 1;
+      }
+      
+      while (mundur == 1) {
+//        enhancedTrotHigherBackward(750,9);
+        if(mode==0){
+          creepBackward(350, 4, 10);
+        }
+        else{
+          enhancedTrotHigherBackward(350,10);
+        }
+        bearing = getBearing();
+        pitchRoll();
+
+        //condition when the robot facing the other side from taking the victim
+        if (bearing > back_direction + 20 && bearing < left_direction - 20) {
+          kanan = 1;
+        }
+        while (kanan == 1) {
+//          enhancedTrotHigherRight(750,9);
+          if(mode==0){
+            creepRight(300, 4, 10);
+          }
+          else{
+            enhancedTrotHigherRight(350,10);
+          }
+          back_distance = scan(BACK);
+          left_distance = scan(LEFT_);
+          right_distance = scan(RIGHT);
+          front_distance = scan(FRONT);
+          bearing = getBearing();
+          pitchRoll();
+          
+          //condition when the robot heading is turning right or the front of the robot is facing toward r4
+          if (bearing > left_direction-25) {
+            maju = 1;
+            kanan = 0;
+            mundur = 0;
+          }
+          if (front_distance > 30 && right_distance < 45) {
+            initialPosition(400);
+            delay(250);
+            pitchRoll();
+            lcdDisplay();
+            if ((pitch <= upper_pitch_limit && pitch >= lower_pitch_limit) && (roll <= upper_roll_limit && roll >= lower_roll_limit)) {
+              initialPosition(300);
+              kanan = 0;
+              mundur = 0;
+              m1 = 0;
+            }
+          }
+        }
+
+        back_distance = scan(BACK);
+        left_distance = scan(LEFT_);
+        right_distance = scan(RIGHT);
+        front_distance = scan(FRONT);
+        bearing = getBearing();
+        pitchRoll();
+        
+          if ((pitch <= upper_pitch_limit && pitch >= lower_pitch_limit) && (roll <= upper_roll_limit && roll >= lower_roll_limit)) {
+            initialPosition(400);
+            mundur = 0;
+            m1 = 0;
+          }
+        }
+        if (bearing > (front_l_offset - 10) && bearing < (front_r_offset - 10)) {
+          mundur = 0;
+        }
+      }
+
+      while (maju == 1) {
+        if(mode==0){
+          creepForward(300, 4, 10);
+        }
+        else{
+          enhancedTrotHigherForward(350,10);
+        }
+        bearing = getBearing();
+        pitchRoll();
+
+        //condition when the robot facing the other side from taking the victim
+        if (bearing > back_direction - 20 && bearing < left_direction - 20) {
+          kanan = 1;
+          maju = 0;
+        }
+        if (bearing < front_direction+20){
+          maju=0;
+        }
+
+        back_distance = scan(BACK);
+        left_distance = scan(LEFT_);
+        right_distance = scan(RIGHT);
+        front_distance = scan(FRONT);
+        bearing = getBearing();
+        pitchRoll();
+        
+//        if ((left_distance > 50 && left_distance < 150) && (front_distance <= 35 && front_distance > 0)) {
+        if ((left_distance > 30) && (front_distance <= 45)) {
+          initialPosition(400);
+          delay(250);
+          pitchRoll();
+          lcdDisplay();
+          
+          if ((pitch <= upper_pitch_limit && pitch >= lower_pitch_limit) && (roll <= upper_roll_limit && roll >= lower_roll_limit)) {
+            initialPosition(400);
+            maju = 0;
+            m1 = 0;
+          }
+        }
+      }
+      while (kanan == 1) {
+//          enhancedTrotHigherRight(750,9);
+        if(mode=0){
+          creepRight(300, 4, 10);
+        }
+        else{
+          enhancedTrotHigherRight(350,10);
+        }
+        back_distance = scan(BACK);
+        left_distance = scan(LEFT_);
+        right_distance = scan(RIGHT);
+        front_distance = scan(FRONT);
+        bearing = getBearing();
+        pitchRoll();
+
+        //condition when the robot heading is turning right or the front of the robot is facing toward r4
+        if (bearing > left_direction) {
+          maju = 1;
+          kanan = 0;
+        }
+        
+        if(front_distance > 30 && right_distance < 45){
+          initialPosition(400);
+          delay(250);
+          pitchRoll();
+          lcdDisplay();
+          if((pitch <= upper_pitch_limit && pitch >= lower_pitch_limit) && (roll <= upper_roll_limit && roll >= lower_roll_limit)){
+            initialPosition(300);
+            kanan = 0;
+            mundur = 0;
+            maju=0;
+            m1 = 0;
+          }
+        }
+      }
+
+      back_distance = scan(BACK);
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      bearing = getBearing();
+      pitchRoll();
+      
+      if(roll >= 12){
+        mode=1;
+      }
+      if ((back_distance > 30) && (left_distance < 45)) {
+        initialPosition(600);
+        delay(200);
+        pitchRoll();
+        if ((pitch <= upper_pitch_limit && pitch >= lower_pitch_limit) && (roll <= upper_roll_limit && roll >= lower_roll_limit)) {
+          m1 = 0;
+        }
+      }
+
+    
+    while(true);
     delay(200);
     gripMovement("take");
+    
     delay(500);
     gripMovement("lcg");
     
@@ -410,7 +1027,6 @@ void loop()
 //      front_distance = scan(FRONT);
 //    }
     pixy.setLamp(0, 0);
-
     repositioning = 0;
     while (repositioning == 0) {
       bearing = getBearing();
@@ -434,17 +1050,17 @@ void loop()
     delay(100);
 
     /*  descending the track (obstacle m1)  */
-    int mundur = 0,
-        kanan = 0,
-        kiri = 0,
-        maju = 0,
-        mod = 0;
-    pitchRoll();
-    int m1 = 1, trot_phase=1, mode=0;
-    int upper_pitch_limit = 4,  //(10)
-        lower_pitch_limit = -4, //-3
-        upper_roll_limit  = 4,  //3        10
-        lower_roll_limit  = -4; //-3
+//    int mundur = 0,
+//        kanan = 0,
+//        kiri = 0,
+//        maju = 0,
+//        mod = 0;
+//    pitchRoll();
+//    int m1 = 1, trot_phase=1, mode=0;
+//    int upper_pitch_limit = 4,  //(10)
+//        lower_pitch_limit = -4, //-3
+//        upper_roll_limit  = 4,  //3        10
+//        lower_roll_limit  = -4; //-3
 
 
 //    while(m1==1){

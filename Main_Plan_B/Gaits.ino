@@ -6,7 +6,13 @@ void initialPosition(int speed)
   RightFront(x_default, y_default, z_default, speed, 10);
   RightBack(x_default, y_default, z_default, speed, 10);
 }
-
+void standingPosition(int z_val, int speed)
+{
+  LeftFront(x_default, y_default, z_val, speed, 10);
+  LeftBack(x_default, y_default, z_val, speed, 10);
+  RightFront(x_default, y_default, z_val, speed, 10);
+  RightBack(x_default, y_default, z_val, speed, 10);
+}
 /* Creep Algorithms */
 void creepForward(int creepSpeed, double z_lift, int delay_servo)
 {

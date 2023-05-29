@@ -4,8 +4,8 @@ void initPixy()
   left_max = 79;
 //  right_min = 80;
 //  right_max = 140;
-  right_min = 130,
-  right_max = 140;
+  right_min = 120,
+  right_max = 130;
   front_min = 60;
   front_max = 0;
   lock = 0;
@@ -152,6 +152,7 @@ void detectObject(int object)
   if(object == 2)
   {
 //    gripMovement("sog");
+    Gripper.write(90);
     pixy.setLamp(1,0);
     delay(100);
     int test_val = 600,
@@ -186,6 +187,46 @@ void detectObject(int object)
     }
     pixy.setLamp(0,0);
     delay(500);
+//    Gripper.write(90);
+  }
+  if(object == 3)
+  {
+//    gripMovement("sog");
     Gripper.write(90);
+    pixy.setLamp(1,0);
+    delay(100);
+    int test_val = 400,
+    right_min = 130,
+    right_max = 140;
+    int scan=0;
+    object1=0;
+    while(object1==0)
+    {
+      
+      int getObject = getObjectLocation();
+      Serial.println(getObject);
+      Dynamixel.moveSpeed(7,test_val,150);
+      if(getObject==1){
+        pixy.setLamp(0,0);
+        delay(500);
+        pixy.setLamp(1,1);
+        delay(500);
+        
+        object1=1;
+      }
+      test_val++;
+      if(test_val == 600){
+        test_val=400;
+        scan=scan+1;
+        if(scan%3==0){
+          enhancedTrotHigherBackward(100,10);
+        }
+      }
+      delay(10);
+      
+    }
+    pixy.setLamp(0,0);
+    delay(500);
+//    Gripper.write(90);
   }
 }
