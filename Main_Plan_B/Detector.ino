@@ -43,8 +43,9 @@ int getObjectLocation()
   }
 }
 
-void detectObject(int object)
+bool detectObject(int object)
 {
+  bool korban=false;
   if(object == 1)
   {
     while(object1==0)
@@ -160,11 +161,14 @@ void detectObject(int object)
     right_max = 130;
     int scan=0,scan_mode=0;
     object1=0;
+    Dynamixel.moveSpeed(16,800,250);
+    Dynamixel.moveSpeed(8,250,250);
+    delay(300);
     while(object1==0)
     {
       
       int getObject = getObjectLocation();
-      Serial.println(getObject);
+//      Serial.println(getObject);
       Dynamixel.moveSpeed(7,test_val,150);
       if(getObject==1){
         pixy.setLamp(0,0);
@@ -173,13 +177,11 @@ void detectObject(int object)
         delay(250);
         
         object1=1;
+        korban =true;
       }
-      else if(scan>7){
-        front_distance = scan(FRONT);
-        while(front_distance>15){
-          enhancedTrotHigherForward(150,10);
-          front_distance = scan(FRONT);
-        }
+      else if(scan>3){
+        object1=1;
+        korban =false;
       }
       else{
         if(scan_mode==0){
@@ -187,8 +189,8 @@ void detectObject(int object)
           if(test_val == 400){
             scan_mode=1;
             scan=scan+1;
-            if(scan%4==0){
-              enhancedTrotHigherBackward(100,10);
+            if(scan%2==0){
+              enhancedTrotHigherForward(100,10);
             }
           }
           else{
@@ -200,13 +202,11 @@ void detectObject(int object)
           if(test_val == 600){
             scan_mode=0;
             scan=scan+1;
-            if(scan%4==0){
-              enhancedTrotHigherBackward(100,10);
+            if(scan%2==0){
+              enhancedTrotHigherForward(100,10);
             }
           }
         }
-        
-        
       }
       
       delay(10);
@@ -215,7 +215,9 @@ void detectObject(int object)
     pixy.setLamp(0,0);
     delay(500);
 //    Gripper.write(90);
+    return korban;
   }
+  
   if(object == 3)
   {
 //    gripMovement("sog");
@@ -231,7 +233,7 @@ void detectObject(int object)
     {
       
       int getObject = getObjectLocation();
-      Serial.println(getObject);
+//      Serial.println(getObject);
       Dynamixel.moveSpeed(7,test_val,150);
       if(getObject==1){
         pixy.setLamp(0,0);

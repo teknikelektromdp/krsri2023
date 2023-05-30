@@ -181,6 +181,7 @@ void loop()
 //  int mundur=1;
   Dynamixel.moveSpeed(7,500, 50);
   while (true) {
+    
 //    int var = Dynamixel.readPosition int (16);
     
 //    Dynamixel.moveSpeed(7,500,250);
@@ -253,21 +254,29 @@ void loop()
 //        delay(10);
 //        Gripper.write(150);
         while(true){
-          pitchRoll();
-          back_distance=scan(BACK);
+          grip_distance=scan(GRIP);
           display.clearDisplay();
           display.setCursor(0,0);
-          display.print("pitch=");
-          display.print(pitch);
-          
-          display.setCursor(0,20);
-          display.print("back=");
-          display.print(back_distance);
-          
-          display.setCursor(0,10);
-          display.print("roll=");
-          display.print(roll);
+          display.print("distance=");
+          display.print(grip_distance);
           display.display();
+//          Serial.print("distance=");
+          Serial.println(grip_distance);
+//          pitchRoll();
+//          back_distance=scan(BACK);
+//          display.clearDisplay();
+//          display.setCursor(0,0);
+//          display.print("pitch=");
+//          display.print(pitch);
+//          
+//          display.setCursor(0,20);
+//          display.print("back=");
+//          display.print(back_distance);
+//          
+//          display.setCursor(0,10);
+//          display.print("roll=");
+//          display.print(roll);
+//          display.display();
 //      if(femur_val<300 || tibia_val>700){
 //        femur_val=800;
 //        tibia_val=200;
@@ -426,66 +435,80 @@ void loop()
     delay(300);
     //tibia
     Dynamixel.moveSpeed(8,250,250);
+    delay(300);
     Gripper.write(90);
     //mempersiapkan tubuh robot untuk scan dan pengambilan korban
     standingPosition(3, 200);
-    delay(1000);
+    delay(100);
+    
     //deteksi obyek
-    detectObject(2);
-//    initialPosition(400);
-
-    //positioning gripper
-    Dynamixel.moveSpeed(16,800,250);
-    delay(300);
-    //tibia
-    Dynamixel.moveSpeed(8,200,250);
-    delay(500);
-    //pengangkatan korban sembari mengambil korban
-    Dynamixel.moveSpeed(16,300,55);
-    delay(300);
-    //tibia
-    Dynamixel.moveSpeed(8,700,70);
-    //pencenkraman korban
-
-    //apabila robot tidak berhasil mengcengkram korban, ??
-    grip=0;
-    while(grip==0){
-      grip_distance=scan(GRIP);
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.print("distance=");
-      display.print(grip_distance);
-      display.setCursor(0,20);
-      display.print("iterasi=");
-      display.print(iterasi);
-      display.display();
-      iterasi++;
-      if(grip_distance<=15){
-        Gripper.write(180);
-        delay(3000);
+    if(detectObject(2)==true){
+      
+      //positioning gripper
+      Dynamixel.moveSpeed(16,800,250);
+      delay(300);
+      //tibia
+      Dynamixel.moveSpeed(8,225,250);
+      delay(500);
+      //pengangkatan korban sembari  korban
+      Dynamixel.moveSpeed(16,300,50);
+      delay(300);
+      //tibia
+      Dynamixel.moveSpeed(8,700,75);
+      //pencenkraman korban
+      
+      //apabila robot tidak berhasil mengcengkram korban, ??
+      grip=0;
+      iterasi=0;
+//      while(grip==0){
+//        grip_distance=scan(GRIP);
+//        delay(200);
+//        iterasi++;
+//        Serial.print(iterasi);
+//        Serial.print(":");
+//        Serial.println(grip_distance);
+//      }
+      while(grip==0){
+        grip_distance=scan(GRIP);
+        Serial.println(grip_distance);
+        display.clearDisplay();
+        display.setCursor(0,0);
+        display.print("distance=");
+        display.print(grip_distance);
+        display.setCursor(0,20);
+        display.print("iterasi=");
+        display.print(iterasi);
+        display.display();
+        iterasi++;
+        
+        
+        if(grip_distance<=8){
+          Gripper.write(180);
+          delay(3000);  
+    
+          //gripMovement("lcg");
+          //coxa
+          Dynamixel.moveSpeed(7,500,250);
+          delay(10);
+          //femur
+          Dynamixel.moveSpeed(16,600,250);
+          delay(10);
+          //tibia
+          Dynamixel.moveSpeed(8,225,250);
+          delay(10);
+          Gripper.write(180);
+          grip=1;
+        }
+        else if(iterasi>40){
+          grip=1;
+        }
+        else{
+          grip=0;
+        }
   
-        //gripMovement("lcg");
-        //coxa
-        Dynamixel.moveSpeed(7,500,50);
-        delay(10);
-        //femur
-        Dynamixel.moveSpeed(16,200,50);
-        delay(10);
-        //tibia
-        Dynamixel.moveSpeed(8,300,50);
-        delay(10);
-        Gripper.write(150);
-        grip=1;
       }
-      else if(iterasi>20){
-        grip=1;
-      }
-      else{
-        grip=0;
-      }
-
-      ///cek posisi 
     }
+    //fungsi untuk menyimpan gripper
     //gripMovement("lcg");
     //coxa
     Dynamixel.moveSpeed(7,500,100);
@@ -570,17 +593,42 @@ void loop()
     maju   = 0;
     mode   = 0;
     while (mode == 0){
+      
       if (mundur == 1) {
-        creepBackward(350, 4, 10);
+        for(int i=0; i<3;i++){
+          enhancedTrotHigherBackward(400, 10);
+        }
+        for(int i=0; i<2;i++){
+          creepBackward(400,4,10);
+        }
+//        creepBackward(350, 4, 10);
       }
       else if (kanan == 1) {
-        creepRight(300, 4, 10);
+        for(int i=0; i<3;i++){
+          enhancedTrotHigherRight(400, 10);
+        }
+        for(int i=0; i<2;i++){
+          creepRight(400,4,10);
+        }
+//        creepRight(300, 4, 10);
       }
       else if (maju == 1) {
-        creepForward(300, 4, 10);
+        for(int i=0; i<3;i++){
+          enhancedTrotHigherForward(400, 10);
+        }
+        for(int i=0; i<2;i++){
+          creepForward(400,4,10);
+        }
+//      creepForward(300, 4, 10);
       }
       else{
-        creepLeft(300, 4, 10);
+        for(int i=0; i<3;i++){
+          enhancedTrotHigherLeft(400, 10);
+        }
+        for(int i=0; i<2;i++){
+          creepLeft(400,4,10);
+        }
+//        creepLeft(300, 4, 10);
       }
       left_distance = scan(LEFT_);
       right_distance = scan(RIGHT);
@@ -616,8 +664,11 @@ void loop()
       else{
         kanan = 0;
       }
-      
-      if(roll >= 14){
+
+      if(mundur==1 && pitch>=-10){
+        mode=1;
+      }
+      else if(mundur == 0 && kanan == 0 && maju == 0 && roll >= 14){
         mode=1;
       }
       else{
@@ -720,6 +771,12 @@ void loop()
           repositioning = 1;
         }
       }
+
+      right_distance = scan(RIGHT);
+      while(right_distance>15){
+        enhancedTrotHigherRight(250,10);
+        right_distance = scan(RIGHT);
+      }
       
       back_distance = scan(BACK);
       while(back_distance<27){
@@ -729,7 +786,7 @@ void loop()
       //memperbaiki heading robot sebelum meletakkan korban pertama
       
       back_distance = scan(BACK);
-      if (back_distance>=27 && repositioning==1) {
+      if (back_distance>=27 && right_distance<=15 && repositioning==1) {
         k=1;
       } else {
         k=0;
@@ -747,6 +804,12 @@ void loop()
     gripMovement("open");
     delay(1000);
     gripMovement("lcg");
+
+    right_distance = scan(RIGHT);
+    while(right_distance>15){
+      enhancedTrotHigherRight(300,10);
+      right_distance = scan(RIGHT);
+    }
     
     back_distance = scan(BACK);
     while(back_distance<48){
@@ -798,7 +861,7 @@ void loop()
         enhancedTrotHigherForward(200,10);
         front_distance = scan(FRONT);
       }
-      //memperbaiki heading robot di depan korban
+      //memperbaiki heading robot di depan korban kedua
       while (repositioning == 0) {
         bearing = getBearing();
         display.clearDisplay();
@@ -825,7 +888,6 @@ void loop()
       }
     }
 
-    initialPosition(400);
     pixy.setLamp(1, 0);
 
     //mempersiapkan gripper untuk scanning
@@ -833,67 +895,86 @@ void loop()
     //tibia
     Dynamixel.moveSpeed(8,100,250);
     //femur
-    
-    Gripper.write(120);
-
-    
+    Dynamixel.moveSpeed(16,800,250);
+//    Dynamixel.moveSpeed(7,500,250);
+    delay(300);
+    //tibia
+    Dynamixel.moveSpeed(8,250,250);
+    delay(300);
+    Gripper.write(90);
     //mempersiapkan tubuh robot untuk scan dan pengambilan korban
     standingPosition(6, 200);
-    Dynamixel.moveSpeed(16,800,250);
-    Dynamixel.moveSpeed(7,400,250);
-    delay(300);
-    //tibia
-    Dynamixel.moveSpeed(8,225,250);
-    delay(1000);
+    delay(100);
+    
     //deteksi obyek
-    detectObject(3);
-//    initialPosition(400);
-
-    //positioning gripper
-    Dynamixel.moveSpeed(16,800,250);
-    delay(300);
-    //tibia
-    Dynamixel.moveSpeed(8,225,250);
-    delay(500);
-    //pengangkatan korban sembari mengambil korban
-    Dynamixel.moveSpeed(16,300,50);
-    delay(300);
-    //tibia
-    Dynamixel.moveSpeed(8,700,75);
-    //pencenkraman korban
-
-    grip=0;
-    while(grip==0){
-      grip_distance=scan(GRIP);
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.print("distance=");
-      display.print(grip_distance);
-      display.display();
-      Serial.print("distance:");
-      Serial.println(grip_distance);
-      if(grip_distance<=18){
-//        if(grip_distance<=9){
-        gripMovement("grip");
-        delay(3000);
+    iterasi=0;
+    if(detectObject(2)==true){
+      
+      //positioning gripper
+      Dynamixel.moveSpeed(16,800,250);
+      delay(300);
+      //tibia
+      Dynamixel.moveSpeed(8,200,250);
+      delay(500);
+      //pengangkatan korban sembari  korban
+      Dynamixel.moveSpeed(16,300,50);
+      delay(300);
+      //tibia
+      Dynamixel.moveSpeed(8,700,75);
+      //pencenkraman korban
+      
+      //apabila robot tidak berhasil mengcengkram korban, ??
+      grip=0;
+      while(grip==0){
+        grip_distance=scan(GRIP);
+        display.clearDisplay();
+        display.setCursor(0,0);
+        display.print("distance=");
+        display.print(grip_distance);
+        display.setCursor(0,20);
+        display.print("iterasi=");
+        display.print(iterasi);
+        display.display();
+        iterasi++;
+        if(grip_distance<=8){// 15/16
+          Gripper.write(180);
+          delay(3000);  
+    
+          //gripMovement("lcg");
+          //coxa
+          Dynamixel.moveSpeed(7,500,50);
+          delay(10);
+          //femur
+          Dynamixel.moveSpeed(16,200,50);
+          delay(10);
+          //tibia
+          Dynamixel.moveSpeed(8,300,50);
+          delay(10);
+          Gripper.write(180);
+          grip=1;
+        }
+        else if(iterasi>40){
+          grip=1;
+        }
+        else{
+          grip=0;
+        }
   
-        //gripMovement("lcg");
-        //coxa
-        Dynamixel.moveSpeed(7,500,50);
-        delay(10);
-        //femur
-        Dynamixel.moveSpeed(16,200,125);
-        delay(10);
-        //tibia
-        Dynamixel.moveSpeed(8,300,100);
-        delay(10);
-        Gripper.write(150);
-        grip=1;
-      }
-      else{
-        grip=0;
       }
     }
+    //fungsi untuk menyimpan gripper
+    //gripMovement("lcg");
+    //coxa
+    Dynamixel.moveSpeed(7,500,100);
+    delay(10);
+    //femur
+    Dynamixel.moveSpeed(16,200,100);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,300,100);
+    delay(10);
+    Gripper.write(160);
+    
     
     //memperbaiki heading robot sebelum menuju safezone 2
     repositioning=0;
@@ -913,7 +994,11 @@ void loop()
         repositioning = 1;
       }
     }
-
+    back_distance = scan(BACK);
+    while(back_distance>35){
+      enhancedTrotHigherBackward(200,10);
+      back_distance = scan(BACK);
+    }
     standingPosition(5,200);
 
     //putting second victim to safezone
