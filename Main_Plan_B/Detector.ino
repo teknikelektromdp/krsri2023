@@ -155,10 +155,10 @@ void detectObject(int object)
     Gripper.write(90);
     pixy.setLamp(1,0);
     delay(100);
-    int test_val = 600,
-    right_min = 130,
-    right_max = 140;
-    int scan=0;
+    int test_val = 500,
+    right_min = 120,
+    right_max = 130;
+    int scan=0,scan_mode=0;
     object1=0;
     while(object1==0)
     {
@@ -168,20 +168,47 @@ void detectObject(int object)
       Dynamixel.moveSpeed(7,test_val,150);
       if(getObject==1){
         pixy.setLamp(0,0);
-        delay(500);
+        delay(250);
         pixy.setLamp(1,1);
-        delay(500);
+        delay(250);
         
         object1=1;
       }
-      test_val--;
-      if(test_val == 400){
-        test_val=600;
-        scan=scan+1;
-        if(scan%3==0){
-          enhancedTrotHigherBackward(100,10);
+      else if(scan>7){
+        front_distance = scan(FRONT);
+        while(front_distance>15){
+          enhancedTrotHigherForward(150,10);
+          front_distance = scan(FRONT);
         }
       }
+      else{
+        if(scan_mode==0){
+          test_val--;
+          if(test_val == 400){
+            scan_mode=1;
+            scan=scan+1;
+            if(scan%4==0){
+              enhancedTrotHigherBackward(100,10);
+            }
+          }
+          else{
+            scan_mode=0;
+          }
+        }
+        else if(scan_mode==1){
+          test_val++;
+          if(test_val == 600){
+            scan_mode=0;
+            scan=scan+1;
+            if(scan%4==0){
+              enhancedTrotHigherBackward(100,10);
+            }
+          }
+        }
+        
+        
+      }
+      
       delay(10);
       
     }

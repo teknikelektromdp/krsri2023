@@ -181,7 +181,7 @@ void loop()
 //  int mundur=1;
   Dynamixel.moveSpeed(7,500, 50);
   while (true) {
-    int var = Dynamixel.readPosition int (16);
+//    int var = Dynamixel.readPosition int (16);
     
 //    Dynamixel.moveSpeed(7,500,250);
 //    delay(300);
@@ -377,8 +377,8 @@ void loop()
 //        }
 //        front_distance = scan(FRONT);
 //      }
-      while(front_distance>17){
-        enhancedTrotHigherForward(150,3);
+      while(front_distance>15){
+        enhancedTrotHigherForward(150,10);
         front_distance = scan(FRONT);
       }
       //memperbaiki heading robot di depan korban
@@ -402,7 +402,7 @@ void loop()
       }
       front_distance = scan(FRONT);
 //      if (front_distance<=16 && front_distance>=15 && repositioning==1) {
-      if (front_distance<=17 && repositioning==1) {
+      if (front_distance<=15 && repositioning==1) {
         k=1;
       } 
       else {
@@ -422,11 +422,11 @@ void loop()
     Dynamixel.moveSpeed(8,100,250);
     //femur
     Dynamixel.moveSpeed(16,800,250);
-    Dynamixel.moveSpeed(7,620,250);
+//    Dynamixel.moveSpeed(7,500,250);
     delay(300);
     //tibia
     Dynamixel.moveSpeed(8,250,250);
-    Gripper.write(120);
+    Gripper.write(90);
     //mempersiapkan tubuh robot untuk scan dan pengambilan korban
     standingPosition(3, 200);
     delay(1000);
@@ -441,10 +441,10 @@ void loop()
     Dynamixel.moveSpeed(8,200,250);
     delay(500);
     //pengangkatan korban sembari mengambil korban
-    Dynamixel.moveSpeed(16,300,50);
+    Dynamixel.moveSpeed(16,300,55);
     delay(300);
     //tibia
-    Dynamixel.moveSpeed(8,700,75);
+    Dynamixel.moveSpeed(8,700,70);
     //pencenkraman korban
 
     //apabila robot tidak berhasil mengcengkram korban, ??
@@ -455,10 +455,13 @@ void loop()
       display.setCursor(0,0);
       display.print("distance=");
       display.print(grip_distance);
+      display.setCursor(0,20);
+      display.print("iterasi=");
+      display.print(iterasi);
       display.display();
       iterasi++;
       if(grip_distance<=15){
-        gripMovement("grip");
+        Gripper.write(180);
         delay(3000);
   
         //gripMovement("lcg");
@@ -474,7 +477,7 @@ void loop()
         Gripper.write(150);
         grip=1;
       }
-      else if(iterasi>1000){
+      else if(iterasi>20){
         grip=1;
       }
       else{
@@ -585,7 +588,14 @@ void loop()
       back_distance = scan(BACK);
       bearing = getBearing();
       pitchRoll();
-
+      display.clearDisplay();
+      display.setCursor(0,0);
+      display.print("pitch = ");
+      display.print(pitch);
+      display.setCursor(0,10);
+      display.print("roll = ");
+      display.print(roll);
+      display.display();
       if (bearing > right_direction - 25 && bearing < back_direction - 20) {
         mundur = 1;
       }
@@ -607,13 +617,14 @@ void loop()
         kanan = 0;
       }
       
-      if(roll >= 12){
+      if(roll >= 14){
         mode=1;
       }
       else{
         mode=0;
       }
     }
+    
     //jalan menurun
     mode=1;
     kondisiPitch=0;
@@ -628,10 +639,6 @@ void loop()
       repositioning=0;
       while(repositioning==0){
         bearing = getBearing();
-//        display.clearDisplay();
-//        display.setCursor(10,10);
-//        display.print(bearing);
-//        display.display();
         if(bearing<right_l_offset){
           creepSlightRight(250,3,10);
         }
@@ -642,6 +649,12 @@ void loop()
           repositioning=1;
         }
       }
+      left_distance = scan(LEFT_);
+      right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
+      back_distance = scan(BACK);
+      bearing = getBearing();
+      pitchRoll();
       if (mundur == 1) {
         enhancedTrotHigherBackward(350,10);
       }
@@ -674,10 +687,12 @@ void loop()
       else{
         kanan = 0;
       }
-      if(pitch>=-86 || right_distance >=30){
-        kondisiPitch = kondisiPitch + 1;
-      }
-      if(back_distance<=20 && kondisiPitch>=1){
+//      if(pitch>=-86 || right_distance >=30){
+//      if(pitch>=-84){
+//        kondisiPitch = kondisiPitch + 1;
+//      }
+//      if(back_distance<=20 && kondisiPitch>=1){
+      if(back_distance<=20 && pitch>=-84){
         mode=0;
       }
       else{
