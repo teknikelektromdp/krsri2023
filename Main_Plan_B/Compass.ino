@@ -391,13 +391,13 @@ void compassManualCalibration8bit(int front_facing){
   if(front_r_offset < 0){
     front_r_offset = front_r_offset + 256;
   }
-//    Serial.print("Front direction :\t");
-//  Serial.println(front_direction);
-//  Serial.print("Left offset :\t");
-//  Serial.println(front_l_offset);
-//  Serial.print("Right offset :\t");
-//  Serial.println(front_r_offset);
-//  Serial.println("__________________________");
+    Serial.print("Front direction :\t");
+  Serial.println(front_direction);
+  Serial.print("Left offset :\t");
+  Serial.println(front_l_offset);
+  Serial.print("Right offset :\t");
+  Serial.println(front_r_offset);
+  Serial.println("__________________________");
 //  writeLog("Front direction :\t");
 //  writeLog(intToString(front_direction));
 //  writeLog("Left offset :\t");
@@ -428,13 +428,13 @@ void compassManualCalibration8bit(int front_facing){
   if(left_r_offset < 0){
     left_r_offset = left_r_offset + 256;
   }
-//  Serial.print("Left direction :\t");
-//  Serial.println(left_direction);
-//  Serial.print("Left offset :\t");
-//  Serial.println(left_l_offset);
-//  Serial.print("Right offset :\t");
-//  Serial.println(left_r_offset);
-//  Serial.println("__________________________");
+  Serial.print("Left direction :\t");
+  Serial.println(left_direction);
+  Serial.print("Left offset :\t");
+  Serial.println(left_l_offset);
+  Serial.print("Right offset :\t");
+  Serial.println(left_r_offset);
+  Serial.println("__________________________");
 //  writeLog("Left direction :\t");
 //  writeLog(intToString(left_direction));
 //  writeLog("Left offset :\t");
@@ -465,13 +465,13 @@ void compassManualCalibration8bit(int front_facing){
   if(right_r_offset < 0){
     right_r_offset = right_r_offset + 256;
   }
-//    Serial.print("Right direction :\t");
-//  Serial.println(right_direction);
-//  Serial.print("Left offset :\t");
-//  Serial.println(right_l_offset);
-//  Serial.print("Right offset :\t");
-//  Serial.println(right_r_offset);
-//  Serial.println("__________________________");
+    Serial.print("Right direction :\t");
+  Serial.println(right_direction);
+  Serial.print("Left offset :\t");
+  Serial.println(right_l_offset);
+  Serial.print("Right offset :\t");
+  Serial.println(right_r_offset);
+  Serial.println("__________________________");
 //  writeLog("Right direction :\t");
 //  writeLog(intToString(right_direction));
 //  writeLog("Left offset :\t");
@@ -502,13 +502,13 @@ void compassManualCalibration8bit(int front_facing){
   if(back_r_offset < 0){
     back_r_offset = back_r_offset + 256;
   }
-//    Serial.print("Back direction :\t");
-//  Serial.println(back_direction);
-//  Serial.print("Left offset :\t");
-//  Serial.println(back_l_offset);
-//  Serial.print("Right offset :\t");
-//  Serial.println(back_r_offset);
-//  Serial.println("________________________________________");
+    Serial.print("Back direction :\t");
+  Serial.println(back_direction);
+  Serial.print("Left offset :\t");
+  Serial.println(back_l_offset);
+  Serial.print("Right offset :\t");
+  Serial.println(back_r_offset);
+  Serial.println("________________________________________");
 //  writeLog("Back direction :\t");
 //  writeLog(intToString(back_direction));
 //  writeLog("Left offset :\t");
