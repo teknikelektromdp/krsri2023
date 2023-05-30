@@ -120,7 +120,7 @@ int upper_pitch_limit = 4,  //(10)
     lower_pitch_limit = -4, //-3
     upper_roll_limit  = 4,  //3        10
     lower_roll_limit  = -4; //-3
-int grip=0;
+int grip=0,iterasi=0;
 /*Classes*/
 U8X8_SSD1306_128X64_NONAME_HW_I2C display(U8X8_PIN_NONE);
 Pixy2 pixy;
@@ -179,7 +179,10 @@ void loop()
 //  int value=38;
 //  compassManualCalibration8bit(value);
 //  int mundur=1;
+  Dynamixel.moveSpeed(7,500, 50);
   while (true) {
+    int var = Dynamixel.readPosition int (16);
+    
 //    Dynamixel.moveSpeed(7,500,250);
 //    delay(300);
 //    //tibia
@@ -297,7 +300,7 @@ void loop()
 
 
   //compassManualCalibration(45);
-  int value=33;
+  int value=35;
   compassManualCalibration8bit(value);
 
   //starting from home
@@ -341,9 +344,11 @@ void loop()
         display.display();
         if (bearing <= front_l_offset+3) {
           enhancedTrotLowerRightTurn(250, 10);
+          repositioning=0;
         }
         else if (bearing >= front_r_offset-3) {
           enhancedTrotLowerLeftTurn(250, 10);
+          repositioning=0;
         }
         else {
           repositioning = 1;
@@ -364,6 +369,14 @@ void loop()
     k=0;
     while(k==0){
       front_distance = scan(FRONT);
+//      while(front_distance>16 || front_distance<15){
+//        if (front_distance>16){
+//          enhancedTrotHigherForward(150,3);
+//        } else if (front_distance<15) {
+//          enhancedTrotHigherBackward(150,3);
+//        }
+//        front_distance = scan(FRONT);
+//      }
       while(front_distance>17){
         enhancedTrotHigherForward(150,3);
         front_distance = scan(FRONT);
@@ -377,18 +390,22 @@ void loop()
         display.display();
         if (bearing <= front_l_offset+3) {
           enhancedTrotLowerRightTurn(250, 10);
+          repositioning=0;
         }
         else if (bearing >= front_r_offset-3) {
           enhancedTrotLowerLeftTurn(250, 10);
+          repositioning=0;
         }
         else {
           repositioning = 1;
         }
       }
       front_distance = scan(FRONT);
+//      if (front_distance<=16 && front_distance>=15 && repositioning==1) {
       if (front_distance<=17 && repositioning==1) {
         k=1;
-      } else {
+      } 
+      else {
         k=0;
         repositioning=0;
       }
@@ -396,7 +413,7 @@ void loop()
 
     //Taking victim(s)
 //    writeLog("SAVING VICTIM");
-    initialPosition(400);
+    initialPosition(200);
     pixy.setLamp(1, 0);
 
     //mempersiapkan gripper untuk scanning
@@ -439,7 +456,8 @@ void loop()
       display.print("distance=");
       display.print(grip_distance);
       display.display();
-      if(grip_distance<=8){
+      iterasi++;
+      if(grip_distance<=15){
         gripMovement("grip");
         delay(3000);
   
@@ -456,16 +474,63 @@ void loop()
         Gripper.write(150);
         grip=1;
       }
+      else if(iterasi>1000){
+        grip=1;
+      }
       else{
         grip=0;
       }
-    }
-    gripMovement("lcg");
-    
 
-    //jalan pecah
-    
-        
+      ///cek posisi 
+    }
+    //gripMovement("lcg");
+    //coxa
+    Dynamixel.moveSpeed(7,500,100);
+    delay(10);
+    //femur
+    Dynamixel.moveSpeed(16,200,100);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,300,100);
+    delay(10);
+    Gripper.write(160);
+
+    //mereposisi tubuh robot sebelum memasuki rintangan jalan pecah
+    k=0;
+    while(k==0){
+      front_distance = scan(FRONT);
+      while(front_distance>17){
+        enhancedTrotHigherForward(150,3);
+        front_distance = scan(FRONT);
+      }
+      //memperbaiki heading robot di depan korban
+      while (repositioning == 0) {
+        bearing = getBearing();
+        display.clearDisplay();
+        display.setCursor(5, 5);
+        display.print(bearing);
+        display.display();
+        if (bearing <= front_l_offset+3) {
+          enhancedTrotLowerRightTurn(250, 10);
+          repositioning=0;
+        }
+        else if (bearing >= front_r_offset-3) {
+          enhancedTrotLowerLeftTurn(250, 10);
+          repositioning=0;
+        }
+        else {
+          repositioning = 1;
+        }
+      }
+      front_distance = scan(FRONT);
+      if (front_distance<=17&& repositioning==1) {
+        k=1;
+      } else {
+        k=0;
+        repositioning=0;
+      }
+    }
+        //jalan pecah
     //memasuki jalan pecah
     mundur = 0,
     kanan = 0,
@@ -609,10 +674,10 @@ void loop()
       else{
         kanan = 0;
       }
-      if(pitch>=-84){
+      if(pitch>=-86 || right_distance >=30){
         kondisiPitch = kondisiPitch + 1;
       }
-      if(back_distance<=30 && kondisiPitch>=1){
+      if(back_distance<=20 && kondisiPitch>=1){
         mode=0;
       }
       else{
@@ -642,14 +707,14 @@ void loop()
       }
       
       back_distance = scan(BACK);
-      while(back_distance<30){
+      while(back_distance<27){
         enhancedTrotHigherForward(250,10);
         back_distance = scan(BACK);
       }
       //memperbaiki heading robot sebelum meletakkan korban pertama
       
       back_distance = scan(BACK);
-      if (back_distance>=30 && repositioning==1) {
+      if (back_distance>=27 && repositioning==1) {
         k=1;
       } else {
         k=0;
@@ -668,7 +733,11 @@ void loop()
     delay(1000);
     gripMovement("lcg");
     
-        
+    back_distance = scan(BACK);
+    while(back_distance<48){
+      enhancedTrotHigherForward(300,10);
+      back_distance = scan(BACK);
+    }
     //preparing for taking second victim
     k=0;
     repositioning = 0;
@@ -916,7 +985,7 @@ void loop()
     }
   
     left_distance=scan(LEFT_);
-    while(left_distance>15){
+    while(left_distance>17){
       creepLeft(200,4,10);
       left_distance=scan(LEFT_);
     }
