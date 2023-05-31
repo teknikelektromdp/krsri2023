@@ -161,6 +161,7 @@ void loop()
 //  //tibia
 //  Dynamixel.moveSpeed(8,325,150);
 //  moveGripper(17, 8, 3, 300);
+//  Gripper.write(150);
   displayMenu();
 //  gripMovement("lcg");
   pixy.setLamp(0, 0);
@@ -482,7 +483,7 @@ void loop()
         iterasi++;
         
         
-        if(grip_distance<=8){
+        if(grip_distance<=3){
           Gripper.write(180);
           delay(3000);  
     
@@ -519,7 +520,7 @@ void loop()
     //tibia
     Dynamixel.moveSpeed(8,300,100);
     delay(10);
-    Gripper.write(160);
+    Gripper.write(170);
 
     //mereposisi tubuh robot sebelum memasuki rintangan jalan pecah
     k=0;
@@ -738,12 +739,8 @@ void loop()
       else{
         kanan = 0;
       }
-//      if(pitch>=-86 || right_distance >=30){
-//      if(pitch>=-84){
-//        kondisiPitch = kondisiPitch + 1;
-//      }
-//      if(back_distance<=20 && kondisiPitch>=1){
-      if(back_distance<=20 && pitch>=-84){
+      
+      if(back_distance<=20 && pitch>=-8){
         mode=0;
       }
       else{
@@ -761,10 +758,10 @@ void loop()
         display.setCursor(5, 5);
         display.print(bearing);
         display.display();
-        if (bearing <= back_l_offset+3) {
+        if (bearing <= back_l_offset+6) {
           enhancedTrotHigherRightTurn(300, 20);
         }
-        else if (bearing >= back_r_offset-3) {
+        else if (bearing >= back_r_offset) {
           enhancedTrotHigherLeftTurn(300, 20);
         }
         else {
@@ -803,8 +800,17 @@ void loop()
     
     gripMovement("open");
     delay(1000);
-    gripMovement("lcg");
+    //femur
+    Dynamixel.moveSpeed(16,200,200);
+    delay(10);
+    //tibia
+    Dynamixel.moveSpeed(8,300,200);
+    //coxa
+    Dynamixel.moveSpeed(7,500,175);
+    delay(10);
+    
 
+    
     right_distance = scan(RIGHT);
     while(right_distance>15){
       enhancedTrotHigherRight(300,10);
@@ -816,11 +822,14 @@ void loop()
       enhancedTrotHigherForward(300,10);
       back_distance = scan(BACK);
     }
+
+    
     //preparing for taking second victim
     k=0;
     repositioning = 0;
     while (k == 0) {
-      //memperbaiki heading robot di depan robot
+    //mereposisi robot sebelum menuju korban kedua
+    //memperbaiki heading robot di depan korban
       while (repositioning == 0) {
         bearing = getBearing();
         display.clearDisplay();
@@ -835,57 +844,37 @@ void loop()
         }
         else {
           repositioning = 1;
-          
         }
       }
+      //menutup gripper
+      Gripper.write(170);
+      //mendekati dinding disebelah kanan untuk memudahkan pengambilan
+      
+  
+      
       //berjalan kedepan korban kedua
       right_distance = scan(RIGHT);
       while (right_distance <= 50) {
         enhancedTrotHigherLeft(200,20);
         right_distance = scan(RIGHT);
       }
-      delay(1000);
+      delay(100);
       right_distance = scan(RIGHT);
+      front_distance = scan(FRONT);
       if (right_distance > 50 && repositioning==1) {
         k=1;
-      } else {
+      }
+      else {
         k=0;
         repositioning=0;
       }
     }
+    
     //mempersiapkan robot sebelum mengambil korban kedua
-    k=0;
-    while(k==0){
+    front_distance = scan(FRONT);
+    while(front_distance>15){
+      enhancedTrotHigherForward(200,10);
       front_distance = scan(FRONT);
-      while(front_distance>17){
-        enhancedTrotHigherForward(200,10);
-        front_distance = scan(FRONT);
-      }
-      //memperbaiki heading robot di depan korban kedua
-      while (repositioning == 0) {
-        bearing = getBearing();
-        display.clearDisplay();
-        display.setCursor(5, 5);
-        display.print(bearing);
-        display.display();
-        if (bearing <= left_l_offset-10 && bearing >front_direction) {
-          creepSlightRight(250,4,10);
-        }
-        else if (bearing >= left_r_offset-10 || bearing<=front_direction) {
-          creepSlightLeft(250,4,10);
-        }
-        else {
-          repositioning = 1;
-          
-        }
-      }
-      front_distance = scan(FRONT);
-      if (front_distance<=17 && repositioning==1) {
-        k=1;
-      } else {
-        k=0;
-        repositioning=0;
-      }
     }
 
     pixy.setLamp(1, 0);
@@ -914,13 +903,13 @@ void loop()
       Dynamixel.moveSpeed(16,800,250);
       delay(300);
       //tibia
-      Dynamixel.moveSpeed(8,200,250);
+      Dynamixel.moveSpeed(8,250,250);
       delay(500);
       //pengangkatan korban sembari  korban
       Dynamixel.moveSpeed(16,300,50);
       delay(300);
       //tibia
-      Dynamixel.moveSpeed(8,700,75);
+      Dynamixel.moveSpeed(8,700,70);
       //pencenkraman korban
       
       //apabila robot tidak berhasil mengcengkram korban, ??
@@ -936,7 +925,7 @@ void loop()
         display.print(iterasi);
         display.display();
         iterasi++;
-        if(grip_distance<=8){// 15/16
+        if(grip_distance<=4){// 15/16
           Gripper.write(180);
           delay(3000);  
     
@@ -962,6 +951,7 @@ void loop()
   
       }
     }
+    
     //fungsi untuk menyimpan gripper
     //gripMovement("lcg");
     //coxa
@@ -973,7 +963,7 @@ void loop()
     //tibia
     Dynamixel.moveSpeed(8,300,100);
     delay(10);
-    Gripper.write(160);
+    Gripper.write(170);
     
     
     //memperbaiki heading robot sebelum menuju safezone 2
@@ -994,6 +984,7 @@ void loop()
         repositioning = 1;
       }
     }
+    
     back_distance = scan(BACK);
     while(back_distance>35){
       enhancedTrotHigherBackward(200,10);
@@ -1024,10 +1015,10 @@ void loop()
       display.print(bearing);
       display.display();
       if (bearing <= front_l_offset+20 || bearing>=left_l_offset-20) {
-        enhancedTrotHigherRightTurn(300,10);
+        creepSlightRight(250,5,10);
       }
       else if (bearing >= front_r_offset+20 && bearing <left_l_offset-20) {
-        enhancedTrotHigherLeftTurn(300,10);
+        creepSlightLeft(250,5,10);
       }
       else {
         repositioning = 1;
@@ -1036,7 +1027,8 @@ void loop()
     //keluar dari rintangan lumpur
     left_distance=scan(LEFT_);
     while(left_distance<60){
-      enhancedTrotHigherRight(400, 20);
+      creepRight(250,4,20);
+//      enhancedTrotHigherRight(400, 20);
       left_distance=scan(LEFT_);
     }
 
@@ -1049,10 +1041,10 @@ void loop()
       display.print(bearing);
       display.display();
       if (bearing < (front_l_offset+right_l_offset)/2) {
-        enhancedTrotHigherRightTurn(300, 10);
+        creepSlightRight(250,4,10);
       }
       else if (bearing > (front_r_offset+right_r_offset)/2) {
-        enhancedTrotHigherLeftTurn(300, 10);
+        creepSlightLeft(250,4,10);
       }
       else {
         repositioning = 1;

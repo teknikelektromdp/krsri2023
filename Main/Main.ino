@@ -146,7 +146,7 @@ void loop()
   
   /*  
    *  testing purpose  
-   *
+   */
 
   int kiri = 0;
   //  int bearing;
@@ -157,7 +157,24 @@ void loop()
                                //f31   b71
 //    while (repositioning == 0) {
 //     enhancedTrotHigherRightTurn(400, 10);
-     creepSlightRight(600,4, 10);
+      int speed=400, delay_servo=5;
+      LeftFront(5,5,0.5,speed,delay_servo);
+      RightBack(5,5,0.5,speed,delay_servo);
+      RightFront(5,7,0.5,speed,delay_servo);
+      LeftBack(5,7,0.5,speed,delay_servo);
+      delay(1);
+//     RightFront(7,5,2.5,speed,delay_servo);
+//    LeftBack(7,5,2.5,speed,delay_servo);
+//    LeftFront(5,7,0.5,speed,delay_servo);
+//    RightBack(5,7,0.5,speed,delay_servo);
+//    delay(1);
+//    LeftFront(7,5,2.5,speed,delay_servo);
+//    RightBack(7,5,2.5,speed,delay_servo);
+//    RightFront(5,7,0.5,speed,delay_servo);
+//    LeftBack(5,7,0.5,speed,delay_servo);
+//    delay(1);
+
+      
 //
 //    //recalibrating robot facing
 ////    compassManualCalibration8bit(25);

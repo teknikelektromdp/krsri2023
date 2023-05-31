@@ -104,7 +104,7 @@ void gripMovement(String movement)
     //tibia
     Dynamixel.moveSpeed(8,300,175);
     delay(10);
-    Gripper.write(150);
+    Gripper.write(160);
   }
   //lift and open gripper
   else if(movement == "log")
@@ -148,7 +148,7 @@ void gripMovement(String movement)
     Dynamixel.moveSpeed(16,700,150);
   }
   else if(movement == "grip"){
-    Gripper.write(160);
+    Gripper.write(170);
   }
   else if(movement == "open"){
     Gripper.write(90);
