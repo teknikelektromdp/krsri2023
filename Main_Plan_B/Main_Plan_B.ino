@@ -146,8 +146,8 @@ void setup() {
   display.drawString(0, 0, "MDP Engine Bot");
   initPixy();
   Gripper.attach(A4);
-  initGripper();
-  initialPosition(400);
+//  initGripper();
+//  initialPosition(400);
   delay(1000);
 }
 
@@ -162,7 +162,9 @@ void loop()
 //  Dynamixel.moveSpeed(8,325,150);
 //  moveGripper(17, 8, 3, 300);
 //  Gripper.write(150);
-  displayMenu();
+
+//  displayMenu();
+
 //  gripMovement("lcg");
   pixy.setLamp(0, 0);
   int right_distance = scan(RIGHT),
@@ -172,7 +174,7 @@ void loop()
   
   /*  
    *  testing purpose  
-   *
+   */
   int kiri = 0;
   //  int bearing;
   //compassManualCalibration(50);
@@ -181,6 +183,8 @@ void loop()
 //  compassManualCalibration8bit(value);
 //  int mundur=1;
   Dynamixel.moveSpeed(7,500, 50);
+  Dynamixel.moveSpeed(16,500, 50);
+  Dynamixel.moveSpeed(8,500, 50);
   while (true) {
     
 //    int var = Dynamixel.readPosition int (16);
